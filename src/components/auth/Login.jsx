@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classes from "./Login.module.css";
 import { API_URL } from "../../actions/apiUrl";
 import { useDispatch } from "react-redux";
@@ -15,6 +15,35 @@ const Login = (props) => {
   const loginState = useSelector((state) => state.user.status);
   const [formState, setFormState] = useState(initialState);
   const dispatch = useDispatch();
+
+  // Auto Login
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      fetch("http://localhost:3001/auth/auto_login", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((resp) => resp.json())
+        .then((data) => {
+          console.log(data);
+          dispatch(
+            userAction.logUserIn({
+              user: data,
+              token,
+            })
+          );
+          props.handleSuccessfulAuth();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [dispatch, props]);
+
   const handleSubmit = (e) => {
     const { email, password } = formState;
 
@@ -46,10 +75,8 @@ const Login = (props) => {
         localStorage.setItem("token", token);
         dispatch(
           userAction.logUserIn({
-            payload: {
-              user,
-              token,
-            },
+            user,
+            token,
           })
         );
 
@@ -96,7 +123,9 @@ const Login = (props) => {
           onChange={valueChangeHandler}
           required
         ></input>
-        <button type="submit">Login</button>
+        <button className={classes.submit__btn} type="submit">
+          Login
+        </button>
       </form>
     </div>
   );
