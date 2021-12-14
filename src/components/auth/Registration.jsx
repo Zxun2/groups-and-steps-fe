@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useState } from "react";
 
 const initialState = {
+  name: "",
   email: "",
   password: "",
   password_confirmation: "",
@@ -12,29 +12,33 @@ const Registration = (props) => {
   const [formState, setFormState] = useState(initialState);
 
   const handleSubmit = (e) => {
-    const { email, password, password_confirmation } = formState;
+    const { name, email, password, password_confirmation } = formState;
+
+    const body = JSON.stringify({
+      name,
+      email,
+      password,
+      password_confirmation,
+    });
+
+    console.log(body);
 
     e.preventDefault();
     // url, data, method
-    axios
-      .post(
-        "http://localhost:3001/registrations",
-        {
-          user: {
-            email,
-            password,
-            password_confirmation,
-          },
-        },
-        {
-          withCredentials: true, // important!
-        }
-      )
+    fetch("http://localhost:3001/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        Accept: "application/json",
+      },
+      body,
+    })
       .then((response) => {
-        console.log("registration successful", response);
-        if (response.data.status === "created") {
-          props.handleSuccessfulAuth(response.data);
-        }
+        console.log("Login successful", response.data);
+        // if (response.data.logged_in) {
+        //   props.handleSuccessfulAuth(response.data);
+        // }
       })
       .catch((err) => {
         console.log(err.message);
@@ -46,6 +50,16 @@ const Registration = (props) => {
   };
 
   // TODO: PLEASE REFACTOR THIS!
+  const nameChangeHandler = (e) => {
+    setFormState((prevState) => {
+      const value = e.target.value;
+      return {
+        ...prevState,
+        name: value,
+      };
+    });
+  };
+
   const emailChangeHandler = (e) => {
     setFormState((prevState) => {
       const value = e.target.value;
@@ -79,6 +93,14 @@ const Registration = (props) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
+        <input
+          type="name"
+          name="name"
+          placeholder="Type your name"
+          value={formState.name}
+          onChange={nameChangeHandler}
+          required
+        ></input>
         <input
           type="email"
           name="email"
