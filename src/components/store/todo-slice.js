@@ -1,18 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { API_URL } from "../../actions/apiUrl";
+import { uiAction } from "./ui-slice";
 
 const todoSlice = createSlice({
-  name: "todos",
+  name: "todo",
   initialState: {
     Todo: [], // Todo[]
-    steps: [], // Object[]
     changed: false,
   },
   reducers: {
+    replaceTodo(state, action) {
+      state.Todo = action.payload.Todo;
+    },
     addNewTodo(state, action) {
-      state.Todo.push(action.payload.Todo);
+      const newTodo = action.payload;
+      state.changed = true;
+      state.Todo.push({
+        id: newTodo.id,
+        title: newTodo.title,
+      });
     },
     removeTodo(state, action) {
-      state.Todo.filter((obj) => obj.id !== action.payload.id);
+      state.changed = true;
+      const id = action.payload;
+      state.Todo.filter((obj) => obj.id !== id);
     },
     updateTodo(state, action) {
       const objIndex = state.Todo.findIndex(
@@ -26,5 +37,44 @@ const todoSlice = createSlice({
   },
 });
 
-export const todoActions = todoSlice.actions;
+// Action creators
+export const fetchTodoData = () => {
+  return async (dispatch) => {
+    const token = localStorage.getItem("token");
+    const fetchData = async () => {
+      const response = await fetch(`${API_URL}/todos`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Could not fetch Todo data!");
+      }
+
+      const todos = await response.json();
+
+      return todos;
+    };
+
+    try {
+      const todoData = await fetchData();
+
+      dispatch(
+        todoAction.replaceTodo({
+          Todo: todoData || [],
+        })
+      );
+    } catch (err) {
+      dispatch(
+        uiAction.showNotification({
+          status: "error",
+          title: "Error!",
+          message: "Fetching todo data failed!",
+        })
+      );
+    }
+  };
+};
+
+export const todoAction = todoSlice.actions;
 export default todoSlice;

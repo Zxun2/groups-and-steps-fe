@@ -4,6 +4,7 @@ import { API_URL } from "../../actions/apiUrl";
 import { useDispatch } from "react-redux";
 import { userAction } from "../store/user-slice";
 import { useSelector } from "react-redux";
+import { Button } from "@mui/material";
 
 const initialState = {
   email: "",
@@ -123,9 +124,9 @@ const Login = (props) => {
           onChange={valueChangeHandler}
           required
         ></input>
-        <button className={classes.submit__btn} type="submit">
+        <Button className={classes.submit__btn} type="submit">
           Login
-        </button>
+        </Button>
       </form>
     </div>
   );
