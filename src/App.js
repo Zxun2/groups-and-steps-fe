@@ -5,7 +5,6 @@ import { Route, Switch } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { userAction } from "./components/store/user-slice";
-import { uiAction } from "./components/store/ui-slice";
 import { useHistory } from "react-router-dom";
 
 function App() {

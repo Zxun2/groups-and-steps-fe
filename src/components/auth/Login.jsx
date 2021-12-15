@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { API_URL } from "../../actions/apiUrl";
 import { useDispatch } from "react-redux";
 import { userAction } from "../store/user-slice";
 import { useHistory } from "react-router-dom";
@@ -11,6 +10,7 @@ import {
   ButtonGroup,
 } from "@material-ui/core";
 import SendIcon from "@mui/icons-material/Send";
+import { LoggingIn } from "../lib/api";
 
 const initialState = {
   email: "",
@@ -79,28 +79,11 @@ const Login = (props) => {
     e.preventDefault();
     const { email, password } = formState;
 
-    const Login = async () => {
+    const LoggedIn = async () => {
       try {
-        const response = await fetch(`${API_URL}/auth/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-        });
+        const responseData = await LoggingIn(email, password);
+        const { user, token } = responseData;
 
-        if (!response.ok) {
-          throw new Error("Something Went Wrong!");
-        }
-
-        const data = await response.json();
-        const token = data.auth_token;
-        const user = data.user;
         localStorage.setItem("token", token);
 
         dispatch(
@@ -110,13 +93,13 @@ const Login = (props) => {
           })
         );
 
-        history.pushState("/dashboard");
+        history.push("/dashboard");
       } catch (err) {
-        console.log(err.message);
+        console.log(err);
       }
     };
 
-    Login();
+    LoggedIn();
 
     formState.email = "";
     formState.password = "";
