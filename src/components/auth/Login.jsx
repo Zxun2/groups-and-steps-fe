@@ -1,29 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { userAction } from "../store/user-slice";
 import { useHistory } from "react-router-dom";
-import {
-  Box,
-  makeStyles,
-  Typography,
-  Button,
-  ButtonGroup,
-  CircularProgress,
-  LinearProgress,
-  Paper,
-} from "@material-ui/core";
-import SendIcon from "@mui/icons-material/Send";
+import { Box, makeStyles, LinearProgress } from "@material-ui/core";
 import { LoggingIn } from "../lib/api";
-
-const initialState = {
-  email: "",
-  password: "",
-  registrationErrors: "",
-};
+import LoginForm from "./LoginForm";
+import useInput from "../hooks/useInput";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.primary,
+    background: "linear-gradient(#2c2f33,  #23272A)",
     height: "100vh",
   },
   login: {
@@ -33,84 +19,55 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     color: "red",
   },
-  login__form: {
-    display: "flex",
-    flexDirection: "column",
-    width: "50%",
-    backgroundColor: theme.palette.background.primary,
-    padding: "2rem",
-
-    "& > h1": {
-      fontSize: "35px",
-      marginBottom: "15px",
-      paddingBottom: "10px",
-      textAlign: "center",
-      fontWeight: 600,
-      color: theme.palette.primary.main,
-    },
-
-    "& > label ": {
-      marginBottom: "1rem",
-      fontSize: "1.5rem",
-      fontWeight: "600",
-      color: theme.palette.primary.main,
-    },
-
-    "& > input": {
-      minWidth: "100px",
-      padding: "20px 0",
-      paddingLeft: "15px",
-      marginBottom: "10px",
-      outline: "none",
-      border: "1px solid rgba(0, 0, 0, 0.24)",
-      borderRadius: theme.shape.borderRadius,
-      fontSize: "15px",
-    },
-  },
-  linearWipe: {
-    background:
-      "linear-gradient(to right, #97A9B4 20%, #5865f2 40%, #5865f2 60%, #97A9B4 80%)",
-    backgroundSize: "200% auto",
-    backgroundClip: "text",
-    textFillColor: "transparent",
-    animation: "$shine 1s linear infinite",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-  },
-  "@keyframes shine": {
-    to: {
-      backgroundPosition: "200% center",
-    },
-  },
-  btn__group: {
-    justifyContent: "end",
-    [theme.breakpoints.down("xs")]: {
-      flexDirection: "column",
-    },
-  },
-  submit__btn: {
-    fontWeight: "500",
-    "& :hover": {
-      color: theme.palette.secondary.main,
-    },
-  },
 }));
 
 const Login = (props) => {
   const classes = useStyles();
-  const [formState, setFormState] = useState(initialState);
+  const [formIsValid, setFormIsValid] = useState(false);
   const [loading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const {
+    value: enteredPassword,
+    valid: enteredPasswordIsValid,
+    error: passwordInputHasError,
+    inputChangeHandler: passwordInputChangeHandler,
+    InputBlurHandler: passwordInputBlurHandler,
+    reset: resetPasswordInput,
+  } = useInput((value) => value.trim() !== "" && value.length > 5);
+
+  const {
+    value: enteredEmail,
+    valid: enteredEmailIsValid,
+    error: emailInputHasError,
+    inputChangeHandler: EmailInputChangeHandler,
+    InputBlurHandler: EmailInputBlurHandler,
+    reset: resetEmailInput,
+  } = useInput((value) => {
+    const mailFormat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    return value.match(mailFormat);
+  });
+
+  useEffect(() => {
+    if (enteredPasswordIsValid && enteredEmailIsValid) {
+      setFormIsValid(true);
+    } else {
+      setFormIsValid(false);
+    }
+  }, [enteredPasswordIsValid, enteredEmailIsValid]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { email, password } = formState;
+
+    if (!enteredPasswordIsValid || !enteredEmailIsValid) {
+      return;
+    }
 
     const LoggedIn = async () => {
       setIsLoading(true);
       try {
-        const responseData = await LoggingIn(email, password);
+        const responseData = await LoggingIn(enteredEmail, enteredPassword);
         const { user, token } = responseData;
 
         localStorage.setItem("token", token);
@@ -131,75 +88,27 @@ const Login = (props) => {
 
     LoggedIn();
 
-    formState.email = "";
-    formState.password = "";
-  };
-
-  const valueChangeHandler = (e) => {
-    setFormState((prevState) => {
-      const value = e.target.value;
-      return {
-        ...prevState,
-        [e.target.name]: value,
-      };
-    });
+    resetPasswordInput();
+    resetEmailInput();
   };
 
   return (
     <React.Fragment>
       {loading && <LinearProgress />}
       <Box className={`${classes.root} ${classes.login}`}>
-        <Paper
-          elevation={10}
-          component="form"
-          onSubmit={handleSubmit}
-          className={classes.login__form}
-        >
-          <Typography variant="h1" className={classes.linearWipe}>
-            Your Weekly (Daily ?) To Do List 🚨
-          </Typography>
-          <label htmlFor="email">E-Mail Address</label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            placeholder="Type your email"
-            value={formState.email}
-            onChange={valueChangeHandler}
-            required
-          ></input>
-          <label htmlFor="email">Password</label>
-          <input
-            type="password"
-            name="password"
-            placeholder="Type your password"
-            value={formState.password}
-            onChange={valueChangeHandler}
-            required
-          ></input>
-
-          <ButtonGroup variant="outlined" className={classes.btn__group}>
-            <Button
-              className={classes.submit__btn}
-              type="submit"
-              size="large"
-              endIcon={!loading ? <SendIcon /> : null}
-              color="primary"
-            >
-              {!loading && "Log in"}
-              {loading && <CircularProgress />}
-            </Button>
-            <Button
-              className={classes.submit__btn}
-              type="submit"
-              size="large"
-              endIcon={<SendIcon />}
-              color="primary"
-            >
-              Register here
-            </Button>
-          </ButtonGroup>
-        </Paper>
+        <LoginForm
+          handleSubmit={handleSubmit}
+          loading={loading}
+          enteredEmail={enteredEmail}
+          enteredPassword={enteredPassword}
+          passwordInputChangeHandler={passwordInputChangeHandler}
+          EmailInputChangeHandler={EmailInputChangeHandler}
+          passwordInputBlurHandler={passwordInputBlurHandler}
+          EmailInputBlurHandler={EmailInputBlurHandler}
+          emailInputHasError={emailInputHasError}
+          passwordInputHasError={passwordInputHasError}
+          formIsValid={formIsValid}
+        />
       </Box>
     </React.Fragment>
   );
