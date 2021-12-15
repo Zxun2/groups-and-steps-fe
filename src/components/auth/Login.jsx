@@ -10,6 +10,7 @@ import {
   ButtonGroup,
   CircularProgress,
   LinearProgress,
+  Paper,
 } from "@material-ui/core";
 import SendIcon from "@mui/icons-material/Send";
 import { LoggingIn } from "../lib/api";
@@ -36,14 +37,23 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     width: "50%",
+    backgroundColor: theme.palette.background.primary,
+    padding: "2rem",
 
     "& > h1": {
       fontSize: "35px",
       marginBottom: "15px",
       paddingBottom: "10px",
       textAlign: "center",
-      color: theme.palette.primary.main,
       fontWeight: 600,
+      color: theme.palette.primary.main,
+    },
+
+    "& > label ": {
+      marginBottom: "1rem",
+      fontSize: "1.5rem",
+      fontWeight: "600",
+      color: theme.palette.primary.main,
     },
 
     "& > input": {
@@ -55,6 +65,21 @@ const useStyles = makeStyles((theme) => ({
       border: "1px solid rgba(0, 0, 0, 0.24)",
       borderRadius: theme.shape.borderRadius,
       fontSize: "15px",
+    },
+  },
+  linearWipe: {
+    background:
+      "linear-gradient(to right, #97A9B4 20%, #5865f2 40%, #5865f2 60%, #97A9B4 80%)",
+    backgroundSize: "200% auto",
+    backgroundClip: "text",
+    textFillColor: "transparent",
+    animation: "$shine 1s linear infinite",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+  },
+  "@keyframes shine": {
+    to: {
+      backgroundPosition: "200% center",
     },
   },
   btn__group: {
@@ -124,16 +149,26 @@ const Login = (props) => {
     <React.Fragment>
       {loading && <LinearProgress />}
       <Box className={`${classes.root} ${classes.login}`}>
-        <form onSubmit={handleSubmit} className={classes.login__form}>
-          <Typography variant="h1"> Login Here 🚨</Typography>
+        <Paper
+          elevation={10}
+          component="form"
+          onSubmit={handleSubmit}
+          className={classes.login__form}
+        >
+          <Typography variant="h1" className={classes.linearWipe}>
+            Your Weekly (Daily ?) To Do List 🚨
+          </Typography>
+          <label htmlFor="email">E-Mail Address</label>
           <input
             type="email"
             name="email"
+            id="email"
             placeholder="Type your email"
             value={formState.email}
             onChange={valueChangeHandler}
             required
           ></input>
+          <label htmlFor="email">Password</label>
           <input
             type="password"
             name="password"
@@ -142,6 +177,7 @@ const Login = (props) => {
             onChange={valueChangeHandler}
             required
           ></input>
+
           <ButtonGroup variant="outlined" className={classes.btn__group}>
             <Button
               className={classes.submit__btn}
@@ -163,7 +199,7 @@ const Login = (props) => {
               Register here
             </Button>
           </ButtonGroup>
-        </form>
+        </Paper>
       </Box>
     </React.Fragment>
   );

@@ -64,6 +64,14 @@ export const fetchTodoData = () => {
           Todo: todoData || [],
         })
       );
+
+      dispatch(
+        uiAction.showNotification({
+          status: "error",
+          title: "Error!",
+          message: "Fetching todo data failed!",
+        })
+      );
     } catch (err) {
       dispatch(
         uiAction.showNotification({

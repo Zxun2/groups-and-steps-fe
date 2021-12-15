@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { USER_LOGGED_IN, USER_LOGGED_OUT } from "../../actions/actionTypes";
 import Typography from "@mui/material/Typography";
 import { fetchTodoData } from "../store/todo-slice";
+import { uiAction } from "../store/ui-slice";
 
 export const Dashboard = (props) => {
   const state = useSelector((state) => state.user);
@@ -13,6 +14,14 @@ export const Dashboard = (props) => {
 
   useEffect(() => {
     dispatch(fetchTodoData());
+
+    const timer = setTimeout(() => {
+      dispatch(uiAction.resetNotification());
+    }, 2000);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [dispatch]);
 
   return (

@@ -3,13 +3,15 @@ import { Home } from "./components/pages/Home";
 import { Dashboard } from "./components/pages/Dashboard";
 import { Route, Switch } from "react-router-dom";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userAction } from "./components/store/user-slice";
 import { useHistory } from "react-router-dom";
+import Notification from "./components/ui/Notification";
 
 function App() {
   const dispatch = useDispatch();
   const history = useHistory();
+  const notification = useSelector((state) => state.ui.notification);
   // Auto Login
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -47,6 +49,13 @@ function App() {
 
   return (
     <div>
+      {notification && (
+        <Notification
+          status={notification.status}
+          title={notification.title}
+          message={notification.message}
+        />
+      )}
       <Switch>
         <Route exact path={"/"}>
           <Home />
