@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { userAction } from "../store/user-slice";
 import { useHistory } from "react-router-dom";
@@ -8,6 +8,8 @@ import {
   Typography,
   Button,
   ButtonGroup,
+  CircularProgress,
+  LinearProgress,
 } from "@material-ui/core";
 import SendIcon from "@mui/icons-material/Send";
 import { LoggingIn } from "../lib/api";
@@ -72,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
 const Login = (props) => {
   const classes = useStyles();
   const [formState, setFormState] = useState(initialState);
+  const [loading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -80,6 +83,7 @@ const Login = (props) => {
     const { email, password } = formState;
 
     const LoggedIn = async () => {
+      setIsLoading(true);
       try {
         const responseData = await LoggingIn(email, password);
         const { user, token } = responseData;
@@ -97,6 +101,7 @@ const Login = (props) => {
       } catch (err) {
         console.log(err);
       }
+      setIsLoading(false);
     };
 
     LoggedIn();
@@ -116,47 +121,51 @@ const Login = (props) => {
   };
 
   return (
-    <Box className={`${classes.root} ${classes.login}`}>
-      <form onSubmit={handleSubmit} className={classes.login__form}>
-        <Typography variant="h1"> Login Here 🚨</Typography>
-        <input
-          type="email"
-          name="email"
-          placeholder="Type your email"
-          value={formState.email}
-          onChange={valueChangeHandler}
-          required
-        ></input>
-        <input
-          type="password"
-          name="password"
-          placeholder="Type your password"
-          value={formState.password}
-          onChange={valueChangeHandler}
-          required
-        ></input>
-        <ButtonGroup variant="outlined" className={classes.btn__group}>
-          <Button
-            className={classes.submit__btn}
-            type="submit"
-            size="large"
-            endIcon={<SendIcon />}
-            color="primary"
-          >
-            Log in
-          </Button>
-          <Button
-            className={classes.submit__btn}
-            type="submit"
-            size="large"
-            endIcon={<SendIcon />}
-            color="primary"
-          >
-            Register here
-          </Button>
-        </ButtonGroup>
-      </form>
-    </Box>
+    <React.Fragment>
+      {loading && <LinearProgress />}
+      <Box className={`${classes.root} ${classes.login}`}>
+        <form onSubmit={handleSubmit} className={classes.login__form}>
+          <Typography variant="h1"> Login Here 🚨</Typography>
+          <input
+            type="email"
+            name="email"
+            placeholder="Type your email"
+            value={formState.email}
+            onChange={valueChangeHandler}
+            required
+          ></input>
+          <input
+            type="password"
+            name="password"
+            placeholder="Type your password"
+            value={formState.password}
+            onChange={valueChangeHandler}
+            required
+          ></input>
+          <ButtonGroup variant="outlined" className={classes.btn__group}>
+            <Button
+              className={classes.submit__btn}
+              type="submit"
+              size="large"
+              endIcon={!loading ? <SendIcon /> : null}
+              color="primary"
+            >
+              {!loading && "Log in"}
+              {loading && <CircularProgress />}
+            </Button>
+            <Button
+              className={classes.submit__btn}
+              type="submit"
+              size="large"
+              endIcon={<SendIcon />}
+              color="primary"
+            >
+              Register here
+            </Button>
+          </ButtonGroup>
+        </form>
+      </Box>
+    </React.Fragment>
   );
 };
 
