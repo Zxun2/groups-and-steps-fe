@@ -4,8 +4,9 @@ import { USER_LOGGED_IN, USER_LOGGED_OUT } from "../../actions/actionTypes";
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    currUser: null, // no user
-    auth_token: "", // jwt token
+    currUser: null,
+    // jwt token
+    auth_token: "",
     status: USER_LOGGED_OUT,
   },
   reducers: {
