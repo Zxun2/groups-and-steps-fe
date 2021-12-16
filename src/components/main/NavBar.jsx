@@ -1,8 +1,13 @@
 import { makeStyles } from "@material-ui/core";
-import { AppBar, Box, Typography, Toolbar, InputBase } from "@material-ui/core";
-import SearchIcon from "@mui/icons-material/Search";
+import IconButton from "@mui/material/IconButton";
 import { alpha } from "@mui/material/styles";
-import InboxIcon from "@mui/icons-material/Inbox";
+import SearchIcon from "@mui/icons-material/Search";
+import { InputBase } from "@material-ui/core";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MenuIcon from "@mui/icons-material/Menu";
 
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -71,34 +76,44 @@ const NavBar = (props) => {
   const classes = useStyles();
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar className={classes.appBar} position="static" elevation={0}>
-        <Toolbar className={classes.toolBar}>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-          >
-            # general
-          </Typography>
-          <div className={classes.group}>
-            <div className={classes.search}>
-              <div className={classes.searchIconWrapper}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-                className={classes.searchBar}
-              />
+    <AppBar
+      elevation={0}
+      position="fixed"
+      sx={{
+        width: { sm: `calc(100% - ${props.drawerWidth}px)` },
+        ml: { sm: `${props.drawerWidth}px` },
+        backgroundColor: "#36393f",
+      }}
+    >
+      <Toolbar className={classes.toolBar}>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          edge="start"
+          onClick={props.handleDrawerToggle}
+          sx={{ mr: 2, display: { sm: "none" } }}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="h6" noWrap component="div">
+          # general
+        </Typography>
+        <div className={classes.group}>
+          <div className={classes.search}>
+            <div className={classes.searchIconWrapper}>
+              <SearchIcon />
             </div>
-
-            <InboxIcon className={classes.inboxIcon} />
+            <InputBase
+              placeholder="Search…"
+              inputProps={{ "aria-label": "search" }}
+              className={classes.searchBar}
+            />
           </div>
-        </Toolbar>
-      </AppBar>
-    </Box>
+
+          <InboxIcon className={classes.inboxIcon} />
+        </div>
+      </Toolbar>
+    </AppBar>
   );
 };
 

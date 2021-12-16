@@ -2,88 +2,23 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTodoData } from "../store/todo-slice";
 import { uiAction } from "../store/ui-slice";
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
-import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { makeStyles } from "@material-ui/core";
-import { InputBase } from "@material-ui/core";
-import SearchIcon from "@mui/icons-material/Search";
-import { alpha } from "@mui/material/styles";
+import NavBar from "../main/NavBar";
+
 const drawerWidth = 240;
-const useStyles = makeStyles((theme) => ({
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  },
-  searchBar: {
-    color: "inherit",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: "3em",
-      transition: theme.transitions.create("width"),
-      width: "100%",
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  },
-  searchIconWrapper: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  appBar: {
-    background: theme.palette.background.tertiary,
-  },
-  toolBar: {
-    justifyContent: "space-between",
-  },
-  group: {
-    display: "flex",
-    alignItems: "center",
-    " & :nth-child(1) ": {
-      marginRight: "2rem",
-    },
-  },
-  inboxIcon: {
-    "& :hover": {
-      color: theme.palette.primary.main,
-    },
-  },
-}));
 
 export const Dashboard = (props) => {
-  const classes = useStyles();
   // const userState = useSelector((state) => state.user);
   // const TodoState = useSelector((state) => state.todo);
   // const Todo = TodoState.Todo;
@@ -142,44 +77,10 @@ export const Dashboard = (props) => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar
-        elevation={0}
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-          backgroundColor: "#36393f",
-        }}
-      >
-        <Toolbar className={classes.toolBar}>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            # general
-          </Typography>
-          <div className={classes.group}>
-            <div className={classes.search}>
-              <div className={classes.searchIconWrapper}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-                className={classes.searchBar}
-              />
-            </div>
-
-            <InboxIcon className={classes.inboxIcon} />
-          </div>
-        </Toolbar>
-      </AppBar>
+      <NavBar
+        handleDrawerToggle={handleDrawerToggle}
+        drawerWidth={drawerWidth}
+      />
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
