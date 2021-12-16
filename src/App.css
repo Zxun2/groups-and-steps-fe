@@ -1,1 +1,87 @@
+.notification-wrapper {
+  position: fixed;
+  top: 70px;
+  right: 10px;
+  width: 300px;
+}
 
+.notification-item {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  overflow: hidden;
+  text-align: center;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  -webkit-animation: SlideLeft 0.4s;
+  animation: SlideLeft 0.4s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  width: 300px;
+  z-index: 10;
+}
+
+@-webkit-keyframes SlideLeft {
+  0% {
+    margin-left: 120%;
+  }
+
+  100% {
+    margin-left: 0;
+  }
+}
+
+@keyframes SlideLeft {
+  0% {
+    margin-left: 120%;
+  }
+
+  100% {
+    margin-left: 0;
+  }
+}
+
+@-webkit-keyframes SlideRight {
+  0% {
+    margin-left: 0;
+  }
+
+  100% {
+    margin-left: 120%;
+  }
+}
+
+@keyframes SlideRight {
+  0% {
+    margin-left: 0;
+  }
+
+  100% {
+    margin-left: 120%;
+  }
+}
+
+.notification-item.exit {
+  -webkit-animation: SlideRight 0.4s;
+  animation: SlideRight 0.4s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+
+.notification-item p {
+  margin: 0;
+  padding: 10px;
+}
+
+.notification-item .bar {
+  height: 10px;
+}
+
+.notification-item.success .bar {
+  background-color: #65d266;
+}
+
+.notification-item.error .bar {
+  background-color: red;
+}

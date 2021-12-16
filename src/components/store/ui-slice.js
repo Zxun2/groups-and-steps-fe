@@ -1,18 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { v4 } from "uuid";
 
 const uiSlice = createSlice({
   name: "ui",
-  initialState: { notification: null },
+  initialState: { notification: [] },
   reducers: {
     showNotification(state, action) {
-      state.notification = {
-        status: action.payload.status,
-        title: action.payload.title,
-        message: action.payload.message,
-      };
+      state.notification = [
+        ...state.notification,
+        {
+          id: v4(),
+          status: action.payload.status,
+          title: action.payload.title,
+          message: action.payload.message,
+        },
+      ];
     },
-    resetNotification(state) {
-      state.notification = null;
+    removeNotification(state, action) {
+      state.notification.filter((el) => el.id !== action.id);
     },
   },
 });
