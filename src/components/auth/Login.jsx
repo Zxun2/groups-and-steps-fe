@@ -9,7 +9,8 @@ import useInput from "../hooks/useInput";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    background: "linear-gradient(#2c2f33,  #23272A)",
+    // background: "linear-gradient(#2c2f33,  #23272A)",
+    background: theme.palette.background.tertiary,
     height: "100vh",
   },
   login: {

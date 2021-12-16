@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { API_URL } from "../../actions/apiUrl";
+import { fetchData } from "../lib/api";
 import { uiAction } from "./ui-slice";
 
 const todoSlice = createSlice({
@@ -41,23 +41,8 @@ const todoSlice = createSlice({
 export const fetchTodoData = () => {
   return async (dispatch) => {
     const token = localStorage.getItem("token");
-    const fetchData = async () => {
-      const response = await fetch(`${API_URL}/todos`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!response.ok) {
-        throw new Error("Could not fetch Todo data!");
-      }
-
-      const todos = await response.json();
-
-      return todos;
-    };
-
     try {
-      const todoData = await fetchData();
+      const todoData = await fetchData(token);
 
       dispatch(
         todoAction.replaceTodo({
@@ -67,9 +52,9 @@ export const fetchTodoData = () => {
 
       dispatch(
         uiAction.showNotification({
-          status: "error",
-          title: "Error!",
-          message: "Fetching todo data failed!",
+          status: "success",
+          title: "Success!",
+          message: "Todo data is fetched successfully!",
         })
       );
     } catch (err) {

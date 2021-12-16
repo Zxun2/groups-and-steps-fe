@@ -21,7 +21,7 @@ function httpReducer(state, action) {
     return {
       data: null,
       error: action.errorMessage,
-      status: "completed",
+      status: "error",
     };
   }
 
@@ -38,12 +38,10 @@ function useHttp(requestFunction, startWithPending = false) {
 
   const sendRequest = useCallback(
     async function (...requestData) {
-      console.log("Sending");
       dispatch({ type: "SEND" });
       try {
         const responseData = await requestFunction(...requestData);
         dispatch({ type: "SUCCESS", responseData });
-        console.log("Completed");
       } catch (error) {
         dispatch({
           type: "ERROR",

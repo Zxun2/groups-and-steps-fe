@@ -1,46 +1,21 @@
 import { makeStyles } from "@material-ui/core";
+import { Alert } from "@mui/material";
+import * as React from "react";
 
 const useStyles = makeStyles((theme) => ({
   notification: {
-    width: "100%",
-    height: "3rem",
-    backgroundColor: theme.palette.primary.main,
+    width: "100vw",
     display: "flex",
-    justifyContent: "space-between",
-    padding: "0.5rem 10%",
-    alignItems: "center",
-    color: "white",
-    " & > h2 p": {
-      fontSize: "1rem",
-      margin: "0",
-    },
-  },
-  error: {
-    backgroundColor: theme.palette.error.main,
-  },
-  success: {
-    backgroundColor: theme.palette.success.main,
+    transition: "all 1s",
   },
 }));
 
 const Notification = (props) => {
   const classes = useStyles();
-  let specialClasses = "";
-
-  if (props.status === "error") {
-    specialClasses = classes.error;
-  }
-  if (props.status === "success") {
-    specialClasses = classes.success;
-  }
-
-  const cssClasses = `${classes.notification} ${specialClasses}`;
-
   return (
-    <section className={cssClasses}>
-      <h2>{props.title}</h2>
-      <p>{props.message}</p>
-    </section>
+    <Alert severity={props.status} className={classes.notification}>
+      <strong>{props.title}</strong> {props.message}
+    </Alert>
   );
 };
 

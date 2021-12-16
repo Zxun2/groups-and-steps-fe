@@ -20,7 +20,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     width: "50%",
-    backgroundColor: theme.palette.background.primary,
+    // backgroundColor: theme.palette.background.primary,
+    backgroundColor: theme.palette.background.secondary,
     padding: "2rem",
 
     "& > h1": {

@@ -20,9 +20,9 @@ const theme = createTheme({
       contrast: "#FFFFFF",
     },
     background: {
-      primary: "#2c2f33",
-      secondary: "#23272A",
-      tertiary: "#97A9B4",
+      primary: "#282424",
+      secondary: "#2f3136",
+      tertiary: "#36393f",
     },
   },
   shape: {
