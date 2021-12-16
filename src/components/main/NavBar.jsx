@@ -8,6 +8,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MenuIcon from "@mui/icons-material/Menu";
+import TagIcon from "@mui/icons-material/Tag";
 
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -50,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   appBar: {
-    background: theme.palette.background.tertiary,
+    background: theme.palette.background.primary,
     "& > .MuiPaper-elevation4": {
       boxShadow: "10px",
     },
@@ -95,8 +96,16 @@ const NavBar = (props) => {
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" noWrap component="div">
-          # general
+        <Typography
+          variant="h6"
+          noWrap
+          component="div"
+          style={{ alignItems: "center", display: "flex" }}
+        >
+          <TagIcon />{" "}
+          {props.title === ""
+            ? "Select/Create a Todo to get started!"
+            : props.title}
         </Typography>
         <div className={classes.group}>
           <div className={classes.search}>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTodoData } from "../store/todo-slice";
 import { uiAction } from "../store/ui-slice";
@@ -14,13 +14,18 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import NavBar from "../main/NavBar";
 import { SideBar } from "../main/SideBar";
-
+import PersonIcon from "@mui/icons-material/Person";
+import EmailIcon from "@mui/icons-material/Email";
+import AddIcon from "@mui/icons-material/Add";
+import { TextField } from "@mui/material";
 const drawerWidth = 240;
 
 export const Dashboard = (props) => {
   const userState = useSelector((state) => state.user);
   const TodoState = useSelector((state) => state.todo);
   const Todos = TodoState.Todo;
+  const [title, setTitle] = useState("");
+  const [addTodo, setAddToDo] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -33,13 +38,46 @@ export const Dashboard = (props) => {
     setMobileOpen(!mobileOpen);
   };
 
+  const changeTitleHandler = (title) => {
+    setTitle(title);
+  };
+
+  const createTodoHandler = (e) => {
+    e.preventDefault();
+    console.log(addTodo);
+  };
+
+  const AddTodoChangeHandler = (e) => {
+    setAddToDo(e.target.value);
+  };
+
   const drawer = (
     <div>
       <Toolbar />
+      <List>
+        <ListItem button>
+          <ListItemIcon>
+            <PersonIcon />
+          </ListItemIcon>
+          <ListItemText primary={userState?.currUser?.name} />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <EmailIcon />
+          </ListItemIcon>
+          <ListItemText primary={userState?.currUser?.email} />
+        </ListItem>
+      </List>
+
       <Divider />
       <List>
         {Todos.map((Todo, index) => (
-          <ListItem button key={Todo.id}>
+          <ListItem
+            button
+            onClick={changeTitleHandler.bind(null, Todo.title)}
+            autoFocus={index === 0 ? true : false}
+            key={Todo.id}
+          >
             <ListItemIcon>
               <TagIcon />
             </ListItemIcon>
@@ -48,6 +86,24 @@ export const Dashboard = (props) => {
         ))}
       </List>
       <Divider />
+      <List>
+        {/* <ListItem button> */}
+        {/* <ListItemText primary={"Add a new Todo"} />
+          <ListItemIcon>
+            <AddIcon color="primary" />
+          </ListItemIcon> */}
+        {/* </ListItem> */}
+        <TextField
+          style={{ margin: "2rem 0 0 1rem" }}
+          component="form"
+          color="primary"
+          size="normal"
+          onChange={AddTodoChangeHandler}
+          onSubmit={createTodoHandler}
+          defaultValue="Add todo"
+          variant="standard"
+        />
+      </List>
     </div>
   );
 
@@ -59,6 +115,7 @@ export const Dashboard = (props) => {
           <NavBar
             handleDrawerToggle={handleDrawerToggle}
             drawerWidth={drawerWidth}
+            title={title}
           />
           <SideBar
             drawer={drawer}
@@ -73,6 +130,8 @@ export const Dashboard = (props) => {
               flexGrow: 1,
               p: 3,
               width: { sm: `calc(100% - ${drawerWidth}px)` },
+              backgroundColor: "#2f3136",
+              height: "100vh",
             }}
           >
             <Toolbar />
