@@ -104,7 +104,7 @@ const NavBar = (props) => {
         >
           <TagIcon />{" "}
           {props.title === ""
-            ? "Select/Create a Todo to get started!"
+            ? "Select/Create a Group to get started!"
             : props.title}
         </Typography>
         <div className={classes.group}>
