@@ -4,7 +4,6 @@ function AppIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      minWidth="300"
       width="400"
       height="50vh"
       data-name="Layer 1"

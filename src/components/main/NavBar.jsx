@@ -102,10 +102,7 @@ const NavBar = (props) => {
           component="div"
           style={{ alignItems: "center", display: "flex" }}
         >
-          <TagIcon />{" "}
-          {props.title === ""
-            ? "Select/Create a Group to get started!"
-            : props.title}
+          <TagIcon /> {props.title === "" ? "Welcome" : props.title}
         </Typography>
         <div className={classes.group}>
           <div className={classes.search}>

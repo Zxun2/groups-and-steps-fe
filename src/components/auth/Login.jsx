@@ -6,6 +6,7 @@ import { Box, makeStyles, LinearProgress } from "@material-ui/core";
 import { LoggingIn } from "../lib/api";
 import LoginForm from "./LoginForm";
 import useInput from "../hooks/useInput";
+import LandingIcon from "../svgs/LandingPage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,7 +16,10 @@ const useStyles = makeStyles((theme) => ({
   },
   login: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+    },
     justifyContent: "center",
     alignItems: "center",
     color: "red",
@@ -97,6 +101,9 @@ const Login = (props) => {
     <React.Fragment>
       {loading && <LinearProgress />}
       <Box className={`${classes.root} ${classes.login}`}>
+        <Box style={{ margin: "0 5rem 0 5rem" }}>
+          <LandingIcon />
+        </Box>
         <LoginForm
           handleSubmit={handleSubmit}
           loading={loading}

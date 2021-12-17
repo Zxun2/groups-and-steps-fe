@@ -6,18 +6,15 @@ const uiSlice = createSlice({
   initialState: { notification: [] },
   reducers: {
     showNotification(state, action) {
-      state.notification = [
-        ...state.notification,
-        {
-          id: v4(),
-          status: action.payload.status,
-          title: action.payload.title,
-          message: action.payload.message,
-        },
-      ];
+      state.notification.push({
+        id: v4(),
+        status: action.payload.status,
+        title: action.payload.title,
+        message: action.payload.message,
+      });
     },
     removeNotification(state, action) {
-      state.notification.filter((el) => el.id !== action.id);
+      state.notification.shift();
     },
   },
 });

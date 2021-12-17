@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTodoData } from "../store/todo-slice";
-import { uiAction } from "../store/ui-slice";
+import { fetchTodoData, addTodoData } from "../store/todo-slice";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
@@ -18,8 +17,9 @@ import EmailIcon from "@mui/icons-material/Email";
 import { TextField } from "@mui/material";
 import { Typography } from "@material-ui/core";
 import AppIcon from "../svgs/AppIcon";
-
-const drawerWidth = 250;
+import SettingsIcon from "@mui/icons-material/Settings";
+import CustomScrollbars from "../ui/CustomScollBars";
+import { drawerWidth } from "../../actions/constants";
 
 export const Dashboard = (props) => {
   const userState = useSelector((state) => state.user);
@@ -45,7 +45,9 @@ export const Dashboard = (props) => {
 
   const createTodoHandler = (e) => {
     e.preventDefault();
-    console.log(addTodo);
+    if (addTodo !== "") {
+      dispatch(addTodoData({ title: addTodo }));
+    }
   };
 
   const AddTodoChangeHandler = (e) => {
@@ -71,20 +73,38 @@ export const Dashboard = (props) => {
       </List>
 
       <Divider />
-      <List>
-        {Todos.map((Todo, index) => (
-          <ListItem
-            button
-            onClick={changeTitleHandler.bind(null, Todo.title)}
-            key={Todo.id}
-          >
-            <ListItemIcon>
-              <TagIcon />
-            </ListItemIcon>
-            <ListItemText primary={Todo.title} />
-          </ListItem>
-        ))}
-      </List>
+      <CustomScrollbars
+        style={{ height: "70vh" }}
+        autoHide
+        autoHideTimeout={500}
+        autoHideDuration={200}
+      >
+        <List>
+          {Todos.map((Todo, index) => (
+            <ListItem
+              button
+              onClick={changeTitleHandler.bind(null, Todo.title)}
+              key={Todo.id}
+            >
+              <ListItemIcon>
+                <TagIcon />
+              </ListItemIcon>
+              <ListItemText primary={Todo.title} />
+              <ListItemIcon
+                style={{
+                  justifyContent: "end",
+                  fontSize: "10px",
+                  " & .MuiListItemIconRoot": {
+                    minWidth: "38px",
+                  },
+                }}
+              >
+                <SettingsIcon fontSize="small" />
+              </ListItemIcon>
+            </ListItem>
+          ))}
+        </List>
+      </CustomScrollbars>
       <Divider />
       <List>
         <TextField
@@ -136,14 +156,27 @@ export const Dashboard = (props) => {
                   justifyContent: "center",
                   alignItems: "center",
                   height: "100%",
+                  textAlign: "center",
                 }}
               >
                 <Typography
                   variant="h4"
                   color="secondary"
+                  style={{ fontWeight: "600", display: "inline" }}
+                >
+                  Welcome{" "}
+                  <span style={{ color: "#5865f2" }}>
+                    {userState?.currUser?.name}
+                  </span>
+                  ,
+                </Typography>
+
+                <Typography
+                  variant="h4"
+                  color="secondary"
                   style={{ fontWeight: "600" }}
                 >
-                  Select a group to get started!
+                  Create/Select a group to get started!
                 </Typography>
                 <AppIcon />
               </Box>

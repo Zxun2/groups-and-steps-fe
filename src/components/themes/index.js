@@ -28,6 +28,9 @@ const theme = createTheme({
   shape: {
     borderRadius: 4,
   },
+  typography: {
+    fontFamily: "Roboto",
+  },
 });
 
 export default theme;

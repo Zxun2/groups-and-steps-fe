@@ -34,10 +34,29 @@ export const fetchData = async (token) => {
     },
   });
   if (!response.ok) {
-    throw new Error("Could not fetch Todo data!");
+    throw new Error("Fetching todo data failed!");
   }
-
   const todos = await response.json();
 
   return todos;
 };
+
+// Add TODO
+export async function addTodo(todoData, token) {
+  console.log(todoData);
+  const response = await fetch(`${API_URL}/todos`, {
+    method: "POST",
+    body: JSON.stringify(todoData),
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Could not create Todo.");
+  }
+  const data = await response.json();
+
+  return data;
+}

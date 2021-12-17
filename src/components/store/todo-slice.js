@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchData } from "../lib/api";
+import { addTodo, fetchData } from "../lib/api";
 import { uiAction } from "./ui-slice";
 
 const todoSlice = createSlice({
@@ -62,7 +62,46 @@ export const fetchTodoData = () => {
         uiAction.showNotification({
           status: "error",
           title: "Error!",
-          message: "Fetching todo data failed!",
+          message: err.message,
+        })
+      );
+    }
+  };
+};
+
+export const addTodoData = (todoData) => {
+  return async (dispatch) => {
+    const token = localStorage.getItem("token");
+    dispatch(
+      uiAction.showNotification({
+        status: "Notice",
+        title: "Sending...",
+        message: "Sending Todo data!",
+      })
+    );
+
+    try {
+      const newTodoData = await addTodo(todoData, token);
+
+      dispatch(
+        todoAction.replaceTodo({
+          Todo: newTodoData || [],
+        })
+      );
+
+      dispatch(
+        uiAction.showNotification({
+          status: "success",
+          title: "Success!",
+          message: "Added Todo successfully!",
+        })
+      );
+    } catch (err) {
+      dispatch(
+        uiAction.showNotification({
+          status: "error",
+          title: "Error!",
+          message: err.message,
         })
       );
     }

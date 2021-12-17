@@ -1,6 +1,7 @@
 import { uiAction } from "../store/ui-slice";
 import React, { useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { FAIL, SUCCESS } from "../../actions/constants";
 
 const Notification = (props) => {
   const [exit, setExit] = useState(false);
@@ -12,6 +13,7 @@ const Notification = (props) => {
     const id = setInterval(() => {
       setWidth((prev) => {
         if (prev < 100) {
+          // continue from prev width
           return prev + 0.5;
         }
 
@@ -24,23 +26,25 @@ const Notification = (props) => {
   };
 
   const handlePauseTimer = useCallback(() => {
+    // clear timer
     clearInterval(intervalID);
   }, [intervalID]);
 
   const handleCloseNotification = useCallback(() => {
+    // remove timer
     handlePauseTimer();
     setExit(true);
     setTimeout(() => {
-      dispatch(uiAction.removeNotification(props.id));
+      dispatch(uiAction.removeNotification());
     });
-  }, [dispatch, handlePauseTimer, props.id]);
+  }, [dispatch, handlePauseTimer]);
 
   React.useEffect(() => {
     if (width === 100) {
       // Close notification
-      handleCloseNotification(props.id);
+      handleCloseNotification();
     }
-  }, [width, handleCloseNotification, props.id]);
+  }, [width, handleCloseNotification]);
 
   React.useEffect(() => {
     handleStartTimer();
@@ -51,7 +55,11 @@ const Notification = (props) => {
       onMouseEnter={handlePauseTimer}
       onMouseLeave={handleStartTimer}
       className={`notification-item ${
-        props.status === "success" ? "success" : "error"
+        props.status === SUCCESS
+          ? "success"
+          : props.status === FAIL
+          ? "error"
+          : "notice"
       } ${exit ? "exit" : ""}`}
     >
       <strong>{props.title}</strong>

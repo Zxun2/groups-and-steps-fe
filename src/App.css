@@ -10,8 +10,6 @@
   border-radius: 10px;
   overflow: hidden;
   text-align: center;
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
   margin-bottom: 20px;
   background-color: #ffffff;
   -webkit-animation: SlideLeft 0.4s;
@@ -84,4 +82,8 @@
 
 .notification-item.error .bar {
   background-color: red;
+}
+
+.notification-item.notice .bar {
+  background-color: yellow;
 }

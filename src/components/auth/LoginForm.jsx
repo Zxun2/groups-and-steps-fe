@@ -19,8 +19,7 @@ const useStyles = makeStyles((theme) => ({
   login__form: {
     display: "flex",
     flexDirection: "column",
-    width: "50%",
-    // backgroundColor: theme.palette.background.primary,
+    width: "auto",
     backgroundColor: theme.palette.background.secondary,
     padding: "2rem",
 
@@ -149,7 +148,8 @@ const LoginForm = (props) => {
           color="primary"
           disabled={!props.formIsValid}
         >
-          Register here
+          {!props.loading && "Register Here"}
+          {props.loading && <CircularProgress />}
         </Button>
       </ButtonGroup>
     </Paper>

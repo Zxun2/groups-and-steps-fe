@@ -10,3 +10,6 @@ export const FAIL = "error";
 // Status
 export const USER_LOGGED_IN = "LOGGED_IN";
 export const USER_LOGGED_OUT = "LOGGED_OUT";
+
+// Dashboard
+export const drawerWidth = 250;
