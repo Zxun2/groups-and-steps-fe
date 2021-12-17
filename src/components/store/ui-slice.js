@@ -3,6 +3,7 @@ import { v4 } from "uuid";
 
 const uiSlice = createSlice({
   name: "ui",
+  globalState: false,
   initialState: { notification: [] },
   reducers: {
     showNotification(state, action) {
@@ -15,6 +16,9 @@ const uiSlice = createSlice({
     },
     removeNotification(state, action) {
       state.notification.shift();
+    },
+    updateGlobalState(state, action) {
+      state.globalState = action.payload.status;
     },
   },
 });

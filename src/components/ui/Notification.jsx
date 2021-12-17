@@ -1,13 +1,18 @@
 import { uiAction } from "../store/ui-slice";
 import React, { useState, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FAIL, SUCCESS } from "../../actions/constants";
 
 const Notification = (props) => {
   const [exit, setExit] = useState(false);
+  const notifications = useSelector((state) => state.ui.notification);
   const dispatch = useDispatch();
   const [width, setWidth] = useState(0);
   const [intervalID, setIntervalID] = useState(null);
+
+  if (notifications.length > 3) {
+    dispatch(uiAction.removeNotification());
+  }
 
   const handleStartTimer = () => {
     const id = setInterval(() => {
@@ -63,7 +68,7 @@ const Notification = (props) => {
       } ${exit ? "exit" : ""}`}
     >
       <strong>{props.title}</strong>
-      <p>{props.message}. Hover over me to see what happens!</p>
+      <p>{props.message}</p>
       <div className={"bar"} style={{ width: `${width}%` }} />
     </div>
   );

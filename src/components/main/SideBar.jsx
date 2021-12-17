@@ -9,8 +9,10 @@ export const SideBar = (props) => {
   return (
     <Box
       component="nav"
-      sx={{ width: { sm: props.drawerWidth }, flexShrink: { sm: 0 } }}
-      aria-label="mailbox folders"
+      sx={{
+        width: { sm: props.drawerWidth },
+        flexShrink: { sm: 0 },
+      }}
     >
       <Drawer
         container={container}
@@ -24,6 +26,7 @@ export const SideBar = (props) => {
           display: { xs: "block", sm: "none" },
           "& .MuiDrawer-paper": {
             boxSizing: "border-box",
+            height: "100vh",
             width: props.drawerWidth,
           },
         }}

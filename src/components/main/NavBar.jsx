@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MenuIcon from "@mui/icons-material/Menu";
 import TagIcon from "@mui/icons-material/Tag";
+import { Fragment } from "react";
 
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -77,49 +78,54 @@ const NavBar = (props) => {
   const classes = useStyles();
 
   return (
-    <AppBar
-      elevation={0}
-      position="fixed"
-      sx={{
-        width: { sm: `calc(100% - ${props.drawerWidth}px)` },
-        ml: { sm: `${props.drawerWidth}px` },
-        backgroundColor: "#36393f",
-      }}
-    >
-      <Toolbar className={classes.toolBar}>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          edge="start"
-          onClick={props.handleDrawerToggle}
-          sx={{ mr: 2, display: { sm: "none" } }}
-        >
-          <MenuIcon />
-        </IconButton>
-        <Typography
-          variant="h6"
-          noWrap
-          component="div"
-          style={{ alignItems: "center", display: "flex" }}
-        >
-          <TagIcon /> {props.title === "" ? "Welcome" : props.title}
-        </Typography>
-        <div className={classes.group}>
-          <div className={classes.search}>
-            <div className={classes.searchIconWrapper}>
-              <SearchIcon />
+    <Fragment>
+      <AppBar
+        elevation={0}
+        position="fixed"
+        sx={{
+          width: { sm: `calc(100% - ${props.drawerWidth}px)` },
+          ml: { sm: `${props.drawerWidth}px` },
+          backgroundColor: "#36393f",
+        }}
+      >
+        <Toolbar className={classes.toolBar}>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={props.handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: "none" } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            style={{ alignItems: "center", display: "flex" }}
+          >
+            <TagIcon />{" "}
+            {props.title === "" || props.todos.length === 0
+              ? "Welcome"
+              : props.title}
+          </Typography>
+          <div className={classes.group}>
+            <div className={classes.search}>
+              <div className={classes.searchIconWrapper}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                inputProps={{ "aria-label": "search" }}
+                className={classes.searchBar}
+              />
             </div>
-            <InputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-              className={classes.searchBar}
-            />
-          </div>
 
-          <InboxIcon className={classes.inboxIcon} />
-        </div>
-      </Toolbar>
-    </AppBar>
+            <InboxIcon className={classes.inboxIcon} />
+          </div>
+        </Toolbar>
+      </AppBar>
+    </Fragment>
   );
 };
 

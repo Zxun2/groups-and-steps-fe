@@ -18,6 +18,7 @@
   animation-fill-mode: forwards;
   width: 300px;
   z-index: 10;
+  padding: 1rem 0 0 0;
 }
 
 @-webkit-keyframes SlideLeft {

@@ -48,7 +48,6 @@ function App() {
     autoLogin();
   }, [dispatch, history]);
 
-  console.log(notifications);
   return (
     <Fragment>
       <div className={"notification-wrapper"}>

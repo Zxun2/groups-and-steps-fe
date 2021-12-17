@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addTodo, fetchData } from "../lib/api";
+import { addTodo, deleteTodo, fetchData, updateTodo } from "../lib/api";
 import { uiAction } from "./ui-slice";
 
 const todoSlice = createSlice({
@@ -41,6 +41,7 @@ const todoSlice = createSlice({
 export const fetchTodoData = () => {
   return async (dispatch) => {
     const token = localStorage.getItem("token");
+
     try {
       const todoData = await fetchData(token);
 
@@ -72,13 +73,6 @@ export const fetchTodoData = () => {
 export const addTodoData = (todoData) => {
   return async (dispatch) => {
     const token = localStorage.getItem("token");
-    dispatch(
-      uiAction.showNotification({
-        status: "Notice",
-        title: "Sending...",
-        message: "Sending Todo data!",
-      })
-    );
 
     try {
       const newTodoData = await addTodo(todoData, token);
@@ -94,6 +88,70 @@ export const addTodoData = (todoData) => {
           status: "success",
           title: "Success!",
           message: "Added Todo successfully!",
+        })
+      );
+    } catch (err) {
+      dispatch(
+        uiAction.showNotification({
+          status: "error",
+          title: "Error!",
+          message: err.message,
+        })
+      );
+    }
+  };
+};
+
+export const updateTodoData = (id, content) => {
+  return async (dispatch) => {
+    const token = localStorage.getItem("token");
+
+    try {
+      const newTodoData = await updateTodo(id, token, content);
+
+      dispatch(
+        todoAction.replaceTodo({
+          Todo: newTodoData.sort((a, b) => a.id - b.id) || [],
+        })
+      );
+
+      dispatch(
+        uiAction.showNotification({
+          status: "success",
+          title: "Success!",
+          message: "Updated Todo successfully!",
+        })
+      );
+    } catch (err) {
+      dispatch(
+        uiAction.showNotification({
+          status: "error",
+          title: "Error!",
+          message: err.message,
+        })
+      );
+    }
+  };
+};
+
+export const deleteTodoData = (id) => {
+  return async (dispatch) => {
+    const token = localStorage.getItem("token");
+
+    try {
+      const newTodoData = await deleteTodo(id, token);
+
+      dispatch(
+        todoAction.replaceTodo({
+          Todo: newTodoData.sort((a, b) => a.id - b.id) || [],
+        })
+      );
+
+      dispatch(
+        uiAction.showNotification({
+          status: "success",
+          title: "Success!",
+          message: "Todo deleted successfully!",
         })
       );
     } catch (err) {
