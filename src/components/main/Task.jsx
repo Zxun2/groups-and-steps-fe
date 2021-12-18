@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useRef, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -17,6 +17,12 @@ import MenuItem from "@mui/material/MenuItem";
 // Returns a hex code for an attractive color
 import randomColor from "randomcolor";
 import { Chip } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import {
+  deleteStepData,
+  stepsAction,
+  updateStepData,
+} from "../store/steps-slice";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -31,6 +37,16 @@ const ExpandMore = styled((props) => {
 
 export default function Task(props) {
   const [expanded, setExpanded] = useState(false);
+  const inputRef = useRef();
+  const dispatch = useDispatch();
+  const {
+    updated_at,
+    id: step_id,
+    step,
+    completed,
+    todo_id,
+    tags,
+  } = { ...props };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -40,13 +56,64 @@ export default function Task(props) {
   };
   const handleClose = () => {
     setAnchorEl(null);
+    // UPDATE DATABASE
+    dispatch(
+      updateStepData(todo_id, step_id, { completed: completed ? false : true })
+    );
+
+    // UPDATE UI
+    dispatch(
+      stepsAction.updateStep({
+        id: step_id,
+        data: {
+          completed: completed ? false : true,
+        },
+      })
+    );
+  };
+  const handleUnchangeClose = () => {
+    setAnchorEl(null);
   };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  const date = new Date(props.updated_at).toDateString();
+  const updateStepHandler = (e) => {
+    e.preventDefault();
+    // UPDATE DATABASE
+    dispatch(
+      updateStepData(todo_id, step_id, { step: inputRef.current.value })
+    );
+
+    // UPDATE UI
+    dispatch(
+      stepsAction.updateStep({
+        id: step_id,
+        data: {
+          step: inputRef.current.value,
+        },
+      })
+    );
+
+    setExpanded(!expanded);
+  };
+
+  const deleteStepHandler = () => {
+    // UPDATE DATABASE
+    dispatch(deleteStepData(todo_id, step_id));
+
+    // UPDATE UI
+    dispatch(
+      stepsAction.removeStep({
+        id: step_id,
+      })
+    );
+
+    setExpanded(!expanded);
+  };
+
+  const date = new Date(updated_at).toDateString();
 
   return (
     <Fragment>
@@ -61,10 +128,10 @@ export default function Task(props) {
                 color="primary"
                 anchorEl={anchorEl}
                 open={open}
-                onClose={handleClose}
+                onClose={handleUnchangeClose}
               >
                 <MenuItem onClick={handleClose}>
-                  {props.completed ? "Uncomplete Task" : "Complete task"}
+                  {completed ? "Uncomplete Task" : "Complete task"}
                 </MenuItem>
               </Menu>
             </Fragment>
@@ -79,16 +146,23 @@ export default function Task(props) {
             color="secondary"
             style={{ fontWeight: "700" }}
           >
-            {props.step}
+            {step}
           </Typography>
         </CardContent>
         <CardActions disableSpacing={true} style={{ paddingBottom: "0" }}>
-          <Stack direction="row" spacing={1}>
-            {props.tags.map((tag, index) => {
+          <Stack
+            direction="row"
+            spacing={1}
+            style={{ paddingLeft: "0.5rem", alignItems: "center" }}
+          >
+            <Typography color="secondary" variant="body2">
+              Tags:{" "}
+            </Typography>
+            {tags.map((tag, index) => {
               const color = randomColor();
-              console.log(color);
               return (
                 <Chip
+                  key={index}
                   label={tag}
                   variant="outlined"
                   color="primary"
@@ -136,9 +210,14 @@ export default function Task(props) {
                 id="title"
                 component="form"
                 color="primary"
+                onSubmit={updateStepHandler}
                 size="medium"
                 variant="filled"
                 style={{ marginTop: "1rem" }}
+                inputRef={inputRef}
+                InputProps={{
+                  style: { color: "white", fontSize: "1.05rem" },
+                }}
               />
               <Box style={{ display: "inline-flex", justifyContent: "end" }}>
                 <Button
@@ -146,6 +225,7 @@ export default function Task(props) {
                   color="error"
                   style={{ marginTop: "1rem" }}
                   startIcon={<DeleteIcon />}
+                  onClick={deleteStepHandler}
                 >
                   Delete
                 </Button>

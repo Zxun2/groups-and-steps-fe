@@ -48,7 +48,7 @@ export const Dashboard = (props) => {
   const [title, setTitle] = useState("");
   const [addTodo, setAddToDo] = useState("");
   const [change, setChange] = useState("");
-  const [id, setId] = useState("");
+  const [todoId, setTodoId] = useState(-1);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const Todos = TodoState.Todo;
@@ -60,7 +60,7 @@ export const Dashboard = (props) => {
 
   const openModalHandler = (id) => {
     setOpen(true);
-    setId(id);
+    setTodoId(id);
   };
 
   const handleClose = () => setOpen(false);
@@ -71,8 +71,10 @@ export const Dashboard = (props) => {
 
   const changeContentHandler = (title, id) => {
     setTitle(title);
-    setId(id);
-    dispatch(fetchstepsData(id));
+    if (id !== -1) {
+      setTodoId(id);
+      dispatch(fetchstepsData(id));
+    }
   };
 
   const createTodoHandler = (e) => {
@@ -95,7 +97,7 @@ export const Dashboard = (props) => {
     e.preventDefault();
 
     if (change !== "") {
-      dispatch(updateTodoData(id, { title: change }));
+      dispatch(updateTodoData(todoId, { title: change }));
       setOpen(false);
     } else {
       dispatch(
@@ -182,7 +184,7 @@ export const Dashboard = (props) => {
           size="medium"
           onChange={createTodoChangeHandler}
           onSubmit={createTodoHandler}
-          defaultValue="Add group"
+          placeholder="Add group"
           variant="standard"
           InputProps={{
             color: "primary",
@@ -201,7 +203,7 @@ export const Dashboard = (props) => {
         updateTodoChangeHandler={updateTodoChangeHandler}
         updateTodoHandler={updateTodoHandler}
         deleteTodoHandler={deleteTodoHandler}
-        id={id}
+        todoId={todoId}
       />
       <div>
         <Box sx={{ display: "flex" }}>
@@ -219,7 +221,12 @@ export const Dashboard = (props) => {
             mobileOpen={mobileOpen}
           />
 
-          <Steps id={id} title={title} userState={userState} Todos={Todos} />
+          <Steps
+            todoId={todoId}
+            title={title}
+            userState={userState}
+            Todos={Todos}
+          />
         </Box>
       </div>
     </React.Fragment>

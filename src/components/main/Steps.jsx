@@ -34,7 +34,7 @@ const Steps = (props) => {
   const status = useSelector((state) => state.ui.globalState);
 
   function handleSelectedTags(items) {
-    console.log(items);
+    // console.log(items);
   }
 
   return (
@@ -111,34 +111,57 @@ const Steps = (props) => {
                   autoHideDuration={200}
                 >
                   <Stack spacing={3}>
-                    {steps.map((step, index) => {
+                    <Divider>
+                      <Chip label="UNCOMPLETED" color="primary" size="medium" />
+                    </Divider>
+                    {steps.map((step) => {
                       return (
-                        <Task
-                          key={step.id}
-                          id={step.id}
-                          step={step.step}
-                          completed={step.completed}
-                          todo_id={step.todo_id}
-                          updated_at={step.updated_at}
-                          tags={step.tags}
-                        />
+                        !step.completed && (
+                          <Task
+                            key={step.id}
+                            id={step.id}
+                            step={step.step}
+                            completed={step.completed}
+                            todo_id={step.todo_id}
+                            updated_at={step.updated_at}
+                            tags={step.tags}
+                          />
+                        )
+                      );
+                    })}
+                    <Divider>
+                      <Chip label="COMPLETED" color="primary" size="medium" />
+                    </Divider>
+                    {steps.map((step) => {
+                      return (
+                        step.completed && (
+                          <Task
+                            key={step.id}
+                            id={step.id}
+                            step={step.step}
+                            completed={step.completed}
+                            todo_id={step.todo_id}
+                            updated_at={step.updated_at}
+                            tags={step.tags}
+                          />
+                        )
                       );
                     })}
                   </Stack>
                 </CustomScrollbars>
                 <Divider>
-                  <Chip label="ADD TASK" color="secondary" size="small" />
+                  <Chip label="ADD TASK" color="primary" size="medium" />
                 </Divider>
                 <Stack
                   direction="row"
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
                   <TextField
-                    style={{ width: "55vw", padding: "1rem" }}
+                    style={{ width: "55vw", padding: "1rem 0 1rem 0" }}
                     component="form"
                     color="primary"
                     size="medium"
-                    placeholder="Add group"
+                    placeholder="Add steps"
                     variant="filled"
                     InputProps={{
                       color: "primary",
@@ -146,7 +169,7 @@ const Steps = (props) => {
                     }}
                   />
                   <TagsInput
-                    style={{ padding: "1rem" }}
+                    style={{ padding: "1rem 0 1rem 0" }}
                     selectedTags={handleSelectedTags}
                     fullWidth
                     variant="filled"

@@ -23,21 +23,25 @@ const stepsSlice = createSlice({
     },
     removeStep(state, action) {
       state.changed = true;
-      const id = action.payload;
-      state.steps.filter((obj) => obj.id !== id);
+      const { id } = { ...action.payload };
+      state.steps = state.steps.filter((obj) => obj.id !== id);
     },
     updateStep(state, action) {
+      state.changed = true;
+
       const objIndex = state.steps.findIndex(
         (obj) => obj.id === action.payload.id
       );
+
       state.steps[objIndex] = {
         ...state.steps[objIndex],
-        title: action.payload.title,
+        ...action.payload.data,
       };
     },
   },
 });
 
+// TODO: REFACTOR CODE
 // Action creators
 export const fetchstepsData = (id) => {
   return async (dispatch) => {

@@ -65,7 +65,7 @@ function TodoModal(props) {
             color="error"
             style={{ marginTop: "2rem" }}
             startIcon={<DeleteIcon />}
-            onClick={props.deleteTodoHandler.bind(null, props.id)}
+            onClick={props.deleteTodoHandler.bind(null, props.todoId)}
           >
             Delete
           </Button>
