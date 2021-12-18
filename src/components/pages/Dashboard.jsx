@@ -10,17 +10,13 @@ import CustomScrollbars from "../ui/CustomScollBars";
 import { drawerWidth } from "../../actions/constants";
 import NavBar from "../main/NavBar";
 import { SideBar } from "../main/SideBar";
-import DeleteIcon from "@mui/icons-material/Delete";
 import TagIcon from "@mui/icons-material/Tag";
 import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { makeStyles, Typography } from "@material-ui/core";
+import { makeStyles, TextField } from "@material-ui/core";
 import {
   Chip,
-  Button,
-  Modal,
-  TextField,
   Toolbar,
   ListItemIcon,
   ListItemText,
@@ -33,28 +29,12 @@ import {
 import { uiAction } from "../store/ui-slice";
 import Steps from "../main/Steps";
 import { fetchstepsData } from "../store/steps-slice";
+import TodoModal from "../main/TodoModal";
 
 const useStyles = makeStyles((theme) => ({
   settings: {
     "&:hover": {
       color: theme.palette.primary.main,
-    },
-  },
-  modal: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    backgroundColor: theme.palette.background.tertiary,
-    boxShadow: 24,
-    borderRadius: "4px",
-    p: 4,
-    padding: "4rem",
-  },
-  input: {
-    "& .MuiFilledInputInput": {
-      color: theme.palette.secondary.main,
     },
   },
 }));
@@ -199,12 +179,15 @@ export const Dashboard = (props) => {
         <TextField
           style={{ margin: "2rem 0 0 1rem" }}
           component="form"
-          color="primary"
-          size="normal"
+          size="medium"
           onChange={createTodoChangeHandler}
           onSubmit={createTodoHandler}
           defaultValue="Add group"
           variant="standard"
+          InputProps={{
+            color: "primary",
+            style: { color: "black", fontSize: "1.1rem" },
+          }}
         />
       </List>
     </div>
@@ -212,53 +195,14 @@ export const Dashboard = (props) => {
 
   return (
     <React.Fragment>
-      <Modal open={open} onClose={handleClose}>
-        <Box className={classes.modal}>
-          <Typography
-            style={{ fontWeight: "600", textAlign: "center", margin: "1rem" }}
-            variant="h5"
-            color="secondary"
-          >
-            Change your title
-          </Typography>
-          <Typography
-            style={{ fontWeight: "400", textAlign: "center", color: "#cccccc" }}
-            variant="subtitle1"
-          >
-            Enter your new title below or click the delete button to delete
-            Todo.
-          </Typography>
-          <Box
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "revert",
-              margin: "2rem",
-            }}
-          >
-            <TextField
-              id="title"
-              component="form"
-              className={classes.input}
-              color="secondary"
-              size="large"
-              onChange={updateTodoChangeHandler}
-              onSubmit={updateTodoHandler}
-              variant="filled"
-            />
-
-            <Button
-              variant="outlined"
-              color="error"
-              style={{ marginTop: "2rem" }}
-              startIcon={<DeleteIcon />}
-              onClick={deleteTodoHandler.bind(null, id)}
-            >
-              Delete
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
+      <TodoModal
+        open={open}
+        handleClose={handleClose}
+        updateTodoChangeHandler={updateTodoChangeHandler}
+        updateTodoHandler={updateTodoHandler}
+        deleteTodoHandler={deleteTodoHandler}
+        id={id}
+      />
       <div>
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
