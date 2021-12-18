@@ -145,7 +145,6 @@ const Steps = (props) => {
                       style: { color: "white", fontSize: "1.05rem" },
                     }}
                   />
-                  <Divider orientation="vertical" />
                   <TagsInput
                     style={{ padding: "1rem" }}
                     selectedTags={handleSelectedTags}

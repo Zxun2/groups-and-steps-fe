@@ -1,5 +1,7 @@
 import { API_URL } from "../../actions/apiUrl";
 
+// TODO: REFACTOR THIS AND USE HTTP HOOK
+
 // LOG USER IN
 export const LoggingIn = async (email, password) => {
   const response = await fetch(`${API_URL}/auth/login`, {
@@ -60,7 +62,7 @@ export async function addTodo(todoData, token) {
   return data;
 }
 
-// Update Todo
+// UPDATE TODO
 export async function updateTodo(id, token, content) {
   const response = await fetch(`${API_URL}/todos/${id}`, {
     method: "PUT",
@@ -79,7 +81,7 @@ export async function updateTodo(id, token, content) {
   return data;
 }
 
-// Update Todo
+// DELETE TODO
 export async function deleteTodo(id, token) {
   const response = await fetch(`${API_URL}/todos/${id}`, {
     method: "DELETE",
@@ -109,6 +111,63 @@ export async function fetchSteps(id, token) {
 
   if (!response.ok) {
     throw new Error("Fetching steps failed");
+  }
+  const data = await response.json();
+
+  return data;
+}
+
+// UPDATE STEPS
+export async function updateStep(todo_id, step_id, token, content) {
+  const response = await fetch(`${API_URL}/todos/${todo_id}/items/${step_id}`, {
+    method: "PUT",
+    body: JSON.stringify(content),
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Could not update step.");
+  }
+  const data = await response.json();
+
+  return data;
+}
+
+// Add STEP
+export async function addStep(stepData, token, todo_id) {
+  const newStepData = { ...stepData, completed: false };
+  const response = await fetch(`${API_URL}/todos/${todo_id}/items`, {
+    method: "POST",
+    body: JSON.stringify(newStepData),
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Could not create step.");
+  }
+  const data = await response.json();
+
+  return data;
+}
+
+// DELETE TODO
+export async function deleteStep(todo_id, step_id, token) {
+  const response = await fetch(`${API_URL}/todos/${todo_id}/items/${step_id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Could not delete Todo.");
   }
   const data = await response.json();
 

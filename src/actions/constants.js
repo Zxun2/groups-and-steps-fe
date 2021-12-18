@@ -6,6 +6,8 @@ export const AUTHENTICATION_FAILURE = "AUTHENTICATION_FAILURE";
 // Fetch data
 export const SUCCESS = "success";
 export const FAIL = "error";
+export const LOADING = "loading";
+export const COMPLETED = "completed";
 
 // Status
 export const USER_LOGGED_IN = "LOGGED_IN";
