@@ -122,7 +122,7 @@ export default function Task(props) {
           action={
             <Fragment>
               <IconButton onClick={handleClick}>
-                <MoreVertIcon />
+                <MoreVertIcon style={{ color: "#ffffff" }} />
               </IconButton>
               <Menu
                 color="primary"
@@ -150,29 +150,31 @@ export default function Task(props) {
           </Typography>
         </CardContent>
         <CardActions disableSpacing={true} style={{ paddingBottom: "0" }}>
-          <Stack
-            direction="row"
-            spacing={1}
-            style={{ paddingLeft: "0.5rem", alignItems: "center" }}
-          >
-            <Typography color="secondary" variant="body2">
-              Tags:{" "}
-            </Typography>
-            {tags.map((tag, index) => {
-              const color = randomColor();
-              return (
-                <Chip
-                  key={index}
-                  label={tag}
-                  variant="outlined"
-                  color="primary"
-                  style={{ color: `${color}` }}
-                />
-              );
-            })}
-          </Stack>
+          {tags.length > 0 && (
+            <Stack
+              direction="row"
+              spacing={1}
+              style={{ paddingLeft: "0.5rem", alignItems: "center" }}
+            >
+              <Typography color="secondary" variant="body2">
+                Tags:{" "}
+              </Typography>
+              {tags.map((tag, index) => {
+                const color = randomColor();
+                return (
+                  <Chip
+                    key={index}
+                    label={tag}
+                    variant="outlined"
+                    color="primary"
+                    style={{ color: `${color}` }}
+                  />
+                );
+              })}
+            </Stack>
+          )}
           <ExpandMore expand={expanded} onClick={handleExpandClick}>
-            <ExpandMoreIcon />
+            <ExpandMoreIcon style={{ color: "#ffffff" }} />
           </ExpandMore>
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>

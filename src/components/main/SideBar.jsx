@@ -40,6 +40,7 @@ export const SideBar = (props) => {
           "& .MuiDrawer-paper": {
             boxSizing: "border-box",
             width: props.drawerWidth,
+            height: "100vh",
           },
         }}
         open

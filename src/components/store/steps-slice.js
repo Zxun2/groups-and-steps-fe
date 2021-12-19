@@ -98,13 +98,13 @@ export const addStepData = (stepsData, todo_id) => {
     );
 
     try {
-      await addStep(stepsData, token, todo_id);
+      const newStepsData = await addStep(stepsData, token, todo_id);
 
-      // dispatch(
-      //   stepsAction.replaceSteps({
-      //     steps: newstepsData || [],
-      //   })
-      // );
+      dispatch(
+        stepsAction.replaceSteps({
+          steps: newStepsData || [],
+        })
+      );
 
       dispatch(
         uiAction.showNotification({

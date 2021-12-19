@@ -213,6 +213,7 @@ export const Dashboard = (props) => {
             drawerWidth={drawerWidth}
             title={title}
             todos={Todos}
+            changeContentHandler={changeContentHandler}
           />
           <SideBar
             drawer={drawer}
@@ -220,7 +221,6 @@ export const Dashboard = (props) => {
             handleDrawerToggle={handleDrawerToggle}
             mobileOpen={mobileOpen}
           />
-
           <Steps
             todoId={todoId}
             title={title}
