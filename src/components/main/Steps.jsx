@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { uiAction } from "../store/ui-slice";
 import { useState } from "react";
 import { addStepData } from "../store/steps-slice";
+import FilterLabel from "./Filter";
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -155,6 +156,7 @@ const Steps = (props) => {
                   autoHideTimeout={500}
                   autoHideDuration={200}
                 >
+                  <FilterLabel steps={steps} />
                   <Stack spacing={3}>
                     <Divider>
                       <Chip label="UNCOMPLETED" color="primary" size="medium" />

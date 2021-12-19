@@ -4,10 +4,11 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import { v4 } from "uuid";
+import { Box } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { addTodoData } from "../store/todo-slice";
 
 const filter = createFilterOptions();
 
@@ -16,6 +17,8 @@ export default function NavInput(props) {
   const [value, setValue] = React.useState(null);
   const [open, toggleOpen] = React.useState(false);
   const searchRef = React.useRef();
+  const todoRef = React.useRef();
+  const dispatch = useDispatch();
 
   const handleClose = () => {
     setDialogValue({
@@ -35,6 +38,17 @@ export default function NavInput(props) {
     setValue({
       title: dialogValue.title,
     });
+
+    // Validation already done once by searchSubmitHandler
+    // No need for further validation
+    const title = todoRef.current.value.trim();
+
+    if (title !== "") {
+      dispatch(addTodoData({ title: title }));
+    }
+
+    todoRef.current.value = "";
+    searchRef.current.value = "";
 
     handleClose();
   };
@@ -97,8 +111,10 @@ export default function NavInput(props) {
           return filtered;
         }}
         options={options}
+        // Decides on what to search on. Option<Obj>
         getOptionLabel={(option) => {
           // e.g value selected with enter, right from the input
+          console.log(option);
           if (typeof option === "string") {
             return option;
           }
@@ -110,6 +126,7 @@ export default function NavInput(props) {
         selectOnFocus
         clearOnBlur
         handleHomeEndKeys
+        // What the search results should look like
         renderOption={(props, option) => (
           // Unique key. IMPORTANT: ALWAYS ADD AFTER THE SPREAD OPERATOR
           <li {...props} key={v4()}>
@@ -129,34 +146,46 @@ export default function NavInput(props) {
           />
         )}
       />
-      <Dialog open={open} onClose={handleClose}>
-        <form onSubmit={handleSubmit}>
-          <DialogTitle>Add a new film</DialogTitle>
+      <Dialog open={open} onClose={handleClose} style={{ margin: "0" }}>
+        <Box style={{ backgroundColor: "#36393f" }}>
+          <DialogTitle color="white" style={{ textAlign: "center" }}>
+            Add a new Todo
+          </DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              Did you miss any film in our list? Please, add it!
+            <DialogContentText color="white">
+              Are you looking for a Todo not in the list? Please, add it!
             </DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              value={dialogValue.title}
-              onChange={(event) =>
-                setDialogValue({
-                  ...dialogValue,
-                  title: event.target.value,
-                })
-              }
-              label="title"
-              type="text"
-              variant="standard"
-            />
+            <Box
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "revert",
+                margin: "2rem",
+              }}
+            >
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                value={dialogValue.title}
+                onChange={(event) =>
+                  setDialogValue({
+                    ...dialogValue,
+                    title: event.target.value,
+                  })
+                }
+                type="text"
+                variant="standard"
+                component="form"
+                onSubmit={handleSubmit}
+                InputProps={{
+                  style: { color: "white", fontSize: "1.05rem" },
+                }}
+                inputRef={todoRef}
+              />
+            </Box>
           </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button type="submit">Add</Button>
-          </DialogActions>
-        </form>
+        </Box>
       </Dialog>
     </React.Fragment>
   );

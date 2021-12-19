@@ -1,6 +1,4 @@
 import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
-import { InputBase } from "@material-ui/core";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
