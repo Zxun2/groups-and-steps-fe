@@ -150,7 +150,7 @@ export default function Task(props) {
           </Typography>
         </CardContent>
         <CardActions disableSpacing={true} style={{ paddingBottom: "0" }}>
-          {tags.length > 0 && (
+          {tags?.length > 0 && (
             <Stack
               direction="row"
               spacing={1}

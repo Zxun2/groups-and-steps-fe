@@ -35,9 +35,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Steps = (props) => {
   const classes = useStyles();
-  const steps = useSelector((state) => state.step.steps);
   const status = useSelector((state) => state.ui.globalState);
   const [tags, setTags] = useState([]);
+  const [isOpenUncompleted, setOpenUncompleted] = useState(true);
+  const [isOpenCompleted, setOpenCompleted] = useState([]);
+  const steps = useSelector((state) => state.step.temp);
   const stepRef = useRef();
   const dispatch = useDispatch();
 
@@ -156,44 +158,60 @@ const Steps = (props) => {
                   autoHideTimeout={500}
                   autoHideDuration={200}
                 >
-                  <FilterLabel steps={steps} />
+                  <FilterLabel
+                    steps={steps}
+                    value={props.value}
+                    setValue={props.setValue}
+                  />
                   <Stack spacing={3}>
                     <Divider>
-                      <Chip label="UNCOMPLETED" color="primary" size="medium" />
+                      <Chip
+                        onClick={() => setOpenUncompleted(!isOpenUncompleted)}
+                        label="UNCOMPLETED"
+                        color="primary"
+                        size="medium"
+                      />
                     </Divider>
-                    {steps?.map((step) => {
-                      return (
-                        !step.completed && (
-                          <Task
-                            key={step.id}
-                            id={step.id}
-                            step={step.step}
-                            completed={step.completed}
-                            todo_id={step.todo_id}
-                            updated_at={step.updated_at}
-                            tags={step.tags}
-                          />
-                        )
-                      );
-                    })}
+                    {isOpenUncompleted &&
+                      steps?.map((step) => {
+                        return (
+                          !step.completed && (
+                            <Task
+                              key={step.id}
+                              id={step.id}
+                              step={step.step}
+                              completed={step.completed}
+                              todo_id={step.todo_id}
+                              updated_at={step.updated_at}
+                              tags={step.tags}
+                            />
+                          )
+                        );
+                      })}
                     <Divider>
-                      <Chip label="COMPLETED" color="primary" size="medium" />
+                      <Chip
+                        onClick={() => setOpenCompleted(!isOpenCompleted)}
+                        label="COMPLETED"
+                        color="primary"
+                        size="medium"
+                      />
                     </Divider>
-                    {steps.map((step) => {
-                      return (
-                        step?.completed && (
-                          <Task
-                            key={step.id}
-                            id={step.id}
-                            step={step.step}
-                            completed={step.completed}
-                            todo_id={step.todo_id}
-                            updated_at={step.updated_at}
-                            tags={step.tags}
-                          />
-                        )
-                      );
-                    })}
+                    {isOpenCompleted &&
+                      steps.map((step) => {
+                        return (
+                          step?.completed && (
+                            <Task
+                              key={step.id}
+                              id={step.id}
+                              step={step.step}
+                              completed={step.completed}
+                              todo_id={step.todo_id}
+                              updated_at={step.updated_at}
+                              tags={step.tags}
+                            />
+                          )
+                        );
+                      })}
                   </Stack>
                 </CustomScrollbars>
                 <Divider>

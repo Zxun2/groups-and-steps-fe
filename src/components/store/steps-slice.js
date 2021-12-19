@@ -8,10 +8,12 @@ const stepsSlice = createSlice({
   initialState: {
     steps: [],
     changed: false,
+    temp: [],
   },
   reducers: {
     replaceSteps(state, action) {
       state.steps = action.payload.steps;
+      state.temp = state.steps;
     },
     addNewStep(state, action) {
       const newsteps = action.payload;
@@ -20,11 +22,13 @@ const stepsSlice = createSlice({
         id: newsteps.id,
         title: newsteps.title,
       });
+      state.temp = state.steps;
     },
     removeStep(state, action) {
       state.changed = true;
       const { id } = { ...action.payload };
       state.steps = state.steps.filter((obj) => obj.id !== id);
+      state.temp = state.steps;
     },
     updateStep(state, action) {
       state.changed = true;
@@ -37,6 +41,21 @@ const stepsSlice = createSlice({
         ...state.steps[objIndex],
         ...action.payload.data,
       };
+      state.temp = state.steps;
+    },
+    filterStep(state, action) {
+      state.changed = true;
+      const filter = action.payload.filterArr;
+      state.temp = [];
+      if (filter?.length > 0) {
+        for (const obj of filter) {
+          const step = state.steps.filter((step) => step.id === obj);
+
+          state.temp = state.temp.concat(step);
+        }
+      } else {
+        state.temp = state.steps;
+      }
     },
   },
 });

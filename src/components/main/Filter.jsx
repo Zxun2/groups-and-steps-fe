@@ -13,6 +13,8 @@ import Box from "@mui/material/Box";
 // Returns a hex code for an attractive color
 import randomColor from "randomcolor";
 import { v4 } from "uuid";
+import { stepsAction } from "../store/steps-slice";
+import { useDispatch } from "react-redux";
 
 // Auto Complete Popper
 const StyledAutocompletePopper = styled("div")(({ theme }) => ({
@@ -102,18 +104,21 @@ const Button = styled(ButtonBase)(({ theme }) => ({
 
 export default function FilterLabel(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [value, setValue] = React.useState([]);
   const [pendingValue, setPendingValue] = React.useState([]);
+  const [filterArr, setFilterArr] = React.useState([]);
+
   const theme = useTheme();
+  const dispatch = useDispatch();
+
   let labels = [];
   let idx = -1; // unique identifier
   props?.steps?.map((step, index) => {
     const color = randomColor();
     const tags = step.tags; // array
     let i = idx;
-    const data = tags.map((tag) => {
+    const data = tags?.map((tag) => {
       i++;
-      return { tag, step: step.step, color, id: step.id, unique_id: i };
+      return { tag, step: step.step, color, id: i, unique_id: step.id };
     });
     idx = i;
     labels = labels.concat(data);
@@ -121,12 +126,29 @@ export default function FilterLabel(props) {
   });
 
   const handleClick = (event) => {
-    setPendingValue(value);
+    setPendingValue(props.value);
     setAnchorEl(event.currentTarget);
   };
 
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch(
+        stepsAction.filterStep({
+          filterArr: filterArr,
+        })
+      );
+    });
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [filterArr, dispatch]);
+
   const handleClose = () => {
-    setValue(pendingValue);
+    props.setValue(pendingValue);
+    setFilterArr([...new Set(pendingValue.map((filter) => filter.unique_id))]);
+
+    // Focus on label
     if (anchorEl) {
       anchorEl.focus();
     }
@@ -144,7 +166,7 @@ export default function FilterLabel(props) {
           <SettingsIcon />
         </Button>
         <Box style={{ "& : lastChild": { marginBottom: "1rem" } }}>
-          {value.map((label) => (
+          {props.value.map((label) => (
             <Box
               key={label.id}
               sx={{
@@ -160,7 +182,7 @@ export default function FilterLabel(props) {
                 color: theme.palette.getContrastText(label.color),
               }}
             >
-              {label.step}
+              #{label.tag}: {label.step}
             </Box>
           ))}
         </Box>
@@ -188,9 +210,7 @@ export default function FilterLabel(props) {
               open
               // Array of tags
               multiple
-              isOptionEqualToValue={(option, value) =>
-                option.unique_id === value.unique_id
-              }
+              isOptionEqualToValue={(option, value) => option.id === value.id}
               onClose={(event, reason) => {
                 if (reason === "escape") {
                   handleClose();
@@ -206,7 +226,6 @@ export default function FilterLabel(props) {
                 ) {
                   return;
                 }
-                console.log(newValue);
                 setPendingValue(newValue);
               }}
               disableCloseOnSelect
@@ -261,10 +280,20 @@ export default function FilterLabel(props) {
               )}
               options={[...labels].sort((a, b) => {
                 // Display the selected labels first.
-                let ai = value.indexOf(a);
-                ai = ai === -1 ? value.length + labels.indexOf(a) : ai;
-                let bi = value.indexOf(b);
-                bi = bi === -1 ? value.length + labels.indexOf(b) : bi;
+                let ai = props.value.findIndex((elem) => a.id === elem.id);
+                ai =
+                  ai === -1
+                    ? props.value.length +
+                      labels.findIndex((elem) => a.id === elem.id)
+                    : ai;
+                let bi = props.value.findIndex((elem) => b.id === elem.id);
+                bi =
+                  bi === -1
+                    ? props.value.length +
+                      labels.findIndex((elem) => b.id === elem.id)
+                    : bi;
+
+                // ai < bi iff ai is selected
                 return ai - bi;
               })}
               getOptionLabel={(option) => `${option.tag} ${option.step}`}

@@ -28,7 +28,7 @@ import {
 } from "@mui/material";
 import { uiAction } from "../store/ui-slice";
 import Steps from "../main/Steps";
-import { fetchstepsData } from "../store/steps-slice";
+import { fetchstepsData, stepsAction } from "../store/steps-slice";
 import TodoModal from "../main/TodoModal";
 
 const useStyles = makeStyles((theme) => ({
@@ -49,6 +49,7 @@ export const Dashboard = (props) => {
   const [addTodo, setAddToDo] = useState("");
   const [change, setChange] = useState("");
   const [todoId, setTodoId] = useState(-1);
+  const [value, setValue] = React.useState([]);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const Todos = TodoState.Todo;
@@ -74,6 +75,12 @@ export const Dashboard = (props) => {
     if (id !== -1) {
       setTodoId(id);
       dispatch(fetchstepsData(id));
+      dispatch(
+        stepsAction.filterStep({
+          filterArr: [],
+        })
+      );
+      setValue([]);
     }
   };
 
@@ -226,6 +233,8 @@ export const Dashboard = (props) => {
             title={title}
             userState={userState}
             Todos={Todos}
+            value={value}
+            setValue={setValue}
           />
         </Box>
       </div>
