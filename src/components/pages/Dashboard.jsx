@@ -31,6 +31,7 @@ import { fetchstepsData, stepsAction } from "../store/steps-slice";
 import Steps from "../main/Steps";
 import TodoModal from "../main/TodoModal";
 import { dashboardStyles } from "../ui/Style";
+import UserModal from "../main/UserModal";
 
 export const Dashboard = (props) => {
   const classes = dashboardStyles();
@@ -44,6 +45,7 @@ export const Dashboard = (props) => {
   const [todoId, setTodoId] = useState(-1);
   const [value, setValue] = React.useState([]);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [openUserModal, setOpenUserModal] = useState(false);
 
   const Todos = TodoState.Todo;
   const dispatch = useDispatch();
@@ -58,6 +60,7 @@ export const Dashboard = (props) => {
   };
 
   const handleClose = () => setOpen(false);
+  const handleUserClose = () => setOpenUserModal(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -90,6 +93,7 @@ export const Dashboard = (props) => {
 
   const deleteTodoHandler = (id) => {
     dispatch(deleteTodoData(id));
+    setTitle("");
     setOpen(false);
   };
 
@@ -121,13 +125,13 @@ export const Dashboard = (props) => {
         <Chip label="USER" />
       </Divider>
       <List>
-        <ListItem button>
+        <ListItem button onClick={() => setOpenUserModal(true)}>
           <ListItemIcon>
             <PersonIcon />
           </ListItemIcon>
           <ListItemText primary={userState?.currUser?.name} />
         </ListItem>
-        <ListItem button>
+        <ListItem button onClick={() => setOpenUserModal(true)}>
           <ListItemIcon>
             <EmailIcon />
           </ListItemIcon>
@@ -205,6 +209,7 @@ export const Dashboard = (props) => {
         deleteTodoHandler={deleteTodoHandler}
         todoId={todoId}
       />
+      <UserModal open={openUserModal} handleClose={handleUserClose} />
       <div>
         <Box sx={{ display: "flex" }}>
           <CssBaseline />

@@ -142,3 +142,22 @@ export const dashboardStyles = makeStyles((theme) => ({
     },
   },
 }));
+
+export const userModalStyle = makeStyles((theme) => ({
+  modal: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 300,
+    backgroundColor: theme.palette.background.tertiary,
+    boxShadow: 24,
+    borderRadius: "4px",
+    padding: "1rem",
+  },
+  input: {
+    "& .MuiFilledInputInput": {
+      color: theme.palette.secondary.main,
+    },
+  },
+}));

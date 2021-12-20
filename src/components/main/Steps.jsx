@@ -27,7 +27,6 @@ const Steps = (props) => {
   const steps = useSelector((state) => state.step.temp);
   const stepRef = useRef();
   const dispatch = useDispatch();
-
   const addStep = () => {
     if (stepRef.current.value.trim() === "") {
       dispatch(
@@ -201,7 +200,12 @@ const Steps = (props) => {
                   </Stack>
                 </CustomScrollbars>
                 <Divider>
-                  <Chip label="ADD TASK" color="primary" size="medium" />
+                  <Chip
+                    onClick={addStepHandler}
+                    label="ADD TASK"
+                    color="primary"
+                    size="medium"
+                  />
                 </Divider>
               </Fragment>
             )}

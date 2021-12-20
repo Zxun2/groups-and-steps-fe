@@ -7,8 +7,8 @@ const stepsSlice = createSlice({
   name: "steps",
   initialState: {
     steps: [],
-    changed: false,
     temp: [],
+    changed: false,
   },
   reducers: {
     replaceSteps(state, action) {
@@ -75,9 +75,13 @@ export const fetchstepsData = (id) => {
     try {
       const stepsData = await fetchSteps(token, id);
 
+      if (stepsData.status === 422) {
+        throw new Error(stepsData.message);
+      }
+
       dispatch(
         stepsAction.replaceSteps({
-          steps: stepsData || [],
+          steps: stepsData.steps || [],
         })
       );
 
@@ -85,7 +89,7 @@ export const fetchstepsData = (id) => {
         uiAction.showNotification({
           status: SUCCESS,
           title: "Success!",
-          message: "Steps is fetched successfully!",
+          message: stepsData.message,
         })
       );
     } catch (err) {
@@ -106,7 +110,7 @@ export const fetchstepsData = (id) => {
   };
 };
 
-export const addStepData = (stepsData, todo_id) => {
+export const addStepData = (stepData, todo_id) => {
   return async (dispatch) => {
     const token = localStorage.getItem("token");
 
@@ -117,11 +121,15 @@ export const addStepData = (stepsData, todo_id) => {
     );
 
     try {
-      const newStepsData = await addStep(token, stepsData, todo_id);
+      const stepsData = await addStep(token, stepData, todo_id);
+
+      if (stepsData.status === 422) {
+        throw new Error(stepsData.message);
+      }
 
       dispatch(
         stepsAction.replaceSteps({
-          steps: newStepsData || [],
+          steps: stepsData.steps || [],
         })
       );
 
@@ -129,7 +137,7 @@ export const addStepData = (stepsData, todo_id) => {
         uiAction.showNotification({
           status: SUCCESS,
           title: "Success!",
-          message: "Step added successfully!",
+          message: stepsData.message,
         })
       );
     } catch (err) {
@@ -161,13 +169,17 @@ export const updateStepData = (todo_id, step_id, content) => {
     );
 
     try {
-      await updateStep(token, todo_id, step_id, content);
+      const stepsData = await updateStep(token, todo_id, step_id, content);
+
+      if (stepsData.status === 422) {
+        throw new Error(stepsData.message);
+      }
 
       dispatch(
         uiAction.showNotification({
           status: "success",
           title: "Success!",
-          message: "Step updated successfully!",
+          message: stepsData.message,
         })
       );
     } catch (err) {
@@ -193,13 +205,17 @@ export const deleteStepData = (todo_id, step_id) => {
     const token = localStorage.getItem("token");
 
     try {
-      await deleteStep(token, todo_id, step_id);
+      const stepsData = await deleteStep(token, todo_id, step_id);
+
+      if (stepsData.status === 422) {
+        throw new Error(stepsData.message);
+      }
 
       dispatch(
         uiAction.showNotification({
           status: "success",
           title: "Success!",
-          message: "Deleted step successfully!",
+          message: stepsData.message,
         })
       );
     } catch (err) {

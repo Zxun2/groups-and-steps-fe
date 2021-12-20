@@ -48,7 +48,7 @@ export const fetchData = async (token) => {
 };
 
 // Add TODO
-export async function addTodo(todoData, token) {
+export async function addTodo(token, todoData) {
   const response = await fetch(`${API_URL}/todos`, {
     method: "POST",
     body: JSON.stringify(todoData),

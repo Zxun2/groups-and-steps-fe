@@ -46,6 +46,10 @@ export const fetchTodoData = () => {
     try {
       const todoData = await fetchData(token);
 
+      if (todoData.status === 422) {
+        throw new Error(todoData.message);
+      }
+
       dispatch(
         todoAction.replaceTodo({
           Todo: todoData.todos || [],
@@ -73,16 +77,21 @@ export const fetchTodoData = () => {
 
 // ADD TODO
 // todoCreators(addTodo, todoData)
-export const addTodoData = (todoData) => {
+export const addTodoData = (todo) => {
   return async (dispatch) => {
     const token = localStorage.getItem("token");
 
     try {
-      const newTodoData = await addTodo(token, todoData);
+      console.log(todo);
+      const todoData = await addTodo(token, todo);
+
+      if (todoData.status === 422) {
+        throw new Error(todoData.message);
+      }
 
       dispatch(
         todoAction.replaceTodo({
-          Todo: newTodoData.todos || [],
+          Todo: todoData.todos || [],
         })
       );
 
@@ -90,7 +99,7 @@ export const addTodoData = (todoData) => {
         uiAction.showNotification({
           status: "success",
           title: "Success!",
-          message: newTodoData.message,
+          message: todoData.message,
         })
       );
     } catch (err) {
@@ -111,11 +120,11 @@ export const updateTodoData = (id, content) => {
     const token = localStorage.getItem("token");
 
     try {
-      const newTodoData = await updateTodo(token, id, content);
+      const todoData = await updateTodo(token, id, content);
 
       dispatch(
         todoAction.replaceTodo({
-          Todo: newTodoData.todos || [],
+          Todo: todoData.todos || [],
         })
       );
 
@@ -123,7 +132,7 @@ export const updateTodoData = (id, content) => {
         uiAction.showNotification({
           status: "success",
           title: "Success!",
-          message: newTodoData.message,
+          message: todoData.message,
         })
       );
     } catch (err) {
@@ -143,11 +152,11 @@ export const deleteTodoData = (id) => {
     const token = localStorage.getItem("token");
 
     try {
-      const newTodoData = await deleteTodo(token, id);
+      const todoData = await deleteTodo(token, id);
 
       dispatch(
         todoAction.replaceTodo({
-          Todo: newTodoData.todos || [],
+          Todo: todoData.todos || [],
         })
       );
 
@@ -155,7 +164,7 @@ export const deleteTodoData = (id) => {
         uiAction.showNotification({
           status: "success",
           title: "Success!",
-          message: newTodoData.message,
+          message: todoData.message,
         })
       );
     } catch (err) {
