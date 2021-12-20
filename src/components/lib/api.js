@@ -9,7 +9,6 @@ export const LoggingIn = async (email, password) => {
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
-      Accept: "application/json",
     },
     body: JSON.stringify({
       email,
@@ -17,11 +16,16 @@ export const LoggingIn = async (email, password) => {
     }),
   });
 
-  if (!response.ok) {
-    throw new Error("Something Went Wrong!");
+  const data = await response.json();
+
+  // Error is handled by the Try-Catch blog in Login.jsx
+  if (response.status === 422 || !response.ok) {
+    if (!response.ok) {
+      throw new Error("Something went wrong! Please try again.");
+    }
+    throw new Error(data.message);
   }
 
-  const data = await response.json();
   const token = data.auth_token;
   const user = data.user;
 
@@ -53,17 +57,17 @@ export async function addTodo(todoData, token) {
       "Content-Type": "application/json",
     },
   });
-
-  if (!response.ok) {
-    throw new Error("Could not create Todo.");
-  }
   const data = await response.json();
+
+  if (response.status === 422) {
+    throw new Error(data.message);
+  }
 
   return data;
 }
 
 // UPDATE TODO
-export async function updateTodo(id, token, content) {
+export async function updateTodo(token, id, content) {
   const response = await fetch(`${API_URL}/todos/${id}`, {
     method: "PUT",
     body: JSON.stringify(content),
@@ -74,7 +78,7 @@ export async function updateTodo(id, token, content) {
   });
 
   if (!response.ok) {
-    throw new Error("Could not update Todo.");
+    throw new Error("There was an error updating the Todo.");
   }
   const data = await response.json();
 
@@ -82,7 +86,7 @@ export async function updateTodo(id, token, content) {
 }
 
 // DELETE TODO
-export async function deleteTodo(id, token) {
+export async function deleteTodo(token, id) {
   const response = await fetch(`${API_URL}/todos/${id}`, {
     method: "DELETE",
     headers: {
@@ -92,7 +96,7 @@ export async function deleteTodo(id, token) {
   });
 
   if (!response.ok) {
-    throw new Error("Could not delete Todo.");
+    throw new Error("There was an error deleting the Todo.");
   }
   const data = await response.json();
 
@@ -100,7 +104,7 @@ export async function deleteTodo(id, token) {
 }
 
 // FETCH STEPS
-export async function fetchSteps(id, token) {
+export async function fetchSteps(token, id) {
   const response = await fetch(`${API_URL}/todos/${id}/items`, {
     method: "GET",
     headers: {
@@ -110,7 +114,7 @@ export async function fetchSteps(id, token) {
   });
 
   if (!response.ok) {
-    throw new Error("Fetching steps failed");
+    throw new Error("There was an error fetching the Steps.");
   }
   const data = await response.json();
 
@@ -118,7 +122,7 @@ export async function fetchSteps(id, token) {
 }
 
 // UPDATE STEPS
-export async function updateStep(todo_id, step_id, token, content) {
+export async function updateStep(token, todo_id, step_id, content) {
   const response = await fetch(`${API_URL}/todos/${todo_id}/items/${step_id}`, {
     method: "PUT",
     body: JSON.stringify(content),
@@ -129,7 +133,7 @@ export async function updateStep(todo_id, step_id, token, content) {
   });
 
   if (!response.ok) {
-    throw new Error("Could not update step.");
+    throw new Error("There was an error updating the Step.");
   }
   const data = await response.json();
 
@@ -137,7 +141,7 @@ export async function updateStep(todo_id, step_id, token, content) {
 }
 
 // Add STEP
-export async function addStep(stepData, token, todo_id) {
+export async function addStep(token, stepData, todo_id) {
   const newStepData = { ...stepData, completed: false };
   const response = await fetch(`${API_URL}/todos/${todo_id}/items`, {
     method: "POST",
@@ -149,7 +153,7 @@ export async function addStep(stepData, token, todo_id) {
   });
 
   if (!response.ok) {
-    throw new Error("Could not create step.");
+    throw new Error("There was an error creating the Step.");
   }
   const data = await response.json();
 
@@ -157,7 +161,7 @@ export async function addStep(stepData, token, todo_id) {
 }
 
 // DELETE TODO
-export async function deleteStep(todo_id, step_id, token) {
+export async function deleteStep(token, todo_id, step_id) {
   const response = await fetch(`${API_URL}/todos/${todo_id}/items/${step_id}`, {
     method: "DELETE",
     headers: {
@@ -167,7 +171,7 @@ export async function deleteStep(todo_id, step_id, token) {
   });
 
   if (!response.ok) {
-    throw new Error("Could not delete Todo.");
+    throw new Error("There was an error deleting the Step.");
   }
   const data = await response.json();
 

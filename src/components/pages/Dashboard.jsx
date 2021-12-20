@@ -14,7 +14,7 @@ import TagIcon from "@mui/icons-material/Tag";
 import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { makeStyles, TextField } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import {
   Chip,
   Toolbar,
@@ -27,20 +27,13 @@ import {
   CssBaseline,
 } from "@mui/material";
 import { uiAction } from "../store/ui-slice";
-import Steps from "../main/Steps";
 import { fetchstepsData, stepsAction } from "../store/steps-slice";
+import Steps from "../main/Steps";
 import TodoModal from "../main/TodoModal";
-
-const useStyles = makeStyles((theme) => ({
-  settings: {
-    "&:hover": {
-      color: theme.palette.primary.main,
-    },
-  },
-}));
+import { dashboardStyles } from "../ui/Style";
 
 export const Dashboard = (props) => {
-  const classes = useStyles();
+  const classes = dashboardStyles();
   const userState = useSelector((state) => state.user);
   const TodoState = useSelector((state) => state.todo);
 

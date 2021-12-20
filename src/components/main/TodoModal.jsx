@@ -1,30 +1,11 @@
 import React from "react";
 import { Modal, Box, TextField, Button } from "@mui/material";
-import { makeStyles, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import DeleteIcon from "@mui/icons-material/Delete";
-
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    backgroundColor: theme.palette.background.tertiary,
-    boxShadow: 24,
-    borderRadius: "4px",
-    p: 4,
-    padding: "4rem",
-  },
-  input: {
-    "& .MuiFilledInputInput": {
-      color: theme.palette.secondary.main,
-    },
-  },
-}));
+import { todoModalStyle } from "../ui/Style";
 
 function TodoModal(props) {
-  const classes = useStyles();
+  const classes = todoModalStyle();
   return (
     <Modal open={props.open} onClose={props.handleClose}>
       <Box className={classes.modal}>

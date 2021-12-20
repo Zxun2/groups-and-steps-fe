@@ -73,7 +73,7 @@ export const fetchstepsData = (id) => {
     const token = localStorage.getItem("token");
 
     try {
-      const stepsData = await fetchSteps(id, token);
+      const stepsData = await fetchSteps(token, id);
 
       dispatch(
         stepsAction.replaceSteps({
@@ -117,7 +117,7 @@ export const addStepData = (stepsData, todo_id) => {
     );
 
     try {
-      const newStepsData = await addStep(stepsData, token, todo_id);
+      const newStepsData = await addStep(token, stepsData, todo_id);
 
       dispatch(
         stepsAction.replaceSteps({
@@ -161,7 +161,7 @@ export const updateStepData = (todo_id, step_id, content) => {
     );
 
     try {
-      await updateStep(todo_id, step_id, token, content);
+      await updateStep(token, todo_id, step_id, content);
 
       dispatch(
         uiAction.showNotification({
@@ -193,7 +193,7 @@ export const deleteStepData = (todo_id, step_id) => {
     const token = localStorage.getItem("token");
 
     try {
-      await deleteStep(todo_id, step_id, token);
+      await deleteStep(token, todo_id, step_id);
 
       dispatch(
         uiAction.showNotification({

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userAction } from "./components/store/user-slice";
 import { useHistory } from "react-router-dom";
 import Notification from "./components/ui/Notification";
+import { uiAction } from "./components/store/ui-slice";
 
 function App() {
   const dispatch = useDispatch();
@@ -29,7 +30,12 @@ function App() {
               },
             }
           );
+
           const data = await response.json();
+
+          if (response.status === 422) {
+            throw new Error(data.message);
+          }
 
           dispatch(
             userAction.logUserIn({
@@ -40,8 +46,17 @@ function App() {
 
           history.push("/dashboard");
         } catch (err) {
-          console.log(err);
+          dispatch(
+            uiAction.showNotification({
+              status: "error",
+              title: "Error!",
+              message: err.message,
+            })
+          );
         }
+      } else {
+        history.push("/");
+        // TODO: ADD A PROMPT HERE
       }
     };
 

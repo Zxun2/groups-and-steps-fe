@@ -1,46 +1,27 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Chip from "@material-ui/core/Chip";
-import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Downshift from "downshift";
-// Returns a hex code for an attractive color
 import randomColor from "randomcolor";
 import { Box } from "@mui/material";
-
-const useStyles = makeStyles((theme) => ({
-  chip: {
-    margin: theme.spacing(0.5, 0.25),
-  },
-  scrollbar: {
-    display: "flex",
-    maxWidth: "13vw",
-    [theme.breakpoints.down("medium")]: {
-      maxWidth: "5vw",
-    },
-    overflowX: "scroll",
-    "&::-webkit-scrollbar": {
-      height: "0.1rem",
-      backgroundColor: "#5865f2",
-    },
-
-    "&::-webkit-scrollbar-thumb": {
-      borderRadius: 6,
-      backgroundColor: "rgba(0,0,0,.1)",
-      outline: "1px solid slategrey",
-    },
-  },
-}));
+import { tagInputStyles } from "../ui/Style";
 
 export default function TagsInput({ ...props }) {
-  const classes = useStyles();
-  const { selectedTags, placeholder, tags, ...other } = props;
+  const classes = tagInputStyles();
+  const {
+    selectedItem,
+    setSelectedItem,
+    selectedTags,
+    placeholder,
+    tags,
+    ...other
+  } = props;
   const [inputValue, setInputValue] = useState("");
-  const [selectedItem, setSelectedItem] = useState([]);
 
   useEffect(() => {
     setSelectedItem(tags);
-  }, [tags]);
+  }, [tags, setSelectedItem]);
 
   useEffect(() => {
     selectedTags(selectedItem);

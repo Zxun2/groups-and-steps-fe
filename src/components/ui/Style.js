@@ -73,3 +73,72 @@ export const navStyles = makeStyles((theme) => ({
     p: 4,
   },
 }));
+
+export const stepStyles = makeStyles((theme) => ({
+  main: {
+    width: "100%",
+    height: "88vh",
+    background: theme.palette.background.tertiary,
+    borderRadius: "10px",
+    padding: "1rem",
+  },
+  notask: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+}));
+
+export const tagInputStyles = makeStyles((theme) => ({
+  chip: {
+    margin: theme.spacing(0.5, 0.25),
+  },
+  scrollbar: {
+    display: "flex",
+    maxWidth: "13vw",
+    borderRadius: "10px",
+    [theme.breakpoints.down("medium")]: {
+      maxWidth: "5vw",
+    },
+    overflowX: "scroll",
+    "&::-webkit-scrollbar": {
+      height: "0.1rem",
+      backgroundColor: "#5865f2",
+    },
+
+    "&::-webkit-scrollbar-thumb": {
+      borderRadius: 6,
+      backgroundColor: "rgba(0,0,0,.1)",
+      outline: "1px solid slategrey",
+    },
+  },
+}));
+
+export const todoModalStyle = makeStyles((theme) => ({
+  modal: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    backgroundColor: theme.palette.background.tertiary,
+    boxShadow: 24,
+    borderRadius: "4px",
+    p: 4,
+    padding: "4rem",
+  },
+  input: {
+    "& .MuiFilledInputInput": {
+      color: theme.palette.secondary.main,
+    },
+  },
+}));
+
+export const dashboardStyles = makeStyles((theme) => ({
+  settings: {
+    "&:hover": {
+      color: theme.palette.primary.main,
+    },
+  },
+}));

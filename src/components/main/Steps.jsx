@@ -4,7 +4,6 @@ import { Toolbar, Box, Stack } from "@mui/material";
 import { Typography, Chip } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { Fragment, useRef } from "react";
-import { makeStyles } from "@material-ui/core";
 import { LinearProgress, TextField } from "@material-ui/core";
 import AddTaskIcon from "../svgs/AddtasksIcon";
 import CustomScrollbars from "../ui/CustomScollBars";
@@ -16,29 +15,15 @@ import { uiAction } from "../store/ui-slice";
 import { useState } from "react";
 import { addStepData } from "../store/steps-slice";
 import FilterLabel from "./Filter";
-
-const useStyles = makeStyles((theme) => ({
-  main: {
-    width: "100%",
-    height: "88vh",
-    background: theme.palette.background.tertiary,
-    borderRadius: "10px",
-    padding: "1rem",
-  },
-  notask: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-evenly",
-  },
-}));
+import { stepStyles } from "../ui/Style";
 
 const Steps = (props) => {
-  const classes = useStyles();
+  const classes = stepStyles();
   const status = useSelector((state) => state.ui.globalState);
   const [tags, setTags] = useState([]);
   const [isOpenUncompleted, setOpenUncompleted] = useState(true);
   const [isOpenCompleted, setOpenCompleted] = useState([]);
+  const [selectedItem, setSelectedItem] = useState([]);
   const steps = useSelector((state) => state.step.temp);
   const stepRef = useRef();
   const dispatch = useDispatch();
@@ -69,6 +54,7 @@ const Steps = (props) => {
   const addStepHandler = (e) => {
     e.preventDefault();
     addStep();
+    setSelectedItem([]);
   };
 
   // Function is called in TagsInput.jsx
@@ -243,6 +229,8 @@ const Steps = (props) => {
                 variant="filled"
                 id="tags"
                 placeholder="Add Tags"
+                selectedItem={selectedItem}
+                setSelectedItem={setSelectedItem}
               />
             </Stack>
           </Box>

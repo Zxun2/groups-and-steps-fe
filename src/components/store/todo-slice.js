@@ -38,6 +38,7 @@ const todoSlice = createSlice({
 });
 
 // Action creators
+// todoCreators(fetchdata)
 export const fetchTodoData = () => {
   return async (dispatch) => {
     const token = localStorage.getItem("token");
@@ -47,7 +48,7 @@ export const fetchTodoData = () => {
 
       dispatch(
         todoAction.replaceTodo({
-          Todo: todoData || [],
+          Todo: todoData.todos || [],
         })
       );
 
@@ -55,7 +56,7 @@ export const fetchTodoData = () => {
         uiAction.showNotification({
           status: "success",
           title: "Success!",
-          message: "Todo data is fetched successfully!",
+          message: todoData.message,
         })
       );
     } catch (err) {
@@ -70,16 +71,18 @@ export const fetchTodoData = () => {
   };
 };
 
+// ADD TODO
+// todoCreators(addTodo, todoData)
 export const addTodoData = (todoData) => {
   return async (dispatch) => {
     const token = localStorage.getItem("token");
 
     try {
-      const newTodoData = await addTodo(todoData, token);
+      const newTodoData = await addTodo(token, todoData);
 
       dispatch(
         todoAction.replaceTodo({
-          Todo: newTodoData || [],
+          Todo: newTodoData.todos || [],
         })
       );
 
@@ -87,7 +90,7 @@ export const addTodoData = (todoData) => {
         uiAction.showNotification({
           status: "success",
           title: "Success!",
-          message: "Added Todo successfully!",
+          message: newTodoData.message,
         })
       );
     } catch (err) {
@@ -102,16 +105,17 @@ export const addTodoData = (todoData) => {
   };
 };
 
+// todoCreators(addTodo, id, content)
 export const updateTodoData = (id, content) => {
   return async (dispatch) => {
     const token = localStorage.getItem("token");
 
     try {
-      const newTodoData = await updateTodo(id, token, content);
+      const newTodoData = await updateTodo(token, id, content);
 
       dispatch(
         todoAction.replaceTodo({
-          Todo: newTodoData.sort((a, b) => a.id - b.id) || [],
+          Todo: newTodoData.todos || [],
         })
       );
 
@@ -119,7 +123,7 @@ export const updateTodoData = (id, content) => {
         uiAction.showNotification({
           status: "success",
           title: "Success!",
-          message: "Updated Todo successfully!",
+          message: newTodoData.message,
         })
       );
     } catch (err) {
@@ -139,11 +143,11 @@ export const deleteTodoData = (id) => {
     const token = localStorage.getItem("token");
 
     try {
-      const newTodoData = await deleteTodo(id, token);
+      const newTodoData = await deleteTodo(token, id);
 
       dispatch(
         todoAction.replaceTodo({
-          Todo: newTodoData.sort((a, b) => a.id - b.id) || [],
+          Todo: newTodoData.todos || [],
         })
       );
 
@@ -151,7 +155,7 @@ export const deleteTodoData = (id) => {
         uiAction.showNotification({
           status: "success",
           title: "Success!",
-          message: "Todo deleted successfully!",
+          message: newTodoData.message,
         })
       );
     } catch (err) {

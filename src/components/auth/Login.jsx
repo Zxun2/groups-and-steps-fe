@@ -86,6 +86,7 @@ const Login = (props) => {
 
         history.push("/dashboard");
       } catch (err) {
+        // TODO: ???? DEAL WITH THIS
         console.log(err);
       }
       setIsLoading(false);
