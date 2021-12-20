@@ -4,14 +4,18 @@ import { Typography } from "@material-ui/core";
 import { userModalStyle } from "../ui/Style";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { userAction } from "../store/user-slice";
 
 function UserModal(props) {
   const history = useHistory();
   const classes = userModalStyle();
+  const dispatch = useDispatch();
 
   const logOutHandler = () => {
     localStorage.removeItem("token");
     history.push("/");
+    dispatch(userAction.logUserOut());
   };
   return (
     <Modal open={props.open} onClose={props.handleClose}>

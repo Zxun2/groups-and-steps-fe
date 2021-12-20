@@ -11,7 +11,9 @@ const Notification = (props) => {
   const [intervalID, setIntervalID] = useState(null);
 
   if (notifications.length > 3) {
-    dispatch(uiAction.removeNotification());
+    setTimeout(() => {
+      dispatch(uiAction.removeNotification());
+    }, 0);
   }
 
   const handleStartTimer = () => {

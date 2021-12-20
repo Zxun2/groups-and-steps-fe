@@ -13,10 +13,10 @@ import TagsInput from "./TagsInput";
 import { useDispatch } from "react-redux";
 import { uiAction } from "../store/ui-slice";
 import { useState } from "react";
-import { StepCreators } from "../store/steps-slice";
 import FilterLabel from "./Filter";
 import { stepStyles } from "../ui/Style";
 import { addStep } from "../lib/api";
+import useHttp from "../hooks/useHttp";
 
 const Steps = (props) => {
   const classes = stepStyles();
@@ -28,6 +28,7 @@ const Steps = (props) => {
   const steps = useSelector((state) => state.step.temp);
   const stepRef = useRef();
   const dispatch = useDispatch();
+  const { sendRequest: createTodo } = useHttp(addStep);
 
   const addStepToDatabase = () => {
     if (stepRef.current.value.trim() === "") {
@@ -39,15 +40,12 @@ const Steps = (props) => {
         })
       );
     } else {
-      dispatch(
-        StepCreators(
-          addStep,
-          {
-            step: stepRef.current.value.trim(),
-            tags: tags,
-          },
-          props.todoId
-        )
+      createTodo(
+        {
+          step: stepRef.current.value.trim(),
+          tags: tags,
+        },
+        props.todoId
       );
     }
     stepRef.current.value = "";
@@ -71,7 +69,6 @@ const Steps = (props) => {
       sx={{
         flexGrow: 1,
         p: 3,
-        // width: { sm: `calc(100% - ${drawerWidth}px)` },
         backgroundColor: "#2f3136",
         height: "100vh",
       }}

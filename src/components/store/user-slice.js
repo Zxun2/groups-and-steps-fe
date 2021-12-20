@@ -15,7 +15,7 @@ const userSlice = createSlice({
       state.auth_token = action.payload.token;
       state.status = USER_LOGGED_IN;
     },
-    logUserOut(state, action) {
+    logUserOut(state) {
       state.currUser = null;
       state.auth_token = null;
       state.status = USER_LOGGED_OUT;

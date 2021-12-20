@@ -65,7 +65,7 @@ export const TodoCreators = (request, ...dataArgs) => {
         uiAction.showNotification({
           status: "error",
           title: "Error!",
-          message: err.message,
+          message: err.message || "Something went wrong!",
         })
       );
     }

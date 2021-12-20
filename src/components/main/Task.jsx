@@ -54,11 +54,13 @@ export default function Task(props) {
   const handleClose = () => {
     setAnchorEl(null);
     // UPDATE DATABASE
-    dispatch(
-      StepCreators(updateStep, todo_id, step_id, {
-        completed: completed ? false : true,
-      })
-    );
+    setTimeout(() => {
+      dispatch(
+        StepCreators(updateStep, todo_id, step_id, {
+          completed: completed ? false : true,
+        })
+      );
+    }, 0);
 
     // UPDATE UI
     dispatch(

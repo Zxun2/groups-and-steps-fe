@@ -1,7 +1,5 @@
 import { API_URL } from "../../actions/apiUrl";
 
-// TODO: REFACTOR THIS AND USE HTTP HOOK
-
 // LOG USER IN
 export const LoggingIn = async (email, password) => {
   const response = await fetch(`${API_URL}/auth/login`, {

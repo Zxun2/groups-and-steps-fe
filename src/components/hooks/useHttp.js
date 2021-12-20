@@ -1,64 +1,61 @@
-import { useReducer, useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { uiAction } from "../store/ui-slice";
-import { COMPLETED, LOADING } from "../../actions/constants";
+import { COMPLETED, LOADING, SUCCESS } from "../../actions/constants";
 
-function httpReducer(state, action) {
-  switch (action.type) {
-    case "SEND":
-      return {
-        data: null,
-        error: null,
-      };
-    case "SUCCESS":
-      return {
-        data: action.responseData,
-        error: null,
-      };
-    case "ERROR":
-      return {
-        data: null,
-        error: action.errorMessage,
-      };
-    default:
-      return state;
-  }
-}
+import { useDispatch } from "react-redux";
+import { stepsAction } from "../store/steps-slice";
+import { todoAction } from "../store/todo-slice";
 
 // Custom Hook for Sending HTTP requests
 function useHttp(requestFunction, startWithPending = false) {
-  const [httpState, dispatch] = useReducer(httpReducer, {
-    data: null,
-    error: null,
-  });
+  const token = localStorage.getItem("token");
+  const dispatch = useDispatch();
 
-  startWithPending &&
-    dispatch(
-      uiAction.updateGlobalState({
-        status: LOADING,
-      })
-    );
+  useEffect(() => {
+    startWithPending &&
+      dispatch(
+        uiAction.updateGlobalState({
+          status: LOADING,
+        })
+      );
+  }, [dispatch, startWithPending]);
 
   const sendRequest = useCallback(
     async function (...requestData) {
-      dispatch({ type: "SEND" });
       try {
-        const response = await requestFunction(...requestData);
-        const data = await response.json();
+        const response = await requestFunction(token, ...requestData);
 
-        if (response.status === 422 || !response.ok) {
-          if (data) {
-            throw new Error(data.message);
+        if (response.status === 422) {
+          if (response) {
+            throw new Error(response.message);
           }
         }
-        dispatch({ type: "SUCCESS", response });
-      } catch (error) {
-        dispatch({
-          type: "ERROR",
-          errorMessage: error.message || "Something went wrong!",
-        });
-      }
+        if (response?.steps) {
+          dispatch(
+            stepsAction.replaceSteps({
+              steps: response.steps || [],
+            })
+          );
+        }
+
+        if (response?.todos) {
+          dispatch(
+            todoAction.replaceTodo({
+              Todo: response.todos || [],
+            })
+          );
+        }
+
+        dispatch(
+          uiAction.showNotification({
+            status: SUCCESS,
+            title: "Success!",
+            message: response.message,
+          })
+        );
+      } catch (error) {}
     },
-    [requestFunction]
+    [requestFunction, dispatch, token]
   );
 
   dispatch(
@@ -68,7 +65,6 @@ function useHttp(requestFunction, startWithPending = false) {
   );
   return {
     sendRequest,
-    ...httpState,
   };
 }
 

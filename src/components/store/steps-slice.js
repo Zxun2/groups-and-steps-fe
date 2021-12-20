@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { COMPLETED, FAIL, LOADING, SUCCESS } from "../../actions/constants";
-import { deleteStep, updateStep } from "../lib/api";
 import { uiAction } from "./ui-slice";
 
 const stepsSlice = createSlice({
@@ -97,7 +96,7 @@ export const StepCreators = (request, ...args) => {
         uiAction.showNotification({
           status: FAIL,
           title: "Error!",
-          message: err.message,
+          message: err.message || "Something went wrong!",
         })
       );
     }
@@ -107,36 +106,6 @@ export const StepCreators = (request, ...args) => {
         status: COMPLETED,
       })
     );
-  };
-};
-
-export const deleteStepData = (todo_id, step_id) => {
-  return async (dispatch) => {
-    const token = localStorage.getItem("token");
-
-    try {
-      const stepsData = await deleteStep(token, todo_id, step_id);
-
-      if (stepsData.status === 422) {
-        throw new Error(stepsData.message);
-      }
-
-      dispatch(
-        uiAction.showNotification({
-          status: "success",
-          title: "Success!",
-          message: stepsData.message,
-        })
-      );
-    } catch (err) {
-      dispatch(
-        uiAction.showNotification({
-          status: "error",
-          title: "Error!",
-          message: err.message,
-        })
-      );
-    }
   };
 };
 

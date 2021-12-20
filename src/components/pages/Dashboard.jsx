@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TodoCreators } from "../store/todo-slice";
+// import { TodoCreators } from "../store/todo-slice";
 import CustomScrollbars from "../ui/CustomScollBars";
 import { drawerWidth } from "../../actions/constants";
 import NavBar from "../main/NavBar";
@@ -22,7 +22,8 @@ import {
   CssBaseline,
 } from "@mui/material";
 import { uiAction } from "../store/ui-slice";
-import { StepCreators, stepsAction } from "../store/steps-slice";
+// StepCreators,
+import { stepsAction } from "../store/steps-slice";
 import Steps from "../main/Steps";
 import TodoModal from "../main/TodoModal";
 import { dashboardStyles } from "../ui/Style";
@@ -34,6 +35,7 @@ import {
   fetchSteps,
   updateTodo,
 } from "../lib/api";
+import useHttp from "../hooks/useHttp";
 
 export const Dashboard = (props) => {
   const classes = dashboardStyles();
@@ -49,12 +51,26 @@ export const Dashboard = (props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openUserModal, setOpenUserModal] = useState(false);
 
+  // HTTP REQUESTS
+  const { sendRequest: fetchTodos } = useHttp(fetchData);
+  const { sendRequest: fetchAllSteps } = useHttp(fetchSteps, true);
+  const { sendRequest: createTodo } = useHttp(addTodo);
+  const { sendRequest: removeTodo } = useHttp(deleteTodo);
+  const { sendRequest: changeTodo } = useHttp(updateTodo);
+
   const Todos = TodoState.Todo;
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(TodoCreators(fetchData));
-  }, [dispatch]);
+    // dispatch(TodoCreators(fetchData))
+    const timer = setTimeout(() => {
+      fetchTodos();
+    });
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [fetchTodos]);
 
   const openModalHandler = (id) => {
     setOpen(true);
@@ -68,53 +84,77 @@ export const Dashboard = (props) => {
     setMobileOpen(!mobileOpen);
   };
 
-  const changeContentHandler = (title, id) => {
-    setTitle(title);
-    if (id !== -1) {
-      setTodoId(id);
-      dispatch(StepCreators(fetchSteps, id));
-      dispatch(
-        stepsAction.filterStep({
-          filterArr: [],
-        })
-      );
-      setValue([]);
-    }
-  };
+  useEffect(() => {
+    if (todoId !== -1) {
+      const timer = setTimeout(() => {
+        fetchAllSteps(todoId);
+      }, 0);
 
-  const createTodoHandler = (e) => {
-    e.preventDefault();
-    if (Todo !== "") {
-      dispatch(TodoCreators(addTodo, { title: Todo }));
+      return () => {
+        clearTimeout(timer);
+      };
     }
-  };
+  }, [todoId, fetchAllSteps]);
+
+  const changeContentHandler = useCallback(
+    (title, id) => {
+      setTitle(title);
+      if (id !== -1) {
+        setTodoId(id);
+
+        dispatch(
+          stepsAction.filterStep({
+            filterArr: [],
+          })
+        );
+        setValue([]);
+      }
+    },
+    [dispatch]
+  );
+
+  const createTodoHandler = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (Todo !== "") {
+        setTimeout(() => createTodo({ title: Todo }), 0);
+      }
+    },
+    [Todo, createTodo]
+  );
 
   const createTodoChangeHandler = (e) => {
     setTodo(e.target.value);
   };
 
-  const deleteTodoHandler = (id) => {
-    dispatch(TodoCreators(deleteTodo, id));
-    setTitle("");
-    setOpen(false);
-  };
-
-  const updateTodoHandler = (e) => {
-    e.preventDefault();
-
-    if (change !== "") {
-      dispatch(TodoCreators(updateTodo, todoId, { title: change }));
+  const deleteTodoHandler = useCallback(
+    (id) => {
+      setTimeout(() => removeTodo(id), 0);
+      setTitle("");
       setOpen(false);
-    } else {
-      dispatch(
-        uiAction.showNotification({
-          status: "error",
-          title: "Error!",
-          message: "Todo title must not be empty",
-        })
-      );
-    }
-  };
+    },
+    [removeTodo]
+  );
+
+  const updateTodoHandler = useCallback(
+    (e) => {
+      e.preventDefault();
+
+      if (change !== "") {
+        setTimeout(() => changeTodo(todoId, { title: change }), 0);
+        setOpen(false);
+      } else {
+        dispatch(
+          uiAction.showNotification({
+            status: "error",
+            title: "Error!",
+            message: "Todo title must not be empty",
+          })
+        );
+      }
+    },
+    [dispatch, changeTodo, change, todoId]
+  );
 
   const updateTodoChangeHandler = (e) => {
     setChange(e.target.value);
