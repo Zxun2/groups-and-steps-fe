@@ -18,11 +18,8 @@ import MenuItem from "@mui/material/MenuItem";
 import randomColor from "randomcolor";
 import { Chip } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import {
-  deleteStepData,
-  stepsAction,
-  updateStepData,
-} from "../store/steps-slice";
+import { StepCreators, stepsAction } from "../store/steps-slice";
+import { deleteStep, updateStep } from "../lib/api";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -58,7 +55,9 @@ export default function Task(props) {
     setAnchorEl(null);
     // UPDATE DATABASE
     dispatch(
-      updateStepData(todo_id, step_id, { completed: completed ? false : true })
+      StepCreators(updateStep, todo_id, step_id, {
+        completed: completed ? false : true,
+      })
     );
 
     // UPDATE UI
@@ -83,7 +82,9 @@ export default function Task(props) {
     e.preventDefault();
     // UPDATE DATABASE
     dispatch(
-      updateStepData(todo_id, step_id, { step: inputRef.current.value })
+      StepCreators(updateStep, todo_id, step_id, {
+        step: inputRef.current.value,
+      })
     );
 
     // UPDATE UI
@@ -101,7 +102,7 @@ export default function Task(props) {
 
   const deleteStepHandler = () => {
     // UPDATE DATABASE
-    dispatch(deleteStepData(todo_id, step_id));
+    dispatch(StepCreators(deleteStep, todo_id, step_id));
 
     // UPDATE UI
     dispatch(

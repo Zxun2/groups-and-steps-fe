@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchTodoData,
-  addTodoData,
-  updateTodoData,
-  deleteTodoData,
-} from "../store/todo-slice";
+import { TodoCreators } from "../store/todo-slice";
 import CustomScrollbars from "../ui/CustomScollBars";
 import { drawerWidth } from "../../actions/constants";
 import NavBar from "../main/NavBar";
@@ -27,11 +22,18 @@ import {
   CssBaseline,
 } from "@mui/material";
 import { uiAction } from "../store/ui-slice";
-import { fetchstepsData, stepsAction } from "../store/steps-slice";
+import { StepCreators, stepsAction } from "../store/steps-slice";
 import Steps from "../main/Steps";
 import TodoModal from "../main/TodoModal";
 import { dashboardStyles } from "../ui/Style";
 import UserModal from "../main/UserModal";
+import {
+  addTodo,
+  deleteTodo,
+  fetchData,
+  fetchSteps,
+  updateTodo,
+} from "../lib/api";
 
 export const Dashboard = (props) => {
   const classes = dashboardStyles();
@@ -40,7 +42,7 @@ export const Dashboard = (props) => {
 
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = useState("");
-  const [addTodo, setAddToDo] = useState("");
+  const [Todo, setTodo] = useState("");
   const [change, setChange] = useState("");
   const [todoId, setTodoId] = useState(-1);
   const [value, setValue] = React.useState([]);
@@ -51,7 +53,7 @@ export const Dashboard = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchTodoData());
+    dispatch(TodoCreators(fetchData));
   }, [dispatch]);
 
   const openModalHandler = (id) => {
@@ -70,7 +72,7 @@ export const Dashboard = (props) => {
     setTitle(title);
     if (id !== -1) {
       setTodoId(id);
-      dispatch(fetchstepsData(id));
+      dispatch(StepCreators(fetchSteps, id));
       dispatch(
         stepsAction.filterStep({
           filterArr: [],
@@ -82,17 +84,17 @@ export const Dashboard = (props) => {
 
   const createTodoHandler = (e) => {
     e.preventDefault();
-    if (addTodo !== "") {
-      dispatch(addTodoData({ title: addTodo }));
+    if (Todo !== "") {
+      dispatch(TodoCreators(addTodo, { title: Todo }));
     }
   };
 
   const createTodoChangeHandler = (e) => {
-    setAddToDo(e.target.value);
+    setTodo(e.target.value);
   };
 
   const deleteTodoHandler = (id) => {
-    dispatch(deleteTodoData(id));
+    dispatch(TodoCreators(deleteTodo, id));
     setTitle("");
     setOpen(false);
   };
@@ -101,7 +103,7 @@ export const Dashboard = (props) => {
     e.preventDefault();
 
     if (change !== "") {
-      dispatch(updateTodoData(todoId, { title: change }));
+      dispatch(TodoCreators(updateTodo, todoId, { title: change }));
       setOpen(false);
     } else {
       dispatch(

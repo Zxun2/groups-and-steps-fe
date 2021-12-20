@@ -40,6 +40,10 @@ function TodoModal(props) {
             onChange={props.updateTodoChangeHandler}
             onSubmit={props.updateTodoHandler}
             variant="filled"
+            InputProps={{
+              color: "primary",
+              style: { color: "white", fontSize: "1.05rem" },
+            }}
           />
 
           <Button

@@ -13,9 +13,10 @@ import TagsInput from "./TagsInput";
 import { useDispatch } from "react-redux";
 import { uiAction } from "../store/ui-slice";
 import { useState } from "react";
-import { addStepData } from "../store/steps-slice";
+import { StepCreators } from "../store/steps-slice";
 import FilterLabel from "./Filter";
 import { stepStyles } from "../ui/Style";
+import { addStep } from "../lib/api";
 
 const Steps = (props) => {
   const classes = stepStyles();
@@ -27,7 +28,8 @@ const Steps = (props) => {
   const steps = useSelector((state) => state.step.temp);
   const stepRef = useRef();
   const dispatch = useDispatch();
-  const addStep = () => {
+
+  const addStepToDatabase = () => {
     if (stepRef.current.value.trim() === "") {
       dispatch(
         uiAction.showNotification({
@@ -38,7 +40,8 @@ const Steps = (props) => {
       );
     } else {
       dispatch(
-        addStepData(
+        StepCreators(
+          addStep,
           {
             step: stepRef.current.value.trim(),
             tags: tags,
@@ -52,7 +55,7 @@ const Steps = (props) => {
 
   const addStepHandler = (e) => {
     e.preventDefault();
-    addStep();
+    addStepToDatabase();
     setSelectedItem([]);
   };
 

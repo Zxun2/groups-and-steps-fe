@@ -8,7 +8,8 @@ import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import { v4 } from "uuid";
 import { Box } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import { addTodoData } from "../store/todo-slice";
+import { TodoCreators } from "../store/todo-slice";
+import { addTodo } from "../lib/api";
 
 const filter = createFilterOptions();
 
@@ -44,7 +45,7 @@ export default function NavInput(props) {
     const title = todoRef.current.value.trim();
 
     if (title !== "") {
-      dispatch(addTodoData({ title: title }));
+      dispatch(TodoCreators(addTodo, { title: title }));
     }
 
     todoRef.current.value = "";

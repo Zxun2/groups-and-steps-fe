@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { COMPLETED, FAIL, LOADING, SUCCESS } from "../../actions/constants";
-import { addStep, deleteStep, fetchSteps, updateStep } from "../lib/api";
+import { deleteStep, updateStep } from "../lib/api";
 import { uiAction } from "./ui-slice";
 
 const stepsSlice = createSlice({
@@ -60,9 +60,7 @@ const stepsSlice = createSlice({
   },
 });
 
-// TODO: REFACTOR CODE
-// Action creators
-export const fetchstepsData = (id) => {
+export const StepCreators = (request, ...args) => {
   return async (dispatch) => {
     dispatch(
       uiAction.updateGlobalState({
@@ -73,17 +71,19 @@ export const fetchstepsData = (id) => {
     const token = localStorage.getItem("token");
 
     try {
-      const stepsData = await fetchSteps(token, id);
+      const stepsData = await request(token, ...args);
 
       if (stepsData.status === 422) {
         throw new Error(stepsData.message);
       }
 
-      dispatch(
-        stepsAction.replaceSteps({
-          steps: stepsData.steps || [],
-        })
-      );
+      if (stepsData?.steps) {
+        dispatch(
+          stepsAction.replaceSteps({
+            steps: stepsData.steps || [],
+          })
+        );
+      }
 
       dispatch(
         uiAction.showNotification({
@@ -96,96 +96,6 @@ export const fetchstepsData = (id) => {
       dispatch(
         uiAction.showNotification({
           status: FAIL,
-          title: "Error!",
-          message: err.message,
-        })
-      );
-    }
-
-    dispatch(
-      uiAction.updateGlobalState({
-        status: COMPLETED,
-      })
-    );
-  };
-};
-
-export const addStepData = (stepData, todo_id) => {
-  return async (dispatch) => {
-    const token = localStorage.getItem("token");
-
-    dispatch(
-      uiAction.updateGlobalState({
-        status: LOADING,
-      })
-    );
-
-    try {
-      const stepsData = await addStep(token, stepData, todo_id);
-
-      if (stepsData.status === 422) {
-        throw new Error(stepsData.message);
-      }
-
-      dispatch(
-        stepsAction.replaceSteps({
-          steps: stepsData.steps || [],
-        })
-      );
-
-      dispatch(
-        uiAction.showNotification({
-          status: SUCCESS,
-          title: "Success!",
-          message: stepsData.message,
-        })
-      );
-    } catch (err) {
-      dispatch(
-        uiAction.showNotification({
-          status: FAIL,
-          title: "Error!",
-          message: err.message,
-        })
-      );
-    }
-
-    dispatch(
-      uiAction.updateGlobalState({
-        status: COMPLETED,
-      })
-    );
-  };
-};
-
-export const updateStepData = (todo_id, step_id, content) => {
-  return async (dispatch) => {
-    const token = localStorage.getItem("token");
-
-    dispatch(
-      uiAction.updateGlobalState({
-        status: LOADING,
-      })
-    );
-
-    try {
-      const stepsData = await updateStep(token, todo_id, step_id, content);
-
-      if (stepsData.status === 422) {
-        throw new Error(stepsData.message);
-      }
-
-      dispatch(
-        uiAction.showNotification({
-          status: "success",
-          title: "Success!",
-          message: stepsData.message,
-        })
-      );
-    } catch (err) {
-      dispatch(
-        uiAction.showNotification({
-          status: "error",
           title: "Error!",
           message: err.message,
         })
