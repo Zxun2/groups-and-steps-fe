@@ -20,6 +20,7 @@ import { Chip } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { StepCreators, stepsAction } from "../store/steps-slice";
 import { deleteStep, updateStep } from "../lib/api";
+import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -144,13 +145,33 @@ export default function Task(props) {
           style={{ paddingBottom: "0" }}
         />
         <CardContent style={{ paddingBottom: "0", paddingTop: "0.5rem" }}>
-          <Typography
-            variant="subtitle1"
-            color="secondary"
-            style={{ fontWeight: "700" }}
-          >
-            {step}
-          </Typography>
+          {step.split("\\n").map((str, idx) => {
+            if (idx === 0) {
+              return (
+                <Typography
+                  key={idx}
+                  variant="subtitle1"
+                  color="secondary"
+                  style={{ fontWeight: "700" }}
+                  paragraph={true}
+                >
+                  {str.trim()}
+                </Typography>
+              );
+            } else {
+              return (
+                <Typography
+                  key={idx}
+                  variant="subtitle2"
+                  color="secondary"
+                  style={{ fontWeight: "500" }}
+                  paragraph={true}
+                >
+                  {str.trim()}
+                </Typography>
+              );
+            }
+          })}
         </CardContent>
         <CardActions disableSpacing={true} style={{ paddingBottom: "0" }}>
           {tags?.length > 0 && (
@@ -218,6 +239,7 @@ export default function Task(props) {
                 onSubmit={updateStepHandler}
                 size="medium"
                 variant="filled"
+                defaultValue={step}
                 style={{ marginTop: "1rem" }}
                 inputRef={inputRef}
                 InputProps={{
