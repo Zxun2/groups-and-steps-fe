@@ -179,3 +179,100 @@ export const userModalStyle = makeStyles((theme) => ({
     },
   },
 }));
+
+export const loginStyles = makeStyles((theme) => ({
+  login: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  login__form: {
+    display: "flex",
+    flexDirection: "column",
+    width: "auto",
+    backgroundColor: theme.palette.background.secondary,
+    padding: "2rem",
+    [theme.breakpoints.down("sm")]: {
+      padding: "1rem",
+    },
+
+    "& > h1": {
+      fontSize: "35px",
+      marginBottom: "15px",
+      paddingBottom: "10px",
+      textAlign: "center",
+      fontWeight: 600,
+      color: theme.palette.primary.main,
+      [theme.breakpoints.down("sm")]: {
+        fontSize: "20px",
+      },
+    },
+
+    "& > label ": {
+      marginBottom: "1rem",
+      fontSize: "1.2rem",
+      fontWeight: "600",
+      color: theme.palette.primary.main,
+      [theme.breakpoints.down("sm")]: {
+        fontSize: "13px",
+        marginBottom: "0.5rem",
+      },
+    },
+
+    "& > input": {
+      padding: "17px 0",
+      paddingLeft: "13px",
+      marginBottom: "10px",
+      outline: "none",
+      border: "1px solid rgba(0, 0, 0, 0.24)",
+      borderRadius: theme.shape.borderRadius,
+      fontSize: "15px",
+      [theme.breakpoints.down("sm")]: {
+        fontSize: "15px",
+        marginBottom: "0.5rem",
+        padding: "10px 0 10px 5px",
+      },
+    },
+  },
+  linearWipe: {
+    background:
+      "linear-gradient(to right, #97A9B4 20%, #5865f2 40%, #5865f2 60%, #97A9B4 80%)",
+    backgroundSize: "200% auto",
+    backgroundClip: "text",
+    textFillColor: "transparent",
+    animation: "$shine 1s linear infinite",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+  },
+  "@keyframes shine": {
+    to: {
+      backgroundPosition: "200% center",
+    },
+  },
+  btn__group: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+    },
+  },
+  submit__btn: {
+    fontWeight: "500",
+    "& :hover": {
+      color: theme.palette.secondary.main,
+    },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "15px",
+    },
+  },
+  error_text: {
+    color: theme.palette.error.main,
+    margin: "0",
+    fontWeight: "600",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "13px",
+    },
+  },
+}));

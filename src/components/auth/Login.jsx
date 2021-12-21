@@ -3,14 +3,15 @@ import { useDispatch } from "react-redux";
 import { userAction } from "../store/user-slice";
 import { useHistory } from "react-router-dom";
 import { Box, makeStyles, LinearProgress } from "@material-ui/core";
-import { LoggingIn } from "../lib/api";
+import { LoggingIn, Register } from "../lib/api";
 import LoginForm from "./LoginForm";
 import useInput from "../hooks/useInput";
 import LandingIcon from "../svgs/LandingPage";
+import { uiAction } from "../store/ui-slice";
+import { SUCCESS } from "../../actions/constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // background: "linear-gradient(#2c2f33,  #23272A)",
     background: theme.palette.background.tertiary,
     height: "100vh",
   },
@@ -24,23 +25,20 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     color: "red",
   },
+  svg: {
+    [theme.breakpoints.down("xs")]: {
+      display: "none",
+    },
+  },
 }));
 
 const Login = (props) => {
   const classes = useStyles();
   const [formIsValid, setFormIsValid] = useState(false);
   const [loading, setIsLoading] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
-
-  const {
-    value: enteredPassword,
-    valid: enteredPasswordIsValid,
-    error: passwordInputHasError,
-    inputChangeHandler: passwordInputChangeHandler,
-    InputBlurHandler: passwordInputBlurHandler,
-    reset: resetPasswordInput,
-  } = useInput((value) => value.trim() !== "" && value.length > 5);
 
   const {
     value: enteredEmail,
@@ -54,26 +52,106 @@ const Login = (props) => {
     return value.match(mailFormat);
   });
 
+  const {
+    value: enteredPassword,
+    valid: enteredPasswordIsValid,
+    error: passwordInputHasError,
+    inputChangeHandler: passwordInputChangeHandler,
+    InputBlurHandler: passwordInputBlurHandler,
+    reset: resetPasswordInput,
+  } = useInput((value) => value.trim() !== "" && value.length > 5);
+
+  const {
+    value: enteredPasswordConfirmation,
+    valid: enteredPasswordConfirmationIsValid,
+    error: passwordConfirmationInputHasError,
+    inputChangeHandler: passwordConfirmationInputChangeHandler,
+    InputBlurHandler: passwordConfirmationInputBlurHandler,
+    reset: resetPasswordConfirmationInput,
+  } = useInput((value) => value.trim() === enteredPassword);
+
+  const {
+    value: enteredName,
+    valid: enteredNameIsValid,
+    error: nameInputHasError,
+    inputChangeHandler: nameInputChangeHandler,
+    InputBlurHandler: nameInputBlurHandler,
+    reset: resetNameInput,
+  } = useInput((value) => value.trim() !== "" && value.length > 5);
+
+  const formValidation = {
+    enteredEmail,
+    emailInputHasError,
+    EmailInputChangeHandler,
+    EmailInputBlurHandler,
+    resetEmailInput,
+    enteredPassword,
+    passwordInputHasError,
+    passwordInputChangeHandler,
+    passwordInputBlurHandler,
+    resetPasswordInput,
+    enteredName,
+    nameInputHasError,
+    nameInputChangeHandler,
+    nameInputBlurHandler,
+    resetNameInput,
+    enteredPasswordConfirmation,
+    passwordConfirmationInputHasError,
+    passwordConfirmationInputChangeHandler,
+    passwordConfirmationInputBlurHandler,
+    resetPasswordConfirmationInput,
+    formIsValid,
+  };
+
   useEffect(() => {
-    if (enteredPasswordIsValid && enteredEmailIsValid) {
-      setFormIsValid(true);
+    if (!isRegistering) {
+      if (enteredPasswordIsValid && enteredEmailIsValid) {
+        setFormIsValid(true);
+      } else {
+        setFormIsValid(false);
+      }
     } else {
-      setFormIsValid(false);
+      if (
+        enteredPasswordIsValid &&
+        enteredEmailIsValid &&
+        enteredNameIsValid &&
+        enteredPasswordConfirmationIsValid
+      ) {
+        setFormIsValid(true);
+      } else {
+        setFormIsValid(false);
+      }
     }
-  }, [enteredPasswordIsValid, enteredEmailIsValid]);
+  }, [
+    isRegistering,
+    enteredPasswordIsValid,
+    enteredEmailIsValid,
+    enteredNameIsValid,
+    enteredPasswordConfirmationIsValid,
+  ]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!enteredPasswordIsValid || !enteredEmailIsValid) {
+    if (!formIsValid) {
       return;
     }
 
     const LoggedIn = async () => {
       setIsLoading(true);
       try {
-        const responseData = await LoggingIn(enteredEmail, enteredPassword);
-        const { user, token } = responseData;
+        let responseData;
+        if (!isRegistering) {
+          responseData = await LoggingIn(enteredEmail, enteredPassword);
+        } else {
+          responseData = await Register(
+            enteredName,
+            enteredEmail,
+            enteredPassword,
+            enteredPasswordConfirmation
+          );
+        }
+        const { user, token, ...message } = responseData;
 
         localStorage.setItem("token", token);
 
@@ -84,13 +162,28 @@ const Login = (props) => {
           })
         );
 
+        dispatch(
+          uiAction.showNotification({
+            status: SUCCESS,
+            title: "Success",
+            message: message.message
+              ? message.message
+              : "Logged in successfully",
+          })
+        );
+
         setIsLoading(false);
         history.push("/dashboard");
       } catch (err) {
         setIsLoading(false);
-
-        // TODO: ???? DEAL WITH THIS
-        console.log(err);
+        dispatch(
+          uiAction.showNotification({
+            status: "error",
+            title: "Error!",
+            message:
+              "Something went wrong! Please double check your credentials. ",
+          })
+        );
       }
     };
     LoggedIn();
@@ -103,21 +196,15 @@ const Login = (props) => {
     <React.Fragment>
       {loading && <LinearProgress />}
       <Box className={`${classes.root} ${classes.login}`}>
-        <Box style={{ margin: "0 5rem 0 5rem" }}>
+        <Box style={{ margin: "0 5rem 0 5rem" }} className={classes.svg}>
           <LandingIcon />
         </Box>
         <LoginForm
           handleSubmit={handleSubmit}
           loading={loading}
-          enteredEmail={enteredEmail}
-          enteredPassword={enteredPassword}
-          passwordInputChangeHandler={passwordInputChangeHandler}
-          EmailInputChangeHandler={EmailInputChangeHandler}
-          passwordInputBlurHandler={passwordInputBlurHandler}
-          EmailInputBlurHandler={EmailInputBlurHandler}
-          emailInputHasError={emailInputHasError}
-          passwordInputHasError={passwordInputHasError}
-          formIsValid={formIsValid}
+          form={formValidation}
+          isRegistering={isRegistering}
+          setIsRegistering={setIsRegistering}
         />
       </Box>
     </React.Fragment>

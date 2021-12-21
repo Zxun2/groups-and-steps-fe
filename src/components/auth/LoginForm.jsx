@@ -1,110 +1,12 @@
-import {
-  makeStyles,
-  Typography,
-  Button,
-  ButtonGroup,
-  CircularProgress,
-  Paper,
-} from "@material-ui/core";
+import { Typography, Button, CircularProgress, Paper } from "@material-ui/core";
 import SendIcon from "@mui/icons-material/Send";
-
-const useStyles = makeStyles((theme) => ({
-  login: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  login__form: {
-    display: "flex",
-    flexDirection: "column",
-    width: "auto",
-    backgroundColor: theme.palette.background.secondary,
-    padding: "2rem",
-    [theme.breakpoints.down("sm")]: {
-      padding: "1rem",
-    },
-
-    "& > h1": {
-      fontSize: "35px",
-      marginBottom: "15px",
-      paddingBottom: "10px",
-      textAlign: "center",
-      fontWeight: 600,
-      color: theme.palette.primary.main,
-      [theme.breakpoints.down("sm")]: {
-        fontSize: "20px",
-      },
-    },
-
-    "& > label ": {
-      marginBottom: "1rem",
-      fontSize: "1.5rem",
-      fontWeight: "600",
-      color: theme.palette.primary.main,
-      [theme.breakpoints.down("sm")]: {
-        fontSize: "13px",
-        marginBottom: "0.5rem",
-      },
-    },
-
-    "& > input": {
-      padding: "20px 0",
-      paddingLeft: "15px",
-      marginBottom: "10px",
-      outline: "none",
-      border: "1px solid rgba(0, 0, 0, 0.24)",
-      borderRadius: theme.shape.borderRadius,
-      fontSize: "15px",
-      [theme.breakpoints.down("sm")]: {
-        fontSize: "15px",
-        marginBottom: "0.5rem",
-        padding: "10px 0 10px 5px",
-      },
-    },
-  },
-  linearWipe: {
-    background:
-      "linear-gradient(to right, #97A9B4 20%, #5865f2 40%, #5865f2 60%, #97A9B4 80%)",
-    backgroundSize: "200% auto",
-    backgroundClip: "text",
-    textFillColor: "transparent",
-    animation: "$shine 1s linear infinite",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-  },
-  "@keyframes shine": {
-    to: {
-      backgroundPosition: "200% center",
-    },
-  },
-  btn__group: {
-    justifyContent: "end",
-    [theme.breakpoints.down("sm")]: {
-      flexDirection: "column",
-    },
-  },
-  submit__btn: {
-    fontWeight: "500",
-    "& :hover": {
-      color: theme.palette.secondary.main,
-    },
-    [theme.breakpoints.down("sm")]: {
-      fontSize: "15px",
-    },
-  },
-  error_text: {
-    color: theme.palette.error.main,
-    margin: "0",
-    fontWeight: "600",
-    [theme.breakpoints.down("sm")]: {
-      fontSize: "13px",
-    },
-  },
-}));
+import { Fragment } from "react";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import { Box } from "@material-ui/core";
+import { loginStyles } from "../ui/Style";
 
 const LoginForm = (props) => {
-  const classes = useStyles();
+  const classes = loginStyles();
 
   return (
     <Paper
@@ -114,20 +16,40 @@ const LoginForm = (props) => {
       className={classes.login__form}
     >
       <Typography variant="h1" className={classes.linearWipe}>
-        Your Weekly (Daily ?) To Do List 🚨
+        Groups and Steps - A journey to the future 📝
       </Typography>
+      {props.isRegistering && (
+        <Fragment>
+          <label htmlFor="name">Name</label>
+          <input
+            type="name"
+            name="name"
+            id="name"
+            placeholder="Type your name"
+            value={props.form.enteredName}
+            onChange={props.form.nameInputChangeHandler}
+            onBlur={props.form.nameInputBlurHandler}
+            required
+          />
+          {props.form.nameInputHasError && (
+            <p className={classes.error_text}>
+              Name must have more than 5 characters!
+            </p>
+          )}
+        </Fragment>
+      )}
       <label htmlFor="email">E-Mail Address</label>
       <input
         type="email"
         name="email"
         id="email"
         placeholder="Type your email"
-        value={props.enteredEmail}
-        onChange={props.EmailInputChangeHandler}
-        onBlur={props.EmailInputBlurHandler}
+        value={props.form.enteredEmail}
+        onChange={props.form.EmailInputChangeHandler}
+        onBlur={props.form.EmailInputBlurHandler}
         required
       />
-      {props.emailInputHasError && (
+      {props.form.emailInputHasError && (
         <p className={classes.error_text}>Email format is wrong!</p>
       )}
       <label htmlFor="password">Password</label>
@@ -136,41 +58,93 @@ const LoginForm = (props) => {
         name="password"
         id="password"
         placeholder="Type your password"
-        value={props.enteredPassword}
-        onChange={props.passwordInputChangeHandler}
-        onBlur={props.passwordInputBlurHandler}
+        value={props.form.enteredPassword}
+        onChange={props.form.passwordInputChangeHandler}
+        onBlur={props.form.passwordInputBlurHandler}
         required
       />
-      {props.passwordInputHasError && (
+      {props.form.passwordInputHasError && (
         <p className={classes.error_text}>
           Password must be more than 6 characters!
         </p>
       )}
+      {props.isRegistering && (
+        <Fragment>
+          <label htmlFor="password_confirmation">Confirm Password</label>
+          <input
+            type="password"
+            name="password_confirmation"
+            id="password_confirmation"
+            placeholder="Type your password"
+            value={props.form.enteredPasswordConfirmation}
+            onChange={props.form.passwordConfirmationInputChangeHandler}
+            onBlur={props.form.passwordConfirmationInputBlurHandler}
+            required
+          />
+          {props.form.passwordConfirmationInputHasError && (
+            <p className={classes.error_text}>
+              The password you entered is not the same!
+            </p>
+          )}
+        </Fragment>
+      )}
 
-      <ButtonGroup variant="outlined" className={classes.btn__group}>
-        <Button
-          className={classes.submit__btn}
-          type="submit"
-          size="large"
-          endIcon={!props.loading ? <SendIcon /> : null}
-          color="primary"
-          disabled={!props.formIsValid}
-        >
-          {!props.loading && "Log in"}
-          {props.loading && <CircularProgress />}
-        </Button>
-        <Button
-          className={classes.submit__btn}
-          type="submit"
-          size="large"
-          endIcon={<SendIcon />}
-          color="primary"
-          disabled={!props.formIsValid}
-        >
-          {!props.loading && "Register Here"}
-          {props.loading && <CircularProgress />}
-        </Button>
-      </ButtonGroup>
+      <Box className={classes.btn__group}>
+        {!props.isRegistering && (
+          <Fragment>
+            <Button
+              className={classes.submit__btn}
+              size="large"
+              variant="outlined"
+              onClick={() => props.setIsRegistering(true)}
+              endIcon={<SendIcon />}
+              color="primary"
+            >
+              {!props.loading && "Register Here"}
+              {props.loading && <CircularProgress />}
+            </Button>
+            <Button
+              className={classes.submit__btn}
+              type="submit"
+              size="large"
+              variant="outlined"
+              endIcon={!props.loading ? <SendIcon /> : null}
+              color="primary"
+              disabled={!props.form.formIsValid}
+            >
+              {!props.loading && "Log in"}
+              {props.loading && <CircularProgress />}
+            </Button>
+          </Fragment>
+        )}
+        {props.isRegistering && (
+          <Fragment>
+            <Button
+              className={classes.submit__btn}
+              size="large"
+              variant="outlined"
+              startIcon={<ArrowBackIosNewIcon />}
+              onClick={() => props.setIsRegistering(false)}
+              color="primary"
+            >
+              {!props.loading && "Back"}
+              {props.loading && <CircularProgress />}
+            </Button>
+            <Button
+              className={classes.submit__btn}
+              size="large"
+              type="submit"
+              endIcon={<SendIcon />}
+              color="primary"
+              variant="outlined"
+              disabled={!props.form.formIsValid}
+            >
+              {!props.loading && "Register"}
+              {props.loading && <CircularProgress />}
+            </Button>
+          </Fragment>
+        )}
+      </Box>
     </Paper>
   );
 };

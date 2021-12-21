@@ -30,6 +30,37 @@ export const LoggingIn = async (email, password) => {
   return { user, token };
 };
 
+// REGISTER USER IN
+export const Register = async (name, email, password, passwordConfirmation) => {
+  const response = await fetch(`${API_URL}/signup`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    body: JSON.stringify({
+      name,
+      email,
+      password,
+      password_confirmation: passwordConfirmation,
+    }),
+  });
+
+  const data = await response.json();
+
+  // Error is handled by the Try-Catch blog in Login.jsx
+  if (response.status === 422 || !response.ok) {
+    if (!response.ok) {
+      throw new Error("Something went wrong! Please try again.");
+    }
+    throw new Error(data.message);
+  }
+
+  const { message, auth_token: token, user } = data;
+
+  return { message, user, token };
+};
+
 // FETCH TODO DATA
 export const fetchData = async (token) => {
   const response = await fetch(`${API_URL}/todos`, {
