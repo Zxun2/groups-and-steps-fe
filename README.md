@@ -24,7 +24,7 @@ Groups and Steps 📝 is a web application built using Rails and React for CVWO 
 
 ## Architecture
 
-This application adopted the use of MVC architecture for the backened and the Flux architecture for the frontend.
+This application adopted the use of MVC architecture for the backend and the Flux architecture for the frontend.
 
 ### A short comparison between the Flux and MVC Architecture.
 Flux application has 3 major parts: the dispatcher, the store and the view.
@@ -34,6 +34,7 @@ Flux application has 3 major parts: the dispatcher, the store and the view.
 **The View:** It renders the user interface and handles user interaction. Container views listen for store changes.
 
 **The Dispatcher:** It broadcasts actions to all registered stores.
+
 ---
 
 The MVC is an acronym for Model View Controller.
