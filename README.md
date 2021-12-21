@@ -6,9 +6,10 @@
 | :----------: | :------------------: |
 | Lee Zong Xun |      A0233594Y       |
 
----
+## Application details
 
-<span color="red"> IMPORTANT! Please take note of the following: </span>
+![image](https://user-images.githubusercontent.com/63457492/146907275-c48e3b2f-b5b9-4eb6-ae60-7dcad107ff2f.png)
+
 
 ### Tutorial account details for Web app :
 
@@ -16,7 +17,6 @@
 | :----------------: | :------: |
 | tutorial@gmail.com |  foobar  |
 
----
 
 ## Overview
 
@@ -27,7 +27,6 @@ Groups and Steps 📝 is a web application built using Rails and React for CVWO 
 This application adopted the use of MVC architecture for the backened and the Flux architecture for the frontend.
 
 ### A short comparison between the Flux and MVC Architecture.
-
 Flux application has 3 major parts: the dispatcher, the store and the view.
 
 **The Store:** State manager, can be changed by listening to actions. It notifies the views to update.
@@ -35,7 +34,6 @@ Flux application has 3 major parts: the dispatcher, the store and the view.
 **The View:** It renders the user interface and handles user interaction. Container views listen for store changes.
 
 **The Dispatcher:** It broadcasts actions to all registered stores.
-
 ---
 
 The MVC is an acronym for Model View Controller.
@@ -61,10 +59,13 @@ The MVC is an acronym for Model View Controller.
 
 - PostgreSQL (Implemented with Rails)
 - Schema
-  ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/74f08995-0f18-4d7f-90aa-2c7463cae55c/Untitled.png)
+  ![image](https://user-images.githubusercontent.com/63457492/146906786-f87c195a-74c2-413c-979d-e338609309ea.png)
+
 
 - Modeling relationship
-  ![CVWO Groups and Steps Database Schema.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c210cf7a-8d2c-4642-bf60-b18c2c99d3bf/CVWO_Groups_and_Steps_Database_Schema.png)
+  ![CVWO Groups and Steps Database Schema](https://user-images.githubusercontent.com/63457492/146906856-70dbc3fe-fe29-4c5f-97d7-a31835928f93.png)
+
+  
 
 <p align="right">(<a href="#top">Back to top</a>)</p>
 
@@ -79,7 +80,7 @@ The MVC is an acronym for Model View Controller.
 | Notes                  | CRUDS functionality is dependent on API availability & integration.                                                                                                                                                                  |
 
 Use Cases:
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/63b02d36-8313-4d70-b2c8-f2dc2684dbfe/Untitled.png)
+![image](https://user-images.githubusercontent.com/63457492/146907228-43150454-c105-4985-9978-2ec01b28dc06.png)
 
 <p align="right">(<a href="#top">Back to top</a>)</p>
 
@@ -96,12 +97,6 @@ This assigment has allowed me to further hone my knowledge in web development an
 1. Implement other ancuillary enhancements such as deadlines and user statistics
 2. Introduce testing
 3. Notification Timelines (Complements current notification system)
-<p align="right">(<a href="#top">Back to top</a>)</p>
-
-## Application details
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/fc5fec97-7471-43db-833f-4b3e1451f838/Untitled.png)
-
 <p align="right">(<a href="#top">Back to top</a>)</p>
 
 ## Contributing
