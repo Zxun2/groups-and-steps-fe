@@ -76,7 +76,7 @@ export const navStyles = makeStyles((theme) => ({
 
 export const stepStyles = makeStyles((theme) => ({
   main: {
-    height: "88vh",
+    height: "94%",
     background: theme.palette.background.tertiary,
     borderRadius: "10px",
     padding: "1rem",
@@ -90,6 +90,20 @@ export const stepStyles = makeStyles((theme) => ({
   text: {
     [theme.breakpoints.down("sm")]: {
       fontSize: "1.6rem",
+    },
+  },
+  root: {
+    height: "75vh",
+    [theme.breakpoints.down("xs")]: {
+      height: "65vh",
+    },
+  },
+  inputField: {
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%",
+    [theme.breakpoints.down("xs")]: {
+      marginTop: "1rem",
     },
   },
 }));

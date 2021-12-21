@@ -128,9 +128,12 @@ const Steps = (props) => {
                 >
                   <AddTaskIcon />
                   <Typography
-                    variant=""
+                    variant="h6"
                     color="secondary"
-                    style={{ fontWeight: "600", marginTop: "2rem" }}
+                    style={{
+                      fontWeight: "600",
+                      textAlign: "center",
+                    }}
                   >
                     Create a task to get started!
                   </Typography>
@@ -139,68 +142,70 @@ const Steps = (props) => {
             )}
             {steps?.length !== 0 && (
               <Fragment>
-                <CustomScrollbars
-                  style={{ height: "75vh" }}
-                  autoHide
-                  autoHideTimeout={500}
-                  autoHideDuration={200}
-                >
-                  <FilterLabel
-                    steps={steps}
-                    value={props.value}
-                    setValue={props.setValue}
-                  />
-                  <Stack spacing={3}>
-                    <Divider>
-                      <Chip
-                        onClick={() => setOpenUncompleted(!isOpenUncompleted)}
-                        label="UNCOMPLETED"
-                        color="primary"
-                        size="medium"
-                      />
-                    </Divider>
-                    {isOpenUncompleted &&
-                      steps?.map((step) => {
-                        return (
-                          !step.completed && (
-                            <Task
-                              key={step.id}
-                              id={step.id}
-                              step={step.step}
-                              completed={step.completed}
-                              todo_id={step.todo_id}
-                              updated_at={step.updated_at}
-                              tags={step.tags}
-                            />
-                          )
-                        );
-                      })}
-                    <Divider>
-                      <Chip
-                        onClick={() => setOpenCompleted(!isOpenCompleted)}
-                        label="COMPLETED"
-                        color="primary"
-                        size="medium"
-                      />
-                    </Divider>
-                    {isOpenCompleted &&
-                      steps.map((step) => {
-                        return (
-                          step?.completed && (
-                            <Task
-                              key={step.id}
-                              id={step.id}
-                              step={step.step}
-                              completed={step.completed}
-                              todo_id={step.todo_id}
-                              updated_at={step.updated_at}
-                              tags={step.tags}
-                            />
-                          )
-                        );
-                      })}
-                  </Stack>
-                </CustomScrollbars>
+                <Box className={classes.root}>
+                  <CustomScrollbars
+                    style={{ height: "100%" }}
+                    autoHide
+                    autoHideTimeout={500}
+                    autoHideDuration={200}
+                  >
+                    <FilterLabel
+                      steps={steps}
+                      value={props.value}
+                      setValue={props.setValue}
+                    />
+                    <Stack spacing={3}>
+                      <Divider>
+                        <Chip
+                          onClick={() => setOpenUncompleted(!isOpenUncompleted)}
+                          label="UNCOMPLETED"
+                          color="primary"
+                          size="medium"
+                        />
+                      </Divider>
+                      {isOpenUncompleted &&
+                        steps?.map((step) => {
+                          return (
+                            !step.completed && (
+                              <Task
+                                key={step.id}
+                                id={step.id}
+                                step={step.step}
+                                completed={step.completed}
+                                todo_id={step.todo_id}
+                                updated_at={step.updated_at}
+                                tags={step.tags}
+                              />
+                            )
+                          );
+                        })}
+                      <Divider>
+                        <Chip
+                          onClick={() => setOpenCompleted(!isOpenCompleted)}
+                          label="COMPLETED"
+                          color="primary"
+                          size="medium"
+                        />
+                      </Divider>
+                      {isOpenCompleted &&
+                        steps.map((step) => {
+                          return (
+                            step?.completed && (
+                              <Task
+                                key={step.id}
+                                id={step.id}
+                                step={step.step}
+                                completed={step.completed}
+                                todo_id={step.todo_id}
+                                updated_at={step.updated_at}
+                                tags={step.tags}
+                              />
+                            )
+                          );
+                        })}
+                    </Stack>
+                  </CustomScrollbars>
+                </Box>
                 <Divider>
                   <Chip
                     onClick={addStepHandler}
@@ -213,11 +218,7 @@ const Steps = (props) => {
             )}
             <Stack
               direction={steps?.length === 0 ? "column" : "row"}
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: "100%",
-              }}
+              className={classes.inputField}
             >
               <TextField
                 style={{ width: "100%" }}
@@ -250,7 +251,6 @@ const Steps = (props) => {
                   size="medium"
                   style={{
                     width: "7rem",
-                    marginTop: "2rem",
                   }}
                 />
               )}

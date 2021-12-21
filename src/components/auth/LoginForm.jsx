@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    color: "red",
   },
   login__form: {
     display: "flex",
@@ -22,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
     width: "auto",
     backgroundColor: theme.palette.background.secondary,
     padding: "2rem",
+    [theme.breakpoints.down("sm")]: {
+      padding: "1rem",
+    },
 
     "& > h1": {
       fontSize: "35px",
@@ -30,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
       textAlign: "center",
       fontWeight: 600,
       color: theme.palette.primary.main,
+      [theme.breakpoints.down("sm")]: {
+        fontSize: "20px",
+      },
     },
 
     "& > label ": {
@@ -37,10 +42,13 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "1.5rem",
       fontWeight: "600",
       color: theme.palette.primary.main,
+      [theme.breakpoints.down("sm")]: {
+        fontSize: "13px",
+        marginBottom: "0.5rem",
+      },
     },
 
     "& > input": {
-      minWidth: "100px",
       padding: "20px 0",
       paddingLeft: "15px",
       marginBottom: "10px",
@@ -48,6 +56,11 @@ const useStyles = makeStyles((theme) => ({
       border: "1px solid rgba(0, 0, 0, 0.24)",
       borderRadius: theme.shape.borderRadius,
       fontSize: "15px",
+      [theme.breakpoints.down("sm")]: {
+        fontSize: "15px",
+        marginBottom: "0.5rem",
+        padding: "10px 0 10px 5px",
+      },
     },
   },
   linearWipe: {
@@ -67,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
   },
   btn__group: {
     justifyContent: "end",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       flexDirection: "column",
     },
   },
@@ -76,11 +89,17 @@ const useStyles = makeStyles((theme) => ({
     "& :hover": {
       color: theme.palette.secondary.main,
     },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "15px",
+    },
   },
   error_text: {
     color: theme.palette.error.main,
     margin: "0",
     fontWeight: "600",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "13px",
+    },
   },
 }));
 
