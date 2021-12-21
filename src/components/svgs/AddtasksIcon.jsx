@@ -4,8 +4,8 @@ function AddTaskIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="400"
-      height="250"
+      width="40vw"
+      height="40vh"
       data-name="Layer 1"
       viewBox="0 0 1005.563 548.695"
     >

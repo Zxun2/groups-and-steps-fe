@@ -115,7 +115,6 @@ export default function NavInput(props) {
         // Decides on what to search on. Option<Obj>
         getOptionLabel={(option) => {
           // e.g value selected with enter, right from the input
-          console.log(option);
           if (typeof option === "string") {
             return option;
           }
@@ -134,7 +133,7 @@ export default function NavInput(props) {
             {option.title}
           </li>
         )}
-        sx={{ width: "100%" }}
+        sx={{ width: "10rem" }}
         freeSolo
         renderInput={(params) => (
           <TextField

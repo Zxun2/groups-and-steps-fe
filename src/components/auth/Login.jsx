@@ -84,13 +84,14 @@ const Login = (props) => {
           })
         );
 
+        setIsLoading(false);
         history.push("/dashboard");
       } catch (err) {
+        setIsLoading(false);
+
         // TODO: ???? DEAL WITH THIS
         console.log(err);
       }
-
-      setIsLoading(false);
     };
     LoggedIn();
 

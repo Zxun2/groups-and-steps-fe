@@ -41,55 +41,52 @@ const NavBar = (props) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            style={{ alignItems: "center", display: "flex" }}
+          <Box
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
           >
-            <TagIcon />{" "}
-            {props.title === "" || props.todos.length === 0
-              ? "Welcome"
-              : props.title}
-          </Typography>
-          <div className={classes.group}>
-            {/* <div className={classes.search}> */}
-            {/* <div className={classes.searchIconWrapper}>
-                <SearchIcon />
-              </div> */}
-            {/* <InputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-                className={classes.searchBar}
-                onChange={(e) => console.log(e.target.value)}
-              />  */}
-            <NavInput
-              Todos={props.todos}
-              changeContentHandler={props.changeContentHandler}
-            />
-            {/* </div> */}
-            <InboxIcon onClick={handleOpen} className={classes.inboxIcon} />
-            <Modal
-              keepMounted
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="keep-mounted-modal-title"
-              aria-describedby="keep-mounted-modal-description"
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              style={{ alignItems: "center", display: "flex" }}
             >
-              <Box className={classes.style}>
-                <CustomScrollbars
-                  style={{ height: "55vh" }}
-                  autoHide
-                  autoHideTimeout={500}
-                  autoHideDuration={200}
-                >
-                  <CustomizedTimeline />
+              <TagIcon />{" "}
+              {props.title === "" || props.todos.length === 0
+                ? "Welcome"
+                : props.title}
+            </Typography>
+            <div className={classes.group}>
+              <NavInput
+                Todos={props.todos}
+                changeContentHandler={props.changeContentHandler}
+              />
+              <InboxIcon onClick={handleOpen} className={classes.inboxIcon} />
+              <Modal
+                keepMounted
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="keep-mounted-modal-title"
+                aria-describedby="keep-mounted-modal-description"
+              >
+                <Box className={classes.style}>
+                  <CustomScrollbars
+                    style={{ height: "55vh" }}
+                    autoHide
+                    autoHideTimeout={500}
+                    autoHideDuration={200}
+                  >
+                    <CustomizedTimeline />
 
-                  <Instructions />
-                </CustomScrollbars>
-              </Box>
-            </Modal>
-          </div>
+                    <Instructions />
+                  </CustomScrollbars>
+                </Box>
+              </Modal>
+            </div>
+          </Box>
         </Toolbar>
       </AppBar>
     </Fragment>

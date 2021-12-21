@@ -87,6 +87,7 @@ const Steps = (props) => {
           <Typography
             variant="h4"
             color="secondary"
+            className={classes.text}
             style={{ fontWeight: "600", display: "inline" }}
           >
             Welcome{" "}
@@ -97,9 +98,10 @@ const Steps = (props) => {
           </Typography>
 
           <Typography
+            className={classes.text}
             variant="h4"
             color="secondary"
-            style={{ fontWeight: "600" }}
+            style={{ fontWeight: "600", marginBottom: "2rem" }}
           >
             Create/Select a group to get started!
           </Typography>
@@ -126,9 +128,9 @@ const Steps = (props) => {
                 >
                   <AddTaskIcon />
                   <Typography
-                    variant="subtitle2"
+                    variant="h6"
                     color="secondary"
-                    style={{ fontWeight: "600" }}
+                    style={{ fontWeight: "600", marginTop: "2rem" }}
                   >
                     Create a task to get started!
                   </Typography>
@@ -210,11 +212,15 @@ const Steps = (props) => {
               </Fragment>
             )}
             <Stack
-              direction="row"
-              style={{ display: "flex", justifyContent: "space-between" }}
+              direction={steps?.length === 0 ? "column" : "row"}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
+              }}
             >
               <TextField
-                style={{ width: "55vw" }}
+                style={{ width: "100%" }}
                 component="form"
                 color="primary"
                 size="medium"
@@ -236,6 +242,18 @@ const Steps = (props) => {
                 selectedItem={selectedItem}
                 setSelectedItem={setSelectedItem}
               />
+              {steps?.length === 0 && (
+                <Chip
+                  onClick={addStepHandler}
+                  label="ADD TASK"
+                  color="primary"
+                  size="medium"
+                  style={{
+                    width: "10rem",
+                    marginTop: "2rem",
+                  }}
+                />
+              )}
             </Stack>
           </Box>
         </Fragment>

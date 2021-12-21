@@ -53,7 +53,7 @@ export const navStyles = makeStyles((theme) => ({
   group: {
     display: "flex",
     alignItems: "center",
-    width: "15vw",
+    // width: "20vw",
   },
   inboxIcon: {
     marginLeft: "1rem",
@@ -76,7 +76,6 @@ export const navStyles = makeStyles((theme) => ({
 
 export const stepStyles = makeStyles((theme) => ({
   main: {
-    width: "100%",
     height: "88vh",
     background: theme.palette.background.tertiary,
     borderRadius: "10px",
@@ -87,6 +86,11 @@ export const stepStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-evenly",
+  },
+  text: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.6rem",
+    },
   },
 }));
 
