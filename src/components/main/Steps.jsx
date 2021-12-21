@@ -251,6 +251,7 @@ const Steps = (props) => {
                   size="medium"
                   style={{
                     width: "7rem",
+                    marginTop: "2rem",
                   }}
                 />
               )}
