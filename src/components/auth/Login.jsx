@@ -89,9 +89,9 @@ const Login = (props) => {
         // TODO: ???? DEAL WITH THIS
         console.log(err);
       }
+
       setIsLoading(false);
     };
-
     LoggedIn();
 
     resetPasswordInput();

@@ -8,6 +8,7 @@ import { userAction } from "./components/store/user-slice";
 import { useHistory } from "react-router-dom";
 import Notification from "./components/ui/Notification";
 import { uiAction } from "./components/store/ui-slice";
+import { API_URL } from "./actions/apiUrl";
 
 function App() {
   const dispatch = useDispatch();
@@ -21,15 +22,12 @@ function App() {
     const autoLogin = async () => {
       if (token) {
         try {
-          const response = await fetch(
-            "http://localhost:3001/auth/auto_login",
-            {
-              method: "POST",
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+          const response = await fetch(`${API_URL}/auth/auto_login`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
           const data = await response.json();
 
