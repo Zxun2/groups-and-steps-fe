@@ -20,7 +20,6 @@ import { Chip } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { StepCreators, stepsAction } from "../store/steps-slice";
 import { deleteStep, updateStep } from "../lib/api";
-import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
