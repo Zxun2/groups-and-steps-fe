@@ -128,7 +128,7 @@ const Steps = (props) => {
                 >
                   <AddTaskIcon />
                   <Typography
-                    variant="h6"
+                    variant=""
                     color="secondary"
                     style={{ fontWeight: "600", marginTop: "2rem" }}
                   >
@@ -245,11 +245,11 @@ const Steps = (props) => {
               {steps?.length === 0 && (
                 <Chip
                   onClick={addStepHandler}
-                  label="ADD TASK"
                   color="primary"
+                  label="ADD TASK"
                   size="medium"
                   style={{
-                    width: "10rem",
+                    width: "7rem",
                     marginTop: "2rem",
                   }}
                 />
