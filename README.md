@@ -10,13 +10,11 @@
 
 ![image](https://user-images.githubusercontent.com/63457492/146907275-c48e3b2f-b5b9-4eb6-ae60-7dcad107ff2f.png)
 
-
 ### Tutorial account details for Web app :
 
 |       Email        | Password |
 | :----------------: | :------: |
 | tutorial@gmail.com |  foobar  |
-
 
 ## Overview
 
@@ -27,21 +25,22 @@ Groups and Steps 📝 is a web application built using Rails and React for CVWO 
 This application adopted the use of MVC architecture for the backend and the Flux architecture for the frontend.
 
 ### A short comparison between the Flux and MVC Architecture.
+
 Flux application has 3 major parts: the dispatcher, the store and the view.
 
 **The Store:** State manager, can be changed by listening to actions. It notifies the views to update.
 
-**The View:** It renders the user interface and handles user interaction. Container views listen for store changes.
+**The View:** It renders the user interface and handles user interaction. Container views listen for store changes.
 
-**The Dispatcher:** It broadcasts actions to all registered stores.
+**The Dispatcher:** It broadcasts actions to all registered stores.
 
 ---
 
 The MVC is an acronym for Model View Controller.
 
-**Model:** It is a backend that includes all the data logic.
+**Model:** It is a backend that includes all the data logic.
 
-**View:** View is basically the frontend or graphical user interface of the application.
+**View:** View is basically the frontend or graphical user interface of the application.
 
 **Controller**: The brains of the application that controls how data is displayed.
 
@@ -62,11 +61,8 @@ The MVC is an acronym for Model View Controller.
 - Schema
   ![image](https://user-images.githubusercontent.com/63457492/146906786-f87c195a-74c2-413c-979d-e338609309ea.png)
 
-
 - Modeling relationship
   ![CVWO Groups and Steps Database Schema](https://user-images.githubusercontent.com/63457492/146906856-70dbc3fe-fe29-4c5f-97d7-a31835928f93.png)
-
-  
 
 <p align="right">(<a href="#top">Back to top</a>)</p>
 

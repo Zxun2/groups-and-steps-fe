@@ -8,8 +8,8 @@ import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import { v4 } from "uuid";
 import { Box } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import { TodoCreators } from "../store/todo-slice";
-import { addTodo } from "../lib/api";
+import { TodoCreators } from "../../store/todo-slice";
+import { addTodo } from "../../lib/api";
 
 const filter = createFilterOptions();
 

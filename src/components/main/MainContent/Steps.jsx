@@ -1,22 +1,22 @@
-import { FAIL } from "../../actions/constants";
-import AppIcon from "../svgs/AppIcon";
+import { FAIL } from "../../../actions/constants";
+import AppIcon from "../../svgs/AppIcon";
 import { Toolbar, Box, Stack } from "@mui/material";
 import { Typography, Chip } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { Fragment, useRef } from "react";
 import { LinearProgress, TextField } from "@material-ui/core";
-import AddTaskIcon from "../svgs/AddtasksIcon";
-import CustomScrollbars from "../ui/CustomScollBars";
+import AddTaskIcon from "../../svgs/AddtasksIcon";
+import CustomScrollbars from "../../ui/CustomScollBars";
 import { Divider } from "@mui/material";
 import Task from "./Task";
-import TagsInput from "./TagsInput";
+import TagsInput from "../Tags/TagsInput";
 import { useDispatch } from "react-redux";
-import { uiAction } from "../store/ui-slice";
+import { uiAction } from "../../store/ui-slice";
 import { useState } from "react";
-import FilterLabel from "./Filter";
-import { stepStyles } from "../ui/Style";
-import { addStep } from "../lib/api";
-import useHttp from "../hooks/useHttp";
+import FilterLabel from "../FilterComponent/Filter";
+import { stepStyles } from "../../ui/Style";
+import { addStep } from "../../lib/api";
+import useHttp from "../../hooks/useHttp";
 
 const Steps = (props) => {
   const classes = stepStyles();

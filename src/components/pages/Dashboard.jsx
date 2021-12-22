@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 // import { TodoCreators } from "../store/todo-slice";
 import CustomScrollbars from "../ui/CustomScollBars";
 import { drawerWidth } from "../../actions/constants";
-import NavBar from "../main/NavBar";
-import { SideBar } from "../main/SideBar";
+import NavBar from "../main/NavBar/NavBar";
+import { SideBar } from "../main/SideBar/SideBar";
 import TagIcon from "@mui/icons-material/Tag";
 import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
@@ -24,10 +24,10 @@ import {
 import { uiAction } from "../store/ui-slice";
 // StepCreators,
 import { stepsAction } from "../store/steps-slice";
-import Steps from "../main/Steps";
-import TodoModal from "../main/TodoModal";
+import Steps from "../main/MainContent/Steps";
+import TodoModal from "../main/Modals/TodoModal";
 import { dashboardStyles } from "../ui/Style";
-import UserModal from "../main/UserModal";
+import UserModal from "../main/Modals/UserModal";
 import {
   addTodo,
   deleteTodo,

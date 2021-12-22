@@ -1,12 +1,22 @@
 import React from "react";
 import { Modal, Box, Button } from "@mui/material";
-import { TextField } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { todoModalStyle } from "../ui/Style";
+import { userModalStyle } from "../../ui/Style";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { userAction } from "../../store/user-slice";
 
-function TodoModal(props) {
-  const classes = todoModalStyle();
+function UserModal(props) {
+  const history = useHistory();
+  const classes = userModalStyle();
+  const dispatch = useDispatch();
+
+  const logOutHandler = () => {
+    localStorage.removeItem("token");
+    history.push("/");
+    dispatch(userAction.logUserOut());
+  };
   return (
     <Modal open={props.open} onClose={props.handleClose}>
       <Box className={classes.modal}>
@@ -15,13 +25,13 @@ function TodoModal(props) {
           variant="h5"
           color="secondary"
         >
-          Change your title
+          User Log Out
         </Typography>
         <Typography
           style={{ fontWeight: "400", textAlign: "center", color: "#cccccc" }}
           variant="subtitle1"
         >
-          Enter your new title below or click the delete button to delete Todo.
+          Leaving already?
         </Typography>
         <Box
           style={{
@@ -31,29 +41,14 @@ function TodoModal(props) {
             margin: "2rem",
           }}
         >
-          <TextField
-            id="title"
-            component="form"
-            className={classes.input}
-            color="primary"
-            size="medium"
-            onChange={props.updateTodoChangeHandler}
-            onSubmit={props.updateTodoHandler}
-            variant="filled"
-            InputProps={{
-              color: "primary",
-              style: { color: "white", fontSize: "1.05rem" },
-            }}
-          />
-
           <Button
             variant="outlined"
             color="error"
             style={{ marginTop: "2rem" }}
-            startIcon={<DeleteIcon />}
-            onClick={props.deleteTodoHandler.bind(null, props.todoId)}
+            startIcon={<LogoutIcon />}
+            onClick={logOutHandler}
           >
-            Delete
+            Log Out
           </Button>
         </Box>
       </Box>
@@ -61,4 +56,4 @@ function TodoModal(props) {
   );
 }
 
-export default TodoModal;
+export default UserModal;

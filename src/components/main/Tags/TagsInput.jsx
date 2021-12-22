@@ -5,7 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import Downshift from "downshift";
 import randomColor from "randomcolor";
 import { Box } from "@mui/material";
-import { tagInputStyles } from "../ui/Style";
+import { tagInputStyles } from "../../ui/Style";
 
 export default function TagsInput({ ...props }) {
   const classes = tagInputStyles();

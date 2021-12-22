@@ -4,7 +4,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import Box from "@mui/material/Box";
 // Returns a hex code for an attractive color
 import randomColor from "randomcolor";
-import { stepsAction } from "../store/steps-slice";
+import { stepsAction } from "../../store/steps-slice";
 import { useDispatch } from "react-redux";
 import { Button } from "./FilterCustomStyledPopper";
 import Popper from "./FilterPopper";

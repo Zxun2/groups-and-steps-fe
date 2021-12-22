@@ -16,7 +16,7 @@ const LoginForm = (props) => {
       className={classes.login__form}
     >
       <Typography variant="h1" className={classes.linearWipe}>
-        Groups and Steps - A journey to the future 📝
+        Groups and Steps - A knowledge repository 📝
       </Typography>
       {props.isRegistering && (
         <Fragment>
@@ -94,17 +94,6 @@ const LoginForm = (props) => {
           <Fragment>
             <Button
               className={classes.submit__btn}
-              size="large"
-              variant="outlined"
-              onClick={() => props.setIsRegistering(true)}
-              endIcon={<SendIcon />}
-              color="primary"
-            >
-              {!props.loading && "Register Here"}
-              {props.loading && <CircularProgress />}
-            </Button>
-            <Button
-              className={classes.submit__btn}
               type="submit"
               size="large"
               variant="outlined"
@@ -115,21 +104,33 @@ const LoginForm = (props) => {
               {!props.loading && "Log in"}
               {props.loading && <CircularProgress />}
             </Button>
+            {!props.loading && (
+              <Button
+                className={classes.submit__btn}
+                size="large"
+                variant="outlined"
+                onClick={() => props.setIsRegistering(true)}
+                color="primary"
+              >
+                Register Here
+              </Button>
+            )}
           </Fragment>
         )}
         {props.isRegistering && (
           <Fragment>
-            <Button
-              className={classes.submit__btn}
-              size="large"
-              variant="outlined"
-              startIcon={<ArrowBackIosNewIcon />}
-              onClick={() => props.setIsRegistering(false)}
-              color="primary"
-            >
-              {!props.loading && "Back"}
-              {props.loading && <CircularProgress />}
-            </Button>
+            {!props.loading && (
+              <Button
+                className={classes.submit__btn}
+                size="large"
+                variant="outlined"
+                startIcon={<ArrowBackIosNewIcon />}
+                onClick={() => props.setIsRegistering(false)}
+                color="primary"
+              >
+                Back
+              </Button>
+            )}
             <Button
               className={classes.submit__btn}
               size="large"

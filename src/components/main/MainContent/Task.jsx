@@ -18,8 +18,8 @@ import MenuItem from "@mui/material/MenuItem";
 import randomColor from "randomcolor";
 import { Chip } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import { StepCreators, stepsAction } from "../store/steps-slice";
-import { deleteStep, updateStep } from "../lib/api";
+import { StepCreators, stepsAction } from "../../store/steps-slice";
+import { deleteStep, updateStep } from "../../lib/api";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
