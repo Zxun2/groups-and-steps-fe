@@ -24,36 +24,12 @@ Groups and Steps 📝 is a web application built using Rails and React for CVWO 
 
 This application adopted the use of MVC architecture for the backend and the Flux architecture for the frontend.
 
-### A short comparison between the Flux and MVC Architecture.
-
-Flux application has 3 major parts: the dispatcher, the store and the view.
-
-**The Store:** State manager, can be changed by listening to actions. It notifies the views to update.
-
-**The View:** It renders the user interface and handles user interaction. Container views listen for store changes.
-
-**The Dispatcher:** It broadcasts actions to all registered stores.
-
----
-
-The MVC is an acronym for Model View Controller.
-
-**Model:** It is a backend that includes all the data logic.
-
-**View:** View is basically the frontend or graphical user interface of the application.
-
-**Controller**: The brains of the application that controls how data is displayed.
-
-<p align="right">(<a href="#top">Back to top</a>)</p>
-
 ## Tech Stacks
 
 1. Ruby on Rails
 2. React ( Javascript)
 3. Postgresql Database
 4. Material UI
-
-<p align="right">(<a href="#top">Back to top</a>)</p>
 
 ## Database Choice and design
 
@@ -79,7 +55,6 @@ The MVC is an acronym for Model View Controller.
 Use Cases:
 ![image](https://user-images.githubusercontent.com/63457492/146907228-43150454-c105-4985-9978-2ec01b28dc06.png)
 
-<p align="right">(<a href="#top">Back to top</a>)</p>
 
 ## Reflection
 
@@ -94,13 +69,11 @@ This assigment has allowed me to further hone my knowledge in web development an
 1. Implement other ancuillary enhancements such as deadlines and user statistics
 2. Introduce testing
 3. Notification Timelines (Complements current notification system)
-<p align="right">(<a href="#top">Back to top</a>)</p>
 
 ## Contributing
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request.
 
-<p align="right">(<a href="#top">Back to top</a>)</p>
 
 <!-- LICENSE -->
 
