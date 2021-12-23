@@ -7,9 +7,8 @@ import DialogContentText from "@mui/material/DialogContentText";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import { v4 } from "uuid";
 import { Box } from "@material-ui/core";
-import { useDispatch } from "react-redux";
-import { TodoCreators } from "../../store/todo-slice";
 import { addTodo } from "../../lib/api";
+import useHttp from "../../hooks/useHttp";
 
 const filter = createFilterOptions();
 
@@ -19,7 +18,11 @@ export default function NavInput(props) {
   const [open, toggleOpen] = React.useState(false);
   const searchRef = React.useRef();
   const todoRef = React.useRef();
-  const dispatch = useDispatch();
+  const { sendRequest: createTodo } = useHttp(addTodo);
+
+  const [dialogValue, setDialogValue] = React.useState({
+    title: "",
+  });
 
   const handleClose = () => {
     setDialogValue({
@@ -28,10 +31,6 @@ export default function NavInput(props) {
 
     toggleOpen(false);
   };
-
-  const [dialogValue, setDialogValue] = React.useState({
-    title: "",
-  });
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -45,12 +44,11 @@ export default function NavInput(props) {
     const title = todoRef.current.value.trim();
 
     if (title !== "") {
-      dispatch(TodoCreators(addTodo, { title: title }));
+      createTodo({ title: title });
     }
 
     todoRef.current.value = "";
     searchRef.current.value = "";
-
     handleClose();
   };
 
@@ -67,12 +65,16 @@ export default function NavInput(props) {
         props.changeContentHandler(title, id);
       }
     }
+
+    setValue("");
   };
 
   return (
     <React.Fragment>
       <Autocomplete
         value={value}
+        autoSelect={true}
+        autoComplete={true}
         onChange={(event, newValue) => {
           if (typeof newValue === "string") {
             // timeout to avoid instant validation of the dialog's form.

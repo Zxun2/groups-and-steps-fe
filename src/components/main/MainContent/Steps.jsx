@@ -1,6 +1,6 @@
 import { FAIL } from "../../../actions/constants";
 import AppIcon from "../../svgs/AppIcon";
-import { Toolbar, Box, Stack } from "@mui/material";
+import { Toolbar, Box, Stack, Collapse } from "@mui/material";
 import { Typography, Chip } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { Fragment, useRef } from "react";
@@ -17,6 +17,7 @@ import FilterLabel from "../FilterComponent/Filter";
 import { stepStyles } from "../../ui/Style";
 import { addStep } from "../../lib/api";
 import useHttp from "../../hooks/useHttp";
+import { Badge } from "@material-ui/core";
 
 const Steps = (props) => {
   const classes = stepStyles();
@@ -28,7 +29,16 @@ const Steps = (props) => {
   const steps = useSelector((state) => state.step.temp);
   const stepRef = useRef();
   const dispatch = useDispatch();
-  const { sendRequest: createTodo } = useHttp(addStep);
+  const { sendRequest: createStep } = useHttp(addStep, true);
+  let UncompletedCount = 0;
+  let CompletedCount = 0;
+  steps?.map((step) => {
+    if (step.completed) {
+      return (CompletedCount += 1);
+    } else {
+      return (UncompletedCount += 1);
+    }
+  });
 
   const addStepToDatabase = () => {
     if (stepRef.current.value.trim() === "") {
@@ -40,7 +50,7 @@ const Steps = (props) => {
         })
       );
     } else {
-      createTodo(
+      createStep(
         {
           step: stepRef.current.value.trim(),
           tags: tags,
@@ -156,39 +166,56 @@ const Steps = (props) => {
                     />
                     <Stack spacing={3}>
                       <Divider>
-                        <Chip
-                          onClick={() => setOpenUncompleted(!isOpenUncompleted)}
-                          label="UNCOMPLETED"
-                          color="primary"
-                          size="medium"
-                        />
+                        <Badge
+                          color="secondary"
+                          badgeContent={`${UncompletedCount}`}
+                          invisible={isOpenUncompleted}
+                        >
+                          <Chip
+                            onClick={() =>
+                              setOpenUncompleted(!isOpenUncompleted)
+                            }
+                            label={"UNCOMPLETED"}
+                            color="primary"
+                            size="medium"
+                          />
+                        </Badge>
                       </Divider>
-                      {isOpenUncompleted &&
-                        steps?.map((step) => {
-                          return (
-                            !step.completed && (
-                              <Task
-                                key={step.id}
-                                id={step.id}
-                                step={step.step}
-                                completed={step.completed}
-                                todo_id={step.todo_id}
-                                updated_at={step.updated_at}
-                                tags={step.tags}
-                              />
-                            )
-                          );
-                        })}
+                      <Collapse in={isOpenUncompleted}>
+                        <Box>
+                          {steps?.map((step) => {
+                            return (
+                              !step.completed && (
+                                <Task
+                                  key={step.id}
+                                  id={step.id}
+                                  step={step.step}
+                                  completed={step.completed}
+                                  todo_id={step.todo_id}
+                                  updated_at={step.updated_at}
+                                  tags={step.tags}
+                                />
+                              )
+                            );
+                          })}
+                        </Box>
+                      </Collapse>
                       <Divider>
-                        <Chip
-                          onClick={() => setOpenCompleted(!isOpenCompleted)}
-                          label="COMPLETED"
-                          color="primary"
-                          size="medium"
-                        />
+                        <Badge
+                          color="secondary"
+                          badgeContent={`${CompletedCount}`}
+                          invisible={isOpenCompleted}
+                        >
+                          <Chip
+                            onClick={() => setOpenCompleted(!isOpenCompleted)}
+                            label={`COMPLETED`}
+                            color="primary"
+                            size="medium"
+                          />
+                        </Badge>
                       </Divider>
-                      {isOpenCompleted &&
-                        steps.map((step) => {
+                      <Collapse in={isOpenCompleted}>
+                        {steps.map((step) => {
                           return (
                             step?.completed && (
                               <Task
@@ -203,6 +230,7 @@ const Steps = (props) => {
                             )
                           );
                         })}
+                      </Collapse>
                     </Stack>
                   </CustomScrollbars>
                 </Box>

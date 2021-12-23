@@ -260,7 +260,7 @@ export default function Task(props) {
           </CardContent>
         </Collapse>
       </Card>
-      <Divider />
+      <Divider style={{ height: "2rem" }} />
     </Fragment>
   );
 }

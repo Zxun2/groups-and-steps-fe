@@ -97,7 +97,9 @@ export default function FilterLabel(props) {
                 color: theme.palette.getContrastText(label.color),
               }}
             >
-              {label.step}
+              {label.step.length > 50
+                ? `${label.step.slice(0, 50)}...`
+                : label.step}
             </Box>
           ))}
         </Box>

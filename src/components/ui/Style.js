@@ -80,27 +80,32 @@ export const stepStyles = makeStyles((theme) => ({
     background: theme.palette.background.tertiary,
     borderRadius: "10px",
     padding: "1rem",
+    transition: "all 0.2s",
   },
   notask: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-evenly",
+    transition: "all 0.2s",
   },
   text: {
     [theme.breakpoints.down("sm")]: {
+      transition: "all 0.2s",
       fontSize: "1.6rem",
     },
   },
   root: {
     height: "75vh",
     [theme.breakpoints.down("xs")]: {
+      transition: "all 0.2s",
       height: "65vh",
     },
   },
   inputField: {
     display: "flex",
     justifyContent: "space-between",
+    transition: "all 0.2s",
     width: "100%",
     [theme.breakpoints.down("xs")]: {
       marginTop: "1rem",

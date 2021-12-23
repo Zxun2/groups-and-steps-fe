@@ -97,12 +97,11 @@ const LoginForm = (props) => {
               type="submit"
               size="large"
               variant="outlined"
-              endIcon={!props.loading ? <SendIcon /> : null}
+              endIcon={!props.loading ? <SendIcon /> : <CircularProgress />}
               color="primary"
               disabled={!props.form.formIsValid}
             >
-              {!props.loading && "Log in"}
-              {props.loading && <CircularProgress />}
+              Log in
             </Button>
             {!props.loading && (
               <Button

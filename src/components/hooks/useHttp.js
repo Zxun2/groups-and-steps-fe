@@ -12,12 +12,13 @@ function useHttp(requestFunction, startWithPending = false) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    startWithPending &&
+    if (startWithPending) {
       dispatch(
         uiAction.updateGlobalState({
           status: LOADING,
         })
       );
+    }
   }, [dispatch, startWithPending]);
 
   const sendRequest = useCallback(

@@ -119,6 +119,8 @@ export const Dashboard = (props) => {
       if (Todo !== "") {
         setTimeout(() => createTodo({ title: Todo }), 0);
       }
+
+      setTodo("");
     },
     [Todo, createTodo]
   );
@@ -130,7 +132,6 @@ export const Dashboard = (props) => {
   const deleteTodoHandler = useCallback(
     (id) => {
       setTimeout(() => removeTodo(id), 0);
-      setTitle("");
       setOpen(false);
     },
     [removeTodo]
