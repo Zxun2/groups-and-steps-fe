@@ -24,17 +24,12 @@ Groups and Steps 📝 is a web application built using Rails and React for CVWO 
 
 This application adopted the use of MVC architecture for the backend and the Flux architecture for the frontend.
 
-
-<p align="right">(<a href="#top">Back to top</a>)</p>
-
 ## Tech Stacks
 
 1. Ruby on Rails
 2. React ( Javascript)
 3. Postgresql Database
 4. Material UI
-
-<p align="right">(<a href="#top">Back to top</a>)</p>
 
 ## Database Choice and design
 
@@ -60,7 +55,6 @@ This application adopted the use of MVC architecture for the backend and the Flu
 Use Cases:
 ![image](https://user-images.githubusercontent.com/63457492/146907228-43150454-c105-4985-9978-2ec01b28dc06.png)
 
-<p align="right">(<a href="#top">Back to top</a>)</p>
 
 ## Reflection
 
@@ -75,13 +69,11 @@ This assigment has allowed me to further hone my knowledge in web development an
 1. Implement other ancuillary enhancements such as deadlines and user statistics
 2. Introduce testing
 3. Notification Timelines (Complements current notification system)
-<p align="right">(<a href="#top">Back to top</a>)</p>
 
 ## Contributing
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request.
 
-<p align="right">(<a href="#top">Back to top</a>)</p>
 
 <!-- LICENSE -->
 
