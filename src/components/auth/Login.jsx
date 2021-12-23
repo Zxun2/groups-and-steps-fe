@@ -196,9 +196,6 @@ const Login = (props) => {
     <React.Fragment>
       {loading && <LinearProgress />}
       <Box className={`${classes.root} ${classes.login}`}>
-        <Box style={{ margin: "0 5rem 0 5rem" }} className={classes.svg}>
-          <LandingIcon />
-        </Box>
         <LoginForm
           handleSubmit={handleSubmit}
           loading={loading}
@@ -206,6 +203,9 @@ const Login = (props) => {
           isRegistering={isRegistering}
           setIsRegistering={setIsRegistering}
         />
+        <Box style={{ margin: "5rem" }} className={classes.svg}>
+          <LandingIcon />
+        </Box>
       </Box>
     </React.Fragment>
   );
