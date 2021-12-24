@@ -4,7 +4,7 @@ import { Toolbar, Box, Stack, Collapse } from "@mui/material";
 import { Typography, Chip } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { Fragment, useRef } from "react";
-import { LinearProgress, TextField } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import AddTaskIcon from "../../svgs/AddtasksIcon";
 import CustomScrollbars from "../../ui/CustomScollBars";
 import { Divider } from "@mui/material";
@@ -21,15 +21,16 @@ import { Badge } from "@material-ui/core";
 
 const Steps = (props) => {
   const classes = stepStyles();
-  const status = useSelector((state) => state.ui.globalState);
   const [tags, setTags] = useState([]);
   const [isOpenUncompleted, setOpenUncompleted] = useState(true);
-  const [isOpenCompleted, setOpenCompleted] = useState([]);
+  const [isOpenCompleted, setOpenCompleted] = useState(true);
   const [selectedItem, setSelectedItem] = useState([]);
   const steps = useSelector((state) => state.step.temp);
+
   const stepRef = useRef();
   const dispatch = useDispatch();
   const { sendRequest: createStep } = useHttp(addStep, true);
+
   let UncompletedCount = 0;
   let CompletedCount = 0;
   steps?.map((step) => {
@@ -126,7 +127,6 @@ const Steps = (props) => {
               steps?.length === 0 && classes.notask
             }`}
           >
-            {status === "loading" && <LinearProgress color="primary" />}
             {steps?.length === 0 && (
               <Fragment>
                 <Box
@@ -169,7 +169,9 @@ const Steps = (props) => {
                         <Badge
                           color="secondary"
                           badgeContent={`${UncompletedCount}`}
-                          invisible={isOpenUncompleted}
+                          invisible={
+                            isOpenUncompleted || UncompletedCount === 0
+                          }
                         >
                           <Chip
                             onClick={() =>
@@ -204,7 +206,7 @@ const Steps = (props) => {
                         <Badge
                           color="secondary"
                           badgeContent={`${CompletedCount}`}
-                          invisible={isOpenCompleted}
+                          invisible={isOpenCompleted || CompletedCount === 0}
                         >
                           <Chip
                             onClick={() => setOpenCompleted(!isOpenCompleted)}

@@ -13,11 +13,16 @@ import Instructions from "../Inbox/Instructions";
 import { navStyles } from "../../ui/Style";
 import { Typography } from "@material-ui/core";
 import NavInput from "./NavInput";
+import { useSelector } from "react-redux";
+import { LinearProgress } from "@material-ui/core";
 
 const NavBar = (props) => {
   const classes = navStyles();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
+  const status = useSelector((state) => state.ui.globalState);
+  console.log(status);
+
   const handleClose = () => setOpen(false);
 
   return (
@@ -88,6 +93,7 @@ const NavBar = (props) => {
             </div>
           </Box>
         </Toolbar>
+        {status === true && <LinearProgress color="primary" />}
       </AppBar>
     </Fragment>
   );

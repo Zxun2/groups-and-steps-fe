@@ -53,7 +53,7 @@ export const Dashboard = (props) => {
 
   // HTTP REQUESTS
   const { sendRequest: fetchTodos } = useHttp(fetchData);
-  const { sendRequest: fetchAllSteps } = useHttp(fetchSteps, true);
+  const { sendRequest: fetchStep } = useHttp(fetchSteps, true);
   const { sendRequest: createTodo } = useHttp(addTodo);
   const { sendRequest: removeTodo } = useHttp(deleteTodo);
   const { sendRequest: changeTodo } = useHttp(updateTodo);
@@ -62,7 +62,6 @@ export const Dashboard = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // dispatch(TodoCreators(fetchData))
     const timer = setTimeout(() => {
       fetchTodos();
     });
@@ -86,15 +85,9 @@ export const Dashboard = (props) => {
 
   useEffect(() => {
     if (todoId !== -1) {
-      const timer = setTimeout(() => {
-        fetchAllSteps(todoId);
-      }, 0);
-
-      return () => {
-        clearTimeout(timer);
-      };
+      fetchStep(todoId);
     }
-  }, [todoId, fetchAllSteps]);
+  }, [todoId, fetchStep, dispatch]);
 
   const changeContentHandler = useCallback(
     (title, id) => {

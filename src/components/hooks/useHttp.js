@@ -1,6 +1,6 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { uiAction } from "../store/ui-slice";
-import { COMPLETED, LOADING, SUCCESS } from "../../actions/constants";
+import { SUCCESS } from "../../actions/constants";
 
 import { useDispatch } from "react-redux";
 import { stepsAction } from "../store/steps-slice";
@@ -11,19 +11,14 @@ function useHttp(requestFunction, startWithPending = false) {
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (startWithPending) {
-      dispatch(
-        uiAction.updateGlobalState({
-          status: LOADING,
-        })
-      );
-    }
-  }, [dispatch, startWithPending]);
-
   const sendRequest = useCallback(
     async function (...requestData) {
       try {
+        dispatch(
+          uiAction.updateGlobalState({
+            status: true,
+          })
+        );
         const response = await requestFunction(token, ...requestData);
 
         if (response.status === 422) {
@@ -55,15 +50,15 @@ function useHttp(requestFunction, startWithPending = false) {
           })
         );
       } catch (error) {}
+      dispatch(
+        uiAction.updateGlobalState({
+          status: false,
+        })
+      );
     },
     [requestFunction, dispatch, token]
   );
 
-  dispatch(
-    uiAction.updateGlobalState({
-      status: COMPLETED,
-    })
-  );
   return {
     sendRequest,
   };
