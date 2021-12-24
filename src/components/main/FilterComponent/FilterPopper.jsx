@@ -65,6 +65,24 @@ const Popper = (props) => {
             disableCloseOnSelect
             PopperComponent={PopperComponent}
             noOptionsText="No labels"
+            ListboxProps={{
+              sx: {
+                overflowY: "scroll",
+                "&::-webkit-scrollbar": {
+                  // Width of scrollbar
+                  width: "0.4rem",
+                },
+
+                "&::-webkit-scrollbar-track": {
+                  // Color of track
+                  background: "transparent",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  borderRadius: 6,
+                  background: "#5865f2",
+                },
+              },
+            }}
             renderOption={(props, option, { selected }) => (
               // Unique key id necessary for React to distinguish the components
               <li {...props} key={v4()}>

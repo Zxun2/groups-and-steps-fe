@@ -19,6 +19,7 @@ const LoginForm = (props) => {
         <Typography variant="h1" className={classes.linearWipe}>
           Groups and Steps - A knowledge repository 📝
         </Typography>
+
         {props.isRegistering && (
           <Fragment>
             <label htmlFor="name">Name</label>
@@ -98,11 +99,12 @@ const LoginForm = (props) => {
                 type="submit"
                 size="large"
                 variant="outlined"
-                endIcon={!props.loading ? <SendIcon /> : <CircularProgress />}
+                endIcon={!props.loading ? <SendIcon /> : ""}
                 color="primary"
                 disabled={!props.form.formIsValid}
               >
-                Log in
+                {!props.loading && "Login"}
+                {props.loading && <CircularProgress />}
               </Button>
               {!props.loading && (
                 <Button

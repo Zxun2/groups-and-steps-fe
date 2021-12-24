@@ -138,6 +138,22 @@ export const tagInputStyles = makeStyles((theme) => ({
   },
 }));
 
+export const popperStyle = makeStyles((theme) => ({
+  popper: {
+    overflowY: "scroll",
+    "&::-webkit-scrollbar": {
+      width: "0.1rem",
+      backgroundColor: "#5865f2",
+    },
+
+    "&::-webkit-scrollbar-thumb": {
+      borderRadius: 6,
+      backgroundColor: "rgba(0,0,0,.1)",
+      outline: "1px solid slategrey",
+    },
+  },
+}));
+
 export const todoModalStyle = makeStyles((theme) => ({
   modal: {
     position: "absolute",
@@ -198,6 +214,7 @@ export const loginStyles = makeStyles((theme) => ({
     width: "auto",
     backgroundColor: theme.palette.background.secondary,
     padding: "2rem",
+    margin: "0 5rem 0 5rem",
     [theme.breakpoints.down("sm")]: {
       padding: "1rem",
     },

@@ -247,9 +247,10 @@ const Steps = (props) => {
             <Stack
               direction={steps?.length === 0 ? "column" : "row"}
               className={classes.inputField}
+              style={{ width: `${steps?.length === 0 ? "50%" : "100%"}` }}
             >
               <TextField
-                style={{ width: "100%" }}
+                fullWidth
                 component="form"
                 color="primary"
                 size="medium"

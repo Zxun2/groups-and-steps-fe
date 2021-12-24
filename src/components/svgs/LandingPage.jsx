@@ -4,7 +4,7 @@ function LandingIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="100%"
+      width="30vw"
       height="100%"
       data-name="Layer 1"
       viewBox="0 0 649.053 653.881"
