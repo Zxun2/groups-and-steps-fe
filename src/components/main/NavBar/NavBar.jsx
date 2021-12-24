@@ -7,7 +7,7 @@ import TagIcon from "@mui/icons-material/Tag";
 import { Fragment } from "react";
 import { Modal, Box } from "@mui/material";
 import { useState } from "react";
-import CustomizedTimeline from "../Inbox/Timeline";
+// import CustomizedTimeline from "../Inbox/Timeline";
 import CustomScrollbars from "../../ui/CustomScollBars";
 import Instructions from "../Inbox/Instructions";
 import { navStyles } from "../../ui/Style";
