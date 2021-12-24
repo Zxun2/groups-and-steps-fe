@@ -18,7 +18,7 @@ import { LinearProgress } from "@material-ui/core";
 
 const NavBar = (props) => {
   const classes = navStyles();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const handleOpen = () => setOpen(true);
   const status = useSelector((state) => state.ui.globalState);
   console.log(status);
@@ -84,7 +84,7 @@ const NavBar = (props) => {
                     autoHideTimeout={500}
                     autoHideDuration={200}
                   >
-                    <CustomizedTimeline />
+                    {/* <CustomizedTimeline /> */}
 
                     <Instructions />
                   </CustomScrollbars>
