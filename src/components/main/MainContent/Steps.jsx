@@ -138,11 +138,12 @@ const Steps = (props) => {
                 >
                   <AddTaskIcon />
                   <Typography
-                    variant="h6"
+                    variant="h5"
                     color="secondary"
                     style={{
-                      fontWeight: "600",
+                      fontWeight: "400",
                       textAlign: "center",
+                      marginTop: "2rem",
                     }}
                   >
                     Create a task to get started!
