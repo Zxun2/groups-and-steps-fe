@@ -27,7 +27,7 @@ This application adopted the use of MVC architecture for the backend and the Flu
 ## Tech Stacks
 
 1. Ruby on Rails
-2. React ( Javascript)
+2. React (Javascript)
 3. Postgresql Database
 4. Material UI
 
@@ -53,14 +53,22 @@ This application adopted the use of MVC architecture for the backend and the Flu
 | Notes                  | CRUDS functionality is dependent on API availability & integration.                                                                                                                                                                  |
 
 Use Cases:
-![image](https://user-images.githubusercontent.com/63457492/146907228-43150454-c105-4985-9978-2ec01b28dc06.png)
 
+|            Input            |                                                              Positive Response                                                               |           Negative response            |
+| :-------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------: |
+|       Create a group        |                             A new thread of steps will be created. User will be prompted to start on their step.                             | Unable to create group. Error message. |
+|  Edit and Deleting a group  |                  Group's title will automatically be updated/deleted. All steps relevant to the group will also be deleted.                  |             Error message.             |
+|        Create a step        |                                             User will begin to input steps to track their tasks.                                             | Unable to create step. Error message.  |
+| Editing and Deleting a step |                                               Step's name will be updated/deleted accordingly.                                               |             Error message.             |
+|      Search for groups      | If group exist, user will be directed to the page containing the group's infomation. Otherwise, user will be prompted to create a new group. |           No error message.            |
+|        Filter steps         |     User will be able to filter the steps according to any keyword they typed in. Successful filters will filter the steps accordingly.      |           No error message.            |
+|         Adding tags         |                                            Tags added will be placed right beside the input box.                                             |           No error message.            |
 
 ## Reflection
 
-Overall, i had a lot of fun developing this application. While i had prior experience in web developmenet, i have not worked with Ruby on Rails before. Therefore, the majority of my time spent was in familiarizing with the Rails' syntax, browsing through documentation and developing the backend. Setting up the environment was also not easy, and i had to troubleshoot many of these issues with the help of Stack Overflow. Adopting the MVC architecture for the backend and Flux architecture for the frontend has opened my eyes to the different software engineering paradigms, in particular, the concept of state management. Using Redux has made it incredibly easy to keep track of app-wide state with a single source of truth.
+Creating this application has been a fantastic experience. While I have past experience in web development, I have never worked with Ruby on Rails. As a result, the majority of my time was spent learning Rails syntax, reading documentation, and constructing the backend. Setting up the environment was also difficult, and I had to use Stack Overflow to debug several of the difficulties. Adopting the MVC design for the backend and the Flux architecture for the frontend has opened up my eyes to the many software engineering paradigms, particularly the notion of state management. Using Redux has made it exceedingly simple to maintain track of app-wide state with a single source of truth.
 
-This assigment has allowed me to further hone my knowledge in web development and i hope i can gain even more by joining CVWO this coming summer.
+This assignment has helped me to further hone my understanding of web programming, and I intend to acquire even more by joining CVWO this summer.
 
 <p align="right">(<a href="#top">Back to top</a>)</p>
 
@@ -74,7 +82,6 @@ This assigment has allowed me to further hone my knowledge in web development an
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request.
 
-
 <!-- LICENSE -->
 
 ## License
@@ -82,5 +89,3 @@ If you have a suggestion that would make this better, please fork the repo and c
 Distributed under the MIT License. See `LICENSE` for more information.
 
 <p align="right">(<a href="#top">Back to top</a>)</p>
-
-To be continued...

@@ -1,0 +1,25 @@
+# Specify node version
+FROM node:16 as react-build
+
+WORKDIR /app
+
+# COPY DEPENDENCIES
+COPY package.json . 
+
+# RUN INSTALL
+RUN npm install --legacy-peer-deps
+
+# REBUILD STARTS HERE
+COPY . .
+
+ARG NODE_ENV
+ENV NODE_ENV=$NODE_ENV
+
+# RUN CMDS
+RUN npm run build
+
+# MULTI STAGE BUILD
+FROM nginx
+
+COPY --from=react-build /app/build /usr/share/nginx/html
+
