@@ -1,0 +1,23 @@
+# Specify node version
+FROM node:16 
+
+WORKDIR /app
+
+# COPY DEPENDENCIES
+COPY package.json . 
+
+# RUN INSTALL
+RUN npm install --legacy-peer-deps
+
+# REBUILD STARTS HERE
+COPY . .
+
+# EXPOSE PORT
+EXPOSE 3000
+
+# RUN CMDS
+CMD ["npm", "start"]
+
+# /* COMMANDS */
+# docker run --name cvwo-front -d -p 3000:3000 -it --rm -v ${pwd}\src:/app/src:ro --env-file ./.env cvwo:frontend
+# docker exec -it cvwo-front bash (TO ACCESS DOCKER CONTAINER DIRECTORY)

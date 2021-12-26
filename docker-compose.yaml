@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  cvwo-front:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    stdin_open: true
+    tty: true
