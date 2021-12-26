@@ -271,7 +271,7 @@ const Steps = (props) => {
                 fullWidth
                 variant="filled"
                 id="tags"
-                placeholder="Add Tags"
+                placeholder="Enter to add Tags"
                 selectedItem={selectedItem}
                 setSelectedItem={setSelectedItem}
               />

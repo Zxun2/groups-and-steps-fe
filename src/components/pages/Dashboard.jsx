@@ -176,7 +176,7 @@ export const Dashboard = (props) => {
       </List>
 
       <Divider>
-        <Chip label="TODO" />
+        <Chip label="GROUP" />
       </Divider>
       <CustomScrollbars
         style={{ height: "60vh" }}
@@ -215,7 +215,7 @@ export const Dashboard = (props) => {
         </List>
       </CustomScrollbars>
       <Divider>
-        <Chip label="ADD TODO" />
+        <Chip label="ADD GROUP" />
       </Divider>
       <List>
         <TextField

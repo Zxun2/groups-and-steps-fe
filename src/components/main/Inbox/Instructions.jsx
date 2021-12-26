@@ -44,6 +44,19 @@ const Instructions = () => {
         style={{
           fontWeight: "400",
           textAlign: "center",
+          color: "#bfbfbfbf",
+          margin: "1rem",
+        }}
+        variant="subtitle2"
+        paragraph={true}
+      >
+        You can revisit these instructions by clicking on the inbox icon at the
+        top right hand corner.
+      </Typography>
+      <Typography
+        style={{
+          fontWeight: "400",
+          textAlign: "center",
           color: "#f2f2f2f2",
           margin: "1rem",
         }}
@@ -146,18 +159,6 @@ const Instructions = () => {
       >
         How do we delete/update steps? Click on the icon just right below the
         vertical floating icon and follow the instructions there!
-      </Typography>
-      <Typography
-        style={{
-          fontWeight: "400",
-          textAlign: "center",
-          color: "#f2f2f2f2",
-          margin: "1rem",
-        }}
-        variant="subtitle1"
-        paragraph={true}
-      >
-        You can revisit these instructions on the top right hand corner!
       </Typography>
     </Fragment>
   );
