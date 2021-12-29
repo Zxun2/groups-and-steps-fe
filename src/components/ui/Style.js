@@ -298,3 +298,25 @@ export const loginStyles = makeStyles((theme) => ({
     },
   },
 }));
+
+export const homeStyles = makeStyles((theme) => ({
+  root: {
+    background: theme.palette.background.tertiary,
+    height: "100vh",
+  },
+  login: {
+    display: "flex",
+    flexDirection: "row",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+    },
+    justifyContent: "center",
+    alignItems: "center",
+    color: "red",
+  },
+  svg: {
+    [theme.breakpoints.down("xs")]: {
+      display: "none",
+    },
+  },
+}));

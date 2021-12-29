@@ -18,9 +18,11 @@ import MenuItem from "@mui/material/MenuItem";
 import randomColor from "randomcolor";
 import { Chip } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import { StepCreators, stepsAction } from "../../store/steps-slice";
+import { stepAction } from "../../store/steps-slice";
 import { deleteStep, updateStep } from "../../lib/api";
+import useHttp from "../../hooks/useHttp";
 
+// Styled Components
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -32,39 +34,35 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function Task(props) {
+export default function Task({
+  updated_at,
+  id: step_id,
+  step,
+  completed,
+  todo_id,
+  tags,
+  ...others
+}) {
   const [expanded, setExpanded] = useState(false);
   const inputRef = useRef();
   const dispatch = useDispatch();
-  const {
-    updated_at,
-    id: step_id,
-    step,
-    completed,
-    todo_id,
-    tags,
-  } = { ...props };
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const { sendRequest: updatesStep } = useHttp(updateStep);
+  const { sendRequest: deletesStep } = useHttp(deleteStep);
+
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
   const handleClose = () => {
     setAnchorEl(null);
     // UPDATE DATABASE
-    setTimeout(() => {
-      dispatch(
-        StepCreators(updateStep, todo_id, step_id, {
-          completed: completed ? false : true,
-        })
-      );
-    }, 0);
+    updatesStep(todo_id, step_id, {
+      completed: completed ? false : true,
+    });
 
     // UPDATE UI
     dispatch(
-      stepsAction.updateStep({
+      stepAction.updateStep({
         id: step_id,
         data: {
           completed: completed ? false : true,
@@ -72,26 +70,17 @@ export default function Task(props) {
       })
     );
   };
-  const handleUnchangeClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
 
   const updateStepHandler = (e) => {
     e.preventDefault();
     // UPDATE DATABASE
-    dispatch(
-      StepCreators(updateStep, todo_id, step_id, {
-        step: inputRef.current.value,
-      })
-    );
+    updatesStep(todo_id, step_id, {
+      step: inputRef.current.value,
+    });
 
     // UPDATE UI
     dispatch(
-      stepsAction.updateStep({
+      stepAction.updateStep({
         id: step_id,
         data: {
           step: inputRef.current.value,
@@ -104,11 +93,11 @@ export default function Task(props) {
 
   const deleteStepHandler = () => {
     // UPDATE DATABASE
-    dispatch(StepCreators(deleteStep, todo_id, step_id));
+    deletesStep(todo_id, step_id);
 
     // UPDATE UI
     dispatch(
-      stepsAction.removeStep({
+      stepAction.removeStep({
         id: step_id,
       })
     );
@@ -120,18 +109,19 @@ export default function Task(props) {
 
   return (
     <Fragment>
+      {/* EXPLORE GRID HERE */}
       <Card sx={{ maxWidth: "100%", backgroundColor: "#2f3136" }}>
         <CardHeader
           action={
             <Fragment>
-              <IconButton onClick={handleClick}>
+              <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
                 <MoreVertIcon style={{ color: "#ffffff" }} />
               </IconButton>
               <Menu
                 color="primary"
                 anchorEl={anchorEl}
                 open={open}
-                onClose={handleUnchangeClose}
+                onClose={() => setAnchorEl(null)}
               >
                 <MenuItem onClick={handleClose}>
                   {completed ? "Uncomplete Task" : "Complete task"}
@@ -143,6 +133,7 @@ export default function Task(props) {
           titleTypographyProps={{ variant: "body2", color: "secondary" }}
           style={{ paddingBottom: "0" }}
         />
+        {/* Explore how to add markdown content here */}
         <CardContent style={{ paddingBottom: "0", paddingTop: "0.5rem" }}>
           {step.split("\\n").map((str, idx) => {
             if (idx === 0) {
@@ -173,30 +164,39 @@ export default function Task(props) {
           })}
         </CardContent>
         <CardActions disableSpacing={true} style={{ paddingBottom: "0" }}>
-          {tags?.length > 0 && (
-            <Stack
-              direction="row"
-              spacing={1}
-              style={{ paddingLeft: "0.5rem", alignItems: "center" }}
-            >
-              <Typography color="secondary" variant="body2">
-                Tags:{" "}
-              </Typography>
-              {tags.map((tag, index) => {
-                const color = randomColor();
-                return (
-                  <Chip
-                    key={index}
-                    label={tag}
-                    variant="outlined"
-                    color="primary"
-                    style={{ color: `${color}` }}
-                  />
-                );
-              })}
-            </Stack>
-          )}
-          <ExpandMore expand={expanded} onClick={handleExpandClick}>
+          {/* BUG: LIMIT WIDTH */}
+          <Box style={{ width: "100%" }}>
+            {tags?.length > 0 && (
+              <Stack
+                direction="row"
+                spacing={1}
+                style={{
+                  paddingLeft: "0.5rem",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                {/* TAGS ARE RENDERED HERE */}
+                <Typography color="secondary" variant="body2">
+                  Tags:
+                </Typography>
+                {tags.map((tag, index) => {
+                  const color = randomColor();
+                  return (
+                    <Chip
+                      key={index}
+                      label={tag}
+                      variant="outlined"
+                      color="primary"
+                      style={{ color: `${color}` }}
+                    />
+                  );
+                })}
+              </Stack>
+            )}
+          </Box>
+          {/* STYLED COMPONENT USED HERE */}
+          <ExpandMore expand={expanded} onClick={() => setExpanded(!expanded)}>
             <ExpandMoreIcon style={{ color: "#ffffff" }} />
           </ExpandMore>
         </CardActions>

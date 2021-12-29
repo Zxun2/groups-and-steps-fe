@@ -1,7 +1,7 @@
-import { API_URL } from "../../actions/apiUrl";
+import { API_URL } from "../../misc/apiUrl";
 
-// LOG USER IN
-export const LoggingIn = async (email, password) => {
+// POST /auth/login
+export const LogUser = async (email, password) => {
   const response = await fetch(`${API_URL}/auth/login`, {
     method: "POST",
     headers: {
@@ -16,7 +16,7 @@ export const LoggingIn = async (email, password) => {
 
   const data = await response.json();
 
-  // Error is handled by the Try-Catch blog in Login.jsx
+  // Error is handled by the Try-Catch block in Login.jsx
   if (response.status === 422 || !response.ok) {
     if (!response.ok) {
       throw new Error("Something went wrong! Please try again.");
@@ -30,7 +30,7 @@ export const LoggingIn = async (email, password) => {
   return { user, token };
 };
 
-// REGISTER USER IN
+// POST /signup
 export const Register = async (name, email, password, passwordConfirmation) => {
   const response = await fetch(`${API_URL}/signup`, {
     method: "POST",
@@ -48,7 +48,7 @@ export const Register = async (name, email, password, passwordConfirmation) => {
 
   const data = await response.json();
 
-  // Error is handled by the Try-Catch blog in Login.jsx
+  // Error is handled by the Try-Catch block in Login.jsx
   if (response.status === 422 || !response.ok) {
     if (!response.ok) {
       throw new Error("Something went wrong! Please try again.");
@@ -61,11 +61,12 @@ export const Register = async (name, email, password, passwordConfirmation) => {
   return { message, user, token };
 };
 
-// FETCH TODO DATA
+// GET /todos
 export const fetchData = async (token) => {
   const response = await fetch(`${API_URL}/todos`, {
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
   });
   if (!response.ok) {
@@ -76,7 +77,7 @@ export const fetchData = async (token) => {
   return todos;
 };
 
-// Add TODO
+// POST /todos
 export async function addTodo(token, todoData) {
   const response = await fetch(`${API_URL}/todos`, {
     method: "POST",
@@ -95,7 +96,7 @@ export async function addTodo(token, todoData) {
   return data;
 }
 
-// UPDATE TODO
+// PUT /todos/:id
 export async function updateTodo(token, id, content) {
   const response = await fetch(`${API_URL}/todos/${id}`, {
     method: "PUT",
@@ -114,7 +115,7 @@ export async function updateTodo(token, id, content) {
   return data;
 }
 
-// DELETE TODO
+// DELETE /todos/:id
 export async function deleteTodo(token, id) {
   const response = await fetch(`${API_URL}/todos/${id}`, {
     method: "DELETE",
@@ -132,7 +133,7 @@ export async function deleteTodo(token, id) {
   return data;
 }
 
-// FETCH STEPS
+// GET /todos/:id/items
 export async function fetchSteps(token, id) {
   const response = await fetch(`${API_URL}/todos/${id}/items`, {
     method: "GET",
@@ -150,7 +151,7 @@ export async function fetchSteps(token, id) {
   return data;
 }
 
-// UPDATE STEPS
+// PUT /todos/:id/items/:id
 export async function updateStep(token, todo_id, step_id, content) {
   const response = await fetch(`${API_URL}/todos/${todo_id}/items/${step_id}`, {
     method: "PUT",
@@ -169,7 +170,7 @@ export async function updateStep(token, todo_id, step_id, content) {
   return data;
 }
 
-// Add STEP
+// POST /todos/:id/items
 export async function addStep(token, stepData, todo_id) {
   const newStepData = { ...stepData, completed: false };
   const response = await fetch(`${API_URL}/todos/${todo_id}/items`, {
@@ -189,7 +190,7 @@ export async function addStep(token, stepData, todo_id) {
   return data;
 }
 
-// DELETE TODO
+// DELETE /todos/:id/items/:item_id
 export async function deleteStep(token, todo_id, step_id) {
   const response = await fetch(`${API_URL}/todos/${todo_id}/items/${step_id}`, {
     method: "DELETE",

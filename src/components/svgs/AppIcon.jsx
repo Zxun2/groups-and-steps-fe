@@ -8,7 +8,6 @@ function AppIcon() {
       height="50%"
       data-name="Layer 1"
       viewBox="0 0 775.79 669.284"
-      //   viewBox="0 0 400 669.284"
     >
       <path
         fill="#e6e6e6"

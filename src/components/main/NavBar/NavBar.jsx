@@ -15,24 +15,24 @@ import { Typography } from "@material-ui/core";
 import NavInput from "./NavInput";
 import { useSelector } from "react-redux";
 import { LinearProgress } from "@material-ui/core";
+import { drawerWidth } from "../../../misc/constants";
 
 const NavBar = (props) => {
   const classes = navStyles();
   const [open, setOpen] = useState(true);
   const handleOpen = () => setOpen(true);
   const status = useSelector((state) => state.ui.globalState);
-  console.log(status);
 
   const handleClose = () => setOpen(false);
 
   return (
     <Fragment>
       <AppBar
-        elevation={0}
+        elevation={2}
         position="fixed"
         sx={{
-          width: { sm: `calc(100% - ${props.drawerWidth}px)` },
-          ml: { sm: `${props.drawerWidth}px` },
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
           backgroundColor: "#36393f",
         }}
       >
@@ -59,7 +59,7 @@ const NavBar = (props) => {
               component="div"
               style={{ alignItems: "center", display: "flex" }}
             >
-              <TagIcon />{" "}
+              <TagIcon />
               {props.title === "" || props.todos.length === 0
                 ? "Welcome"
                 : props.title}
@@ -70,13 +70,7 @@ const NavBar = (props) => {
                 changeContentHandler={props.changeContentHandler}
               />
               <InboxIcon onClick={handleOpen} className={classes.inboxIcon} />
-              <Modal
-                keepMounted
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="keep-mounted-modal-title"
-                aria-describedby="keep-mounted-modal-description"
-              >
+              <Modal keepMounted open={open} onClose={handleClose}>
                 <Box className={classes.style}>
                   <CustomScrollbars
                     style={{ height: "55vh" }}

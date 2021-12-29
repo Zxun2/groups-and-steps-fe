@@ -4,7 +4,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import Box from "@mui/material/Box";
 // Returns a hex code for an attractive color
 import randomColor from "randomcolor";
-import { stepsAction } from "../../store/steps-slice";
+import { stepAction } from "../../store/steps-slice";
 import { useDispatch } from "react-redux";
 import { Button } from "./FilterCustomStyledPopper";
 import Popper from "./FilterPopper";
@@ -46,7 +46,7 @@ export default function FilterLabel(props) {
     // on mount
     const timer = setTimeout(() => {
       dispatch(
-        stepsAction.filterStep({
+        stepAction.filterStep({
           filterArr: filterArr,
         })
       );
@@ -75,8 +75,8 @@ export default function FilterLabel(props) {
 
   return (
     <React.Fragment>
-      <Box sx={{ width: 221, fontSize: 13 }}>
-        <Button disableRipple aria-describedby={id} onClick={handleClick}>
+      <Box sx={{ width: 220, fontSize: 13 }}>
+        <Button disableRipple onClick={handleClick}>
           <span>Filter</span>
           <SettingsIcon />
         </Button>

@@ -1,12 +1,43 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { USER_LOGGED_IN, USER_LOGGED_OUT } from "../../actions/constants";
+import { USER_LOGGED_IN, USER_LOGGED_OUT } from "../../misc/constants";
+
+// TO ADD: interfaces for initial state
+
+// A function that accepts an initial state, an object of reducer functions,
+// and a "slice name", and automatically generates action creators and action types
+// that correspond to the reducers and state.
+
+/**
+ * createSlice will return an object that looks like this
+ * {
+ *  name: string,
+ *  reducer: ReducerFunction,
+ *  actions: Record<string, ActionCreator>
+ *  caseReducers: Record<string, CaseReducer>,
+ *  getInitialState: () => State
+ * }
+ */
+
+/**
+ * interface userState {
+ *  currUser: {
+ *      id: number,
+ *      created_at: Date,
+ *      updated_at: Date,
+ *      email: string,
+ *      name: string,
+ *      password_digest: string,
+ *    };
+ *  status: USER_LOGGED_IN | USER_LOGGED_OUT;
+ *  auth_token: string;
+ * }
+ */
 
 const userSlice = createSlice({
   name: "user",
   initialState: {
     currUser: null,
-    // jwt token
-    auth_token: "",
+    auth_token: "", // jwt token
     status: USER_LOGGED_OUT,
   },
   reducers: {

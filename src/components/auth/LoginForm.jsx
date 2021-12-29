@@ -5,6 +5,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Box } from "@material-ui/core";
 import { loginStyles } from "../ui/Style";
 
+// Form Component
 const LoginForm = (props) => {
   const classes = loginStyles();
 

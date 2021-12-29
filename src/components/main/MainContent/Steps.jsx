@@ -1,4 +1,4 @@
-import { FAIL } from "../../../actions/constants";
+import { FAIL } from "../../../misc/constants";
 import AppIcon from "../../svgs/AppIcon";
 import { Toolbar, Box, Stack, Collapse } from "@mui/material";
 import { Typography, Chip } from "@material-ui/core";
@@ -21,16 +21,19 @@ import { Badge } from "@material-ui/core";
 
 const Steps = (props) => {
   const classes = stepStyles();
-  const [tags, setTags] = useState([]);
+  const dispatch = useDispatch();
+
+  const stepRef = useRef();
+
   const [isOpenUncompleted, setOpenUncompleted] = useState(true);
   const [isOpenCompleted, setOpenCompleted] = useState(true);
   const [selectedItem, setSelectedItem] = useState([]);
-  const steps = useSelector((state) => state.step.temp);
+  const [tags, setTags] = useState([]);
 
-  const stepRef = useRef();
-  const dispatch = useDispatch();
+  const steps = useSelector((state) => state.step.temp);
   const { sendRequest: createStep } = useHttp(addStep, true);
 
+  // Count
   let UncompletedCount = 0;
   let CompletedCount = 0;
   steps?.map((step) => {
@@ -101,7 +104,7 @@ const Steps = (props) => {
             className={classes.text}
             style={{ fontWeight: "600", display: "inline" }}
           >
-            Welcome{" "}
+            Welcome
             <span style={{ color: "#5865f2" }}>
               {props.userState?.currUser?.name}
             </span>
@@ -122,6 +125,7 @@ const Steps = (props) => {
       {props.title !== "" && (
         <Fragment>
           <Toolbar />
+          {/* ADD GRID HERE */}
           <Box
             className={`${classes.main} ${
               steps?.length === 0 && classes.notask

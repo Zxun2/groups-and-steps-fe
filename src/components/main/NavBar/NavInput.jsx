@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, useRef, Fragment } from "react";
 import { TextField } from "@material-ui/core";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -14,21 +14,25 @@ const filter = createFilterOptions();
 
 export default function NavInput(props) {
   const options = [...props.Todos];
-  const [value, setValue] = React.useState(null);
-  const [open, toggleOpen] = React.useState(false);
-  const searchRef = React.useRef();
-  const todoRef = React.useRef();
-  const { sendRequest: createTodo } = useHttp(addTodo);
 
-  const [dialogValue, setDialogValue] = React.useState({
+  const [dialogValue, setDialogValue] = useState({
     title: "",
   });
+  const [open, toggleOpen] = useState(false);
+  const [value, setValue] = useState("");
+
+  const searchRef = useRef();
+  const todoRef = useRef();
+
+  const { sendRequest: createTodo } = useHttp(addTodo);
 
   const handleClose = () => {
+    // Empty Input
     setDialogValue({
       title: "",
     });
 
+    // Close Modal
     toggleOpen(false);
   };
 
@@ -49,6 +53,7 @@ export default function NavInput(props) {
 
     todoRef.current.value = "";
     searchRef.current.value = "";
+
     handleClose();
   };
 
@@ -62,6 +67,7 @@ export default function NavInput(props) {
 
       if (index !== -1) {
         const { title, id } = options[index];
+        // Change Content of screen
         props.changeContentHandler(title, id);
       }
     }
@@ -70,11 +76,11 @@ export default function NavInput(props) {
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Autocomplete
         value={value}
-        autoSelect={true}
         autoComplete={true}
+        // Does not actually mean onChange (more-of onEnter)
         onChange={(event, newValue) => {
           if (typeof newValue === "string") {
             // timeout to avoid instant validation of the dialog's form.
@@ -84,6 +90,7 @@ export default function NavInput(props) {
                   (Todo) => Todo.title === searchRef.current.value.trim()
                 );
 
+                // If todo is not found, toggle open Modal
                 if (index === -1) {
                   toggleOpen(true);
                   setDialogValue({
@@ -189,7 +196,7 @@ export default function NavInput(props) {
           </DialogContent>
         </Box>
       </Dialog>
-    </React.Fragment>
+    </Fragment>
   );
 }
 

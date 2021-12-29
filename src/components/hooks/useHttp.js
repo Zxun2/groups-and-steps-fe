@@ -1,9 +1,9 @@
 import { useCallback } from "react";
 import { uiAction } from "../store/ui-slice";
-import { SUCCESS } from "../../actions/constants";
+import { FAIL, SUCCESS } from "../../misc/constants";
 
 import { useDispatch } from "react-redux";
-import { stepsAction } from "../store/steps-slice";
+import { stepAction } from "../store/steps-slice";
 import { todoAction } from "../store/todo-slice";
 
 // Custom Hook for Sending HTTP requests
@@ -14,11 +14,14 @@ function useHttp(requestFunction, startWithPending = false) {
   const sendRequest = useCallback(
     async function (...requestData) {
       try {
+        // Set loading state to true
         dispatch(
           uiAction.updateGlobalState({
             status: true,
           })
         );
+
+        // Request
         const response = await requestFunction(token, ...requestData);
 
         if (response.status === 422) {
@@ -26,9 +29,10 @@ function useHttp(requestFunction, startWithPending = false) {
             throw new Error(response.message);
           }
         }
+
         if (response?.steps) {
           dispatch(
-            stepsAction.replaceSteps({
+            stepAction.replaceSteps({
               steps: response.steps || [],
             })
           );
@@ -49,7 +53,19 @@ function useHttp(requestFunction, startWithPending = false) {
             message: response.message,
           })
         );
-      } catch (error) {}
+      } catch (error) {
+        dispatch(
+          uiAction.showNotification({
+            status: FAIL,
+            title: "Error!",
+            message:
+              error.message ||
+              "There was an error sending a request. Please reload.",
+          })
+        );
+      }
+
+      // Reset loading state
       dispatch(
         uiAction.updateGlobalState({
           status: false,
