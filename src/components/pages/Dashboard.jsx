@@ -1,32 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import { TodoCreators } from "../store/todo-slice";
-import CustomScrollbars from "../ui/CustomScollBars";
-import { drawerWidth } from "../../actions/constants";
+import { drawerWidth } from "../../misc/constants";
 import NavBar from "../main/NavBar/NavBar";
 import { SideBar } from "../main/SideBar/SideBar";
-import TagIcon from "@mui/icons-material/Tag";
-import PersonIcon from "@mui/icons-material/Person";
-import EmailIcon from "@mui/icons-material/Email";
-import SettingsIcon from "@mui/icons-material/Settings";
-import { TextField } from "@material-ui/core";
-import {
-  Chip,
-  Toolbar,
-  ListItemIcon,
-  ListItemText,
-  ListItem,
-  List,
-  Box,
-  Divider,
-  CssBaseline,
-} from "@mui/material";
+import { Box, CssBaseline } from "@mui/material";
 import { uiAction } from "../store/ui-slice";
-// StepCreators,
-import { stepsAction } from "../store/steps-slice";
+import { stepAction } from "../store/steps-slice";
 import Steps from "../main/MainContent/Steps";
 import TodoModal from "../main/Modals/TodoModal";
-import { dashboardStyles } from "../ui/Style";
 import UserModal from "../main/Modals/UserModal";
 import {
   addTodo,
@@ -38,18 +19,19 @@ import {
 import useHttp from "../hooks/useHttp";
 
 export const Dashboard = (props) => {
-  const classes = dashboardStyles();
+  const dispatch = useDispatch();
   const userState = useSelector((state) => state.user);
   const TodoState = useSelector((state) => state.todo);
 
+  // STATE
+  const [openUserModal, setOpenUserModal] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState([]);
+  const [activeTodoId, setTodoId] = useState(-1);
+  const [updatedTodo, setChange] = useState("");
   const [title, setTitle] = useState("");
   const [Todo, setTodo] = useState("");
-  const [change, setChange] = useState("");
-  const [todoId, setTodoId] = useState(-1);
-  const [value, setValue] = React.useState([]);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [openUserModal, setOpenUserModal] = useState(false);
 
   // HTTP REQUESTS
   const { sendRequest: fetchTodos } = useHttp(fetchData);
@@ -59,8 +41,8 @@ export const Dashboard = (props) => {
   const { sendRequest: changeTodo } = useHttp(updateTodo);
 
   const Todos = TodoState.Todo;
-  const dispatch = useDispatch();
 
+  // Fetch Todos
   useEffect(() => {
     const timer = setTimeout(() => {
       fetchTodos();
@@ -71,60 +53,64 @@ export const Dashboard = (props) => {
     };
   }, [fetchTodos]);
 
+  // Todo Modal
   const openModalHandler = (id) => {
     setOpen(true);
     setTodoId(id);
   };
 
+  // Todo Modal close
   const handleClose = () => setOpen(false);
+  // User Modal close
   const handleUserClose = () => setOpenUserModal(false);
 
+  // Drawer toggle
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
+  // Fetch curr Todo steps
   useEffect(() => {
-    if (todoId !== -1) {
-      fetchStep(todoId);
+    if (activeTodoId !== -1) {
+      fetchStep(activeTodoId);
     }
-  }, [todoId, fetchStep, dispatch]);
+  }, [activeTodoId, fetchStep, dispatch]);
 
   const changeContentHandler = useCallback(
     (title, id) => {
       setTitle(title);
       if (id !== -1) {
         setTodoId(id);
-
+        // Reset filters
         dispatch(
-          stepsAction.filterStep({
+          stepAction.filterStep({
             filterArr: [],
           })
         );
+        // Reset filter value
         setValue([]);
       }
     },
     [dispatch]
   );
 
+  // Create Todo
   const createTodoHandler = useCallback(
     (e) => {
       e.preventDefault();
       if (Todo !== "") {
-        setTimeout(() => createTodo({ title: Todo }), 0);
+        createTodo({ title: Todo });
       }
-
       setTodo("");
     },
     [Todo, createTodo]
   );
 
-  const createTodoChangeHandler = (e) => {
-    setTodo(e.target.value);
-  };
-
+  // Delete Todo
   const deleteTodoHandler = useCallback(
     (id) => {
       setTimeout(() => removeTodo(id), 0);
+      // Close Modal
       setOpen(false);
     },
     [removeTodo]
@@ -134,8 +120,8 @@ export const Dashboard = (props) => {
     (e) => {
       e.preventDefault();
 
-      if (change !== "") {
-        setTimeout(() => changeTodo(todoId, { title: change }), 0);
+      if (updatedTodo !== "") {
+        setTimeout(() => changeTodo(activeTodoId, { title: updatedTodo }), 0);
         setOpen(false);
       } else {
         dispatch(
@@ -147,92 +133,7 @@ export const Dashboard = (props) => {
         );
       }
     },
-    [dispatch, changeTodo, change, todoId]
-  );
-
-  const updateTodoChangeHandler = (e) => {
-    setChange(e.target.value);
-  };
-
-  const drawer = (
-    <div>
-      <Toolbar />
-      <Divider>
-        <Chip label="USER" />
-      </Divider>
-      <List>
-        <ListItem button onClick={() => setOpenUserModal(true)}>
-          <ListItemIcon>
-            <PersonIcon />
-          </ListItemIcon>
-          <ListItemText primary={userState?.currUser?.name} />
-        </ListItem>
-        <ListItem button onClick={() => setOpenUserModal(true)}>
-          <ListItemIcon>
-            <EmailIcon />
-          </ListItemIcon>
-          <ListItemText primary={userState?.currUser?.email} />
-        </ListItem>
-      </List>
-
-      <Divider>
-        <Chip label="TODO" />
-      </Divider>
-      <CustomScrollbars
-        style={{ height: "60vh" }}
-        autoHide
-        autoHideTimeout={500}
-        autoHideDuration={200}
-      >
-        <List>
-          {Todos.map((Todo) => (
-            <ListItem
-              button
-              onClick={changeContentHandler.bind(null, Todo.title, Todo.id)}
-              key={Todo.id}
-            >
-              <ListItemIcon>
-                <TagIcon />
-              </ListItemIcon>
-              <ListItemText primary={Todo.title} />
-              <ListItemIcon
-                style={{
-                  justifyContent: "end",
-                  fontSize: "10px",
-                  " & .MuiListItemIconRoot": {
-                    minWidth: "38px",
-                  },
-                }}
-              >
-                <SettingsIcon
-                  className={classes.settings}
-                  onClick={openModalHandler.bind(null, Todo.id)}
-                  fontSize="small"
-                />
-              </ListItemIcon>
-            </ListItem>
-          ))}
-        </List>
-      </CustomScrollbars>
-      <Divider>
-        <Chip label="ADD TODO" />
-      </Divider>
-      <List>
-        <TextField
-          style={{ margin: "2rem 0 0 1rem" }}
-          component="form"
-          size="medium"
-          onChange={createTodoChangeHandler}
-          onSubmit={createTodoHandler}
-          placeholder="Add group"
-          variant="standard"
-          InputProps={{
-            color: "primary",
-            style: { color: "black", fontSize: "1.1rem" },
-          }}
-        />
-      </List>
-    </div>
+    [dispatch, changeTodo, updatedTodo, activeTodoId]
   );
 
   return (
@@ -240,10 +141,10 @@ export const Dashboard = (props) => {
       <TodoModal
         open={open}
         handleClose={handleClose}
-        updateTodoChangeHandler={updateTodoChangeHandler}
+        updateTodoChangeHandler={(e) => setChange(e.target.value)}
         updateTodoHandler={updateTodoHandler}
         deleteTodoHandler={deleteTodoHandler}
-        todoId={todoId}
+        todoId={activeTodoId}
       />
       <UserModal open={openUserModal} handleClose={handleUserClose} />
       <div>
@@ -257,13 +158,19 @@ export const Dashboard = (props) => {
             changeContentHandler={changeContentHandler}
           />
           <SideBar
-            drawer={drawer}
-            drawerWidth={drawerWidth}
             handleDrawerToggle={handleDrawerToggle}
             mobileOpen={mobileOpen}
+            setOpenUserModal={setOpenUserModal}
+            userState={userState}
+            Todos={Todos}
+            changeContentHandler={changeContentHandler}
+            openModalHandler={openModalHandler}
+            createTodoHandler={createTodoHandler}
+            Todo={Todo}
+            setTodo={setTodo}
           />
           <Steps
-            todoId={todoId}
+            todoId={activeTodoId}
             title={title}
             userState={userState}
             Todos={Todos}

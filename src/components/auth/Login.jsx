@@ -1,45 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useDispatch } from "react-redux";
 import { userAction } from "../store/user-slice";
 import { useHistory } from "react-router-dom";
-import { Box, makeStyles, LinearProgress } from "@material-ui/core";
-import { LoggingIn, Register } from "../lib/api";
+import { Box, LinearProgress } from "@material-ui/core";
+import { LogUser, Register } from "../lib/api";
 import LoginForm from "./LoginForm";
 import useInput from "../hooks/useInput";
 import LandingIcon from "../svgs/LandingPage";
 import { uiAction } from "../store/ui-slice";
-import { SUCCESS } from "../../actions/constants";
+import { FAIL, SUCCESS } from "../../misc/constants";
+import { homeStyles } from "../ui/Style";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    background: theme.palette.background.tertiary,
-    height: "100vh",
-  },
-  login: {
-    display: "flex",
-    flexDirection: "row",
-    [theme.breakpoints.down("sm")]: {
-      flexDirection: "column",
-    },
-    justifyContent: "center",
-    alignItems: "center",
-    color: "red",
-  },
-  svg: {
-    [theme.breakpoints.down("xs")]: {
-      display: "none",
-    },
-  },
-}));
-
+// Component responsible for Form Validation and Login/Registration State
 const Login = (props) => {
-  const classes = useStyles();
-  const [formIsValid, setFormIsValid] = useState(false);
-  const [loading, setIsLoading] = useState(false);
-  const [isRegistering, setIsRegistering] = useState(false);
+  const classes = homeStyles();
   const dispatch = useDispatch();
   const history = useHistory();
+  const [formIsValid, setFormIsValid] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [loading, setIsLoading] = useState(false);
 
+  // Validate Email
   const {
     value: enteredEmail,
     valid: enteredEmailIsValid,
@@ -52,24 +33,7 @@ const Login = (props) => {
     return value.match(mailFormat);
   });
 
-  const {
-    value: enteredPassword,
-    valid: enteredPasswordIsValid,
-    error: passwordInputHasError,
-    inputChangeHandler: passwordInputChangeHandler,
-    InputBlurHandler: passwordInputBlurHandler,
-    reset: resetPasswordInput,
-  } = useInput((value) => value.trim() !== "" && value.length > 5);
-
-  const {
-    value: enteredPasswordConfirmation,
-    valid: enteredPasswordConfirmationIsValid,
-    error: passwordConfirmationInputHasError,
-    inputChangeHandler: passwordConfirmationInputChangeHandler,
-    InputBlurHandler: passwordConfirmationInputBlurHandler,
-    reset: resetPasswordConfirmationInput,
-  } = useInput((value) => value.trim() === enteredPassword);
-
+  // Validate Name
   const {
     value: enteredName,
     valid: enteredNameIsValid,
@@ -79,6 +43,27 @@ const Login = (props) => {
     reset: resetNameInput,
   } = useInput((value) => value.trim() !== "" && value.length > 5);
 
+  // Validate Password
+  const {
+    value: enteredPassword,
+    valid: enteredPasswordIsValid,
+    error: passwordInputHasError,
+    inputChangeHandler: passwordInputChangeHandler,
+    InputBlurHandler: passwordInputBlurHandler,
+    reset: resetPasswordInput,
+  } = useInput((value) => value.trim() !== "" && value.length > 5);
+
+  // Validate Password Confirmation
+  const {
+    value: enteredPasswordConfirmation,
+    valid: enteredPasswordConfirmationIsValid,
+    error: passwordConfirmationInputHasError,
+    inputChangeHandler: passwordConfirmationInputChangeHandler,
+    InputBlurHandler: passwordConfirmationInputBlurHandler,
+    reset: resetPasswordConfirmationInput,
+  } = useInput((value) => value.trim() === enteredPassword);
+
+  // Props to pass
   const formValidation = {
     enteredEmail,
     emailInputHasError,
@@ -103,6 +88,7 @@ const Login = (props) => {
     formIsValid,
   };
 
+  // Check form validation
   useEffect(() => {
     if (!isRegistering) {
       if (enteredPasswordIsValid && enteredEmailIsValid) {
@@ -142,7 +128,7 @@ const Login = (props) => {
       try {
         let responseData;
         if (!isRegistering) {
-          responseData = await LoggingIn(enteredEmail, enteredPassword);
+          responseData = await LogUser(enteredEmail, enteredPassword);
         } else {
           responseData = await Register(
             enteredName,
@@ -153,6 +139,7 @@ const Login = (props) => {
         }
         const { user, token, ...message } = responseData;
 
+        // Change to a more secure method
         localStorage.setItem("token", token);
 
         dispatch(
@@ -178,10 +165,10 @@ const Login = (props) => {
         setIsLoading(false);
         dispatch(
           uiAction.showNotification({
-            status: "error",
+            status: FAIL,
             title: "Error!",
             message:
-              "Something went wrong! Please double check your credentials. ",
+              "Something went wrong! Please double check your credentials.",
           })
         );
       }
@@ -193,7 +180,7 @@ const Login = (props) => {
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       {loading && <LinearProgress />}
       <Box className={`${classes.root} ${classes.login}`}>
         <LoginForm
@@ -207,7 +194,7 @@ const Login = (props) => {
           <LandingIcon />
         </Box>
       </Box>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

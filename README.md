@@ -56,7 +56,7 @@ This application adopted the use of MVC architecture for the backend and the Flu
 | Acceptance Criteria    | Build a task management application to allow real-time tasks updates and management. Allow users to perform basic CRUDs functionalities, a tagging system to categorise tasks and a search functionality to navigate between groups. |
 | Notes                  | CRUDS functionality is dependent on API availability & integration.                                                                                                                                                                  |
 
-Use Cases:
+### Use Cases
 
 |            Input            |                                                              Positive Response                                                               |           Negative response            |
 | :-------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------: |

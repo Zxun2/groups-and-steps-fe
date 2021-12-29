@@ -1,8 +1,17 @@
 import { uiAction } from "../store/ui-slice";
 import React, { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FAIL, SUCCESS } from "../../actions/constants";
+import { FAIL, SUCCESS } from "../../misc/constants";
 
+// Logic for app-wide notifications
+/** Props received
+ * {
+ *  status: ERROR | SUCCESS | LOADING
+ *  title: string
+ *  message: string
+ *  id: string
+ * }
+ */
 const Notification = (props) => {
   const [exit, setExit] = useState(false);
   const notifications = useSelector((state) => state.ui.notification);
@@ -10,10 +19,9 @@ const Notification = (props) => {
   const [width, setWidth] = useState(0);
   const [intervalID, setIntervalID] = useState(null);
 
+  // Limit number of notifications on screen
   if (notifications.length > 3) {
-    setTimeout(() => {
-      dispatch(uiAction.removeNotification());
-    }, 0);
+    dispatch(uiAction.removeNotification());
   }
 
   const handleStartTimer = () => {
@@ -23,7 +31,7 @@ const Notification = (props) => {
           // continue from prev width
           return prev + 0.5;
         }
-
+        // finished
         clearInterval(id);
         return prev;
       });
@@ -41,9 +49,7 @@ const Notification = (props) => {
     // remove timer
     handlePauseTimer();
     setExit(true);
-    setTimeout(() => {
-      dispatch(uiAction.removeNotification());
-    });
+    dispatch(uiAction.removeNotification());
   }, [dispatch, handlePauseTimer]);
 
   React.useEffect(() => {
@@ -53,6 +59,7 @@ const Notification = (props) => {
     }
   }, [width, handleCloseNotification]);
 
+  // Start timer automatically
   React.useEffect(() => {
     handleStartTimer();
   }, []);

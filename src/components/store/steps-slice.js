@@ -1,25 +1,57 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { COMPLETED, FAIL, LOADING, SUCCESS } from "../../actions/constants";
-import { uiAction } from "./ui-slice";
+// import { COMPLETED, FAIL, LOADING, SUCCESS } from "../../misc/constants";
+// import { uiAction } from "./ui-slice";
 
-const stepsSlice = createSlice({
+// TO ADD: interfaces for initial state
+
+// A function that accepts an initial state, an object of reducer functions,
+// and a "slice name", and automatically generates action creators and action types
+// that correspond to the reducers and state.
+
+/**
+ * createSlice will return an object that looks like this
+ * {
+ *  name: string,
+ *  reducer: ReducerFunction,
+ *  actions: Record<string, ActionCreator>
+ *  caseReducers: Record<string, CaseReducer>,
+ *  getInitialState: () => State
+ * }
+ */
+
+/**
+ * interface Step {
+ *  completed: boolean;
+ *  created_at: Date;
+ *  id: number;
+ *  step: string;
+ *  tags: string[];
+ *  todo_id: number;
+ *  updated_at: Date;
+ * }
+ */
+
+const stepSlice = createSlice({
+  // A name used in action types
   name: "steps",
+  // The initial state
   initialState: {
     steps: [],
     temp: [],
     changed: false,
   },
+  // An object of "case reducers". Key names will be used to generate actions.
   reducers: {
     replaceSteps(state, action) {
       state.steps = action.payload.steps;
       state.temp = state.steps;
     },
     addNewStep(state, action) {
-      const newsteps = action.payload;
+      const newstep = action.payload;
       state.changed = true;
       state.steps.push({
-        id: newsteps.id,
-        title: newsteps.title,
+        id: newstep.id,
+        title: newstep.title,
       });
       state.temp = state.steps;
     },
@@ -59,55 +91,55 @@ const stepsSlice = createSlice({
   },
 });
 
-export const StepCreators = (request, ...args) => {
-  return async (dispatch) => {
-    dispatch(
-      uiAction.updateGlobalState({
-        status: LOADING,
-      })
-    );
+// export const StepCreators = (request, ...args) => {
+//   return async (dispatch) => {
+//     dispatch(
+//       uiAction.updateGlobalState({
+//         status: LOADING,
+//       })
+//     );
 
-    const token = localStorage.getItem("token");
+//     const token = localStorage.getItem("token");
 
-    try {
-      const stepsData = await request(token, ...args);
+//     try {
+//       const stepsData = await request(token, ...args);
 
-      if (stepsData.status === 422) {
-        throw new Error(stepsData.message);
-      }
+//       if (stepsData.status === 422) {
+//         throw new Error(stepsData.message);
+//       }
 
-      if (stepsData?.steps) {
-        dispatch(
-          stepsAction.replaceSteps({
-            steps: stepsData.steps || [],
-          })
-        );
-      }
+//       if (stepsData?.steps) {
+//         dispatch(
+//           stepAction.replaceSteps({
+//             steps: stepsData.steps || [],
+//           })
+//         );
+//       }
 
-      dispatch(
-        uiAction.showNotification({
-          status: SUCCESS,
-          title: "Success!",
-          message: stepsData.message,
-        })
-      );
-    } catch (err) {
-      dispatch(
-        uiAction.showNotification({
-          status: FAIL,
-          title: "Error!",
-          message: err.message || "Something went wrong!",
-        })
-      );
-    }
+//       dispatch(
+//         uiAction.showNotification({
+//           status: SUCCESS,
+//           title: "Success!",
+//           message: stepsData.message,
+//         })
+//       );
+//     } catch (err) {
+//       dispatch(
+//         uiAction.showNotification({
+//           status: FAIL,
+//           title: "Error!",
+//           message: err.message || "Something went wrong!",
+//         })
+//       );
+//     }
 
-    dispatch(
-      uiAction.updateGlobalState({
-        status: COMPLETED,
-      })
-    );
-  };
-};
+//     dispatch(
+//       uiAction.updateGlobalState({
+//         status: COMPLETED,
+//       })
+//     );
+//   };
+// };
 
-export const stepsAction = stepsSlice.actions;
-export default stepsSlice;
+export const stepAction = stepSlice.actions;
+export default stepSlice;

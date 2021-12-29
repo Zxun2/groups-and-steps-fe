@@ -1,10 +1,13 @@
 import { useState } from "react";
 
+// Custom Hook for Form Validation
 const useInput = (validateValue) => {
   const [enteredValue, setEnteredValue] = useState("");
   const [isTouched, setIsTouched] = useState(false);
 
+  // Validate
   const valueIsValid = validateValue(enteredValue);
+  // Input was touched but value is invalid
   const hasError = !valueIsValid && isTouched;
 
   const inputChangeHandler = (event) => {

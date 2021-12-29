@@ -32,7 +32,7 @@ const Popper = (props) => {
               fontWeight: 600,
             }}
           >
-            Apply filters to this todo
+            Apply filters to this group
           </Box>
           <Autocomplete
             open

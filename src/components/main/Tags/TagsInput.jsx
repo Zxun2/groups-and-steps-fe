@@ -7,16 +7,17 @@ import randomColor from "randomcolor";
 import { Box } from "@mui/material";
 import { tagInputStyles } from "../../ui/Style";
 
-export default function TagsInput({ ...props }) {
+export default function TagsInput({
+  // Array of Tags
+  selectedItem,
+  // Setter
+  setSelectedItem,
+  selectedTags,
+  placeholder,
+  tags,
+  ...other
+}) {
   const classes = tagInputStyles();
-  const {
-    selectedItem,
-    setSelectedItem,
-    selectedTags,
-    placeholder,
-    tags,
-    ...other
-  } = props;
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
@@ -32,10 +33,10 @@ export default function TagsInput({ ...props }) {
       const newSelectedItem = [...selectedItem];
 
       const duplicatedValues = newSelectedItem.indexOf(
-        // Trim input field
         event.target.value.trim()
       );
 
+      // Check duplicates
       if (duplicatedValues !== -1) {
         setInputValue("");
         return;
@@ -84,6 +85,7 @@ export default function TagsInput({ ...props }) {
   function handleInputChange(event) {
     setInputValue(event.target.value);
   }
+
   return (
     <React.Fragment>
       <Downshift
