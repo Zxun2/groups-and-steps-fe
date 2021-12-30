@@ -76,18 +76,24 @@ export const navStyles = makeStyles((theme) => ({
 
 export const stepStyles = makeStyles((theme) => ({
   main: {
-    height: "94%",
     background: theme.palette.background.tertiary,
     borderRadius: "10px",
     padding: "1rem",
     transition: "all 0.2s",
   },
   notask: {
+    height: "90vh",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-evenly",
     transition: "all 0.2s",
+  },
+  filter: {
+    display: "flex",
+    alignItems: "start",
+    justifyContent: "space-between",
+    marginBottom: "1rem",
   },
   text: {
     [theme.breakpoints.down("sm")]: {
@@ -318,5 +324,12 @@ export const homeStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       display: "none",
     },
+  },
+}));
+
+export const dateStyles = makeStyles((theme) => ({
+  date: {
+    backgroundColor: "red",
+    borderRadius: "10px",
   },
 }));

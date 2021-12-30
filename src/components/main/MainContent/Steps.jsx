@@ -17,7 +17,10 @@ import FilterLabel from "../FilterComponent/Filter";
 import { stepStyles } from "../../ui/Style";
 import { addStep } from "../../lib/api";
 import useHttp from "../../hooks/useHttp";
+import Grid from "@mui/material/Grid";
 import { Badge } from "@material-ui/core";
+// import StaticDatePickerLandscape from "../FilterComponent/DateFilter";
+import SelectLabels from "../FilterComponent/ViewSelect";
 
 const Steps = (props) => {
   const classes = stepStyles();
@@ -28,6 +31,8 @@ const Steps = (props) => {
   const [isOpenUncompleted, setOpenUncompleted] = useState(true);
   const [isOpenCompleted, setOpenCompleted] = useState(true);
   const [selectedItem, setSelectedItem] = useState([]);
+  const [view, setView] = useState("Layered");
+  const [toggleDetails, setToggleDetails] = useState(false);
   const [tags, setTags] = useState([]);
 
   const steps = useSelector((state) => state.step.temp);
@@ -125,174 +130,208 @@ const Steps = (props) => {
       {props.title !== "" && (
         <Fragment>
           <Toolbar />
-          {/* ADD GRID HERE */}
-          <Box
-            className={`${classes.main} ${
-              steps?.length === 0 && classes.notask
-            }`}
-          >
-            {steps?.length === 0 && (
-              <Fragment>
-                <Box
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <AddTaskIcon />
-                  <Typography
-                    variant="h5"
-                    color="secondary"
-                    style={{
-                      fontWeight: "400",
-                      textAlign: "center",
-                      marginTop: "2rem",
-                    }}
-                  >
-                    Create a task to get started!
-                  </Typography>
-                </Box>
-              </Fragment>
-            )}
-            {steps?.length !== 0 && (
-              <Fragment>
-                <Box className={classes.root}>
-                  <CustomScrollbars
-                    style={{ height: "100%" }}
-                    autoHide
-                    autoHideTimeout={500}
-                    autoHideDuration={200}
-                  >
-                    <FilterLabel
-                      steps={steps}
-                      value={props.value}
-                      setValue={props.setValue}
-                    />
-                    <Stack spacing={3}>
-                      <Divider>
-                        <Badge
-                          color="secondary"
-                          badgeContent={`${UncompletedCount}`}
-                          invisible={
-                            isOpenUncompleted || UncompletedCount === 0
-                          }
-                        >
-                          <Chip
-                            onClick={() =>
-                              setOpenUncompleted(!isOpenUncompleted)
-                            }
-                            label={"UNCOMPLETED"}
-                            color="primary"
-                            size="medium"
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={toggleDetails ? 8 : 12}>
+              <Box
+                className={`${classes.main} ${
+                  steps?.length === 0 && classes.notask
+                }`}
+              >
+                {steps?.length === 0 && (
+                  <Fragment>
+                    <Box
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <AddTaskIcon />
+                      <Typography
+                        variant="h5"
+                        color="secondary"
+                        style={{
+                          fontWeight: "400",
+                          textAlign: "center",
+                          margin: "2rem 0 2rem 0",
+                        }}
+                      >
+                        Create a task to get started!
+                      </Typography>
+                    </Box>
+                  </Fragment>
+                )}
+                {steps?.length !== 0 && (
+                  <Fragment>
+                    <Box className={classes.root}>
+                      <CustomScrollbars
+                        style={{ height: "100%" }}
+                        autoHide
+                        autoHideTimeout={500}
+                        autoHideDuration={200}
+                      >
+                        <Box className={classes.filter}>
+                          <FilterLabel
+                            steps={steps}
+                            value={props.value}
+                            setValue={props.setValue}
                           />
-                        </Badge>
-                      </Divider>
-                      <Collapse in={isOpenUncompleted}>
-                        <Box>
-                          {steps?.map((step) => {
-                            return (
-                              !step.completed && (
-                                <Task
-                                  key={step.id}
-                                  id={step.id}
-                                  step={step.step}
-                                  completed={step.completed}
-                                  todo_id={step.todo_id}
-                                  updated_at={step.updated_at}
-                                  tags={step.tags}
-                                />
-                              )
-                            );
-                          })}
+                          <SelectLabels
+                            toggleDetails={toggleDetails}
+                            setToggleDetails={setToggleDetails}
+                            setView={setView}
+                          />
                         </Box>
-                      </Collapse>
-                      <Divider>
-                        <Badge
-                          color="secondary"
-                          badgeContent={`${CompletedCount}`}
-                          invisible={isOpenCompleted || CompletedCount === 0}
-                        >
-                          <Chip
-                            onClick={() => setOpenCompleted(!isOpenCompleted)}
-                            label={`COMPLETED`}
-                            color="primary"
-                            size="medium"
-                          />
-                        </Badge>
-                      </Divider>
-                      <Collapse in={isOpenCompleted}>
-                        {steps.map((step) => {
-                          return (
-                            step?.completed && (
-                              <Task
-                                key={step.id}
-                                id={step.id}
-                                step={step.step}
-                                completed={step.completed}
-                                todo_id={step.todo_id}
-                                updated_at={step.updated_at}
-                                tags={step.tags}
-                              />
-                            )
-                          );
-                        })}
-                      </Collapse>
-                    </Stack>
-                  </CustomScrollbars>
-                </Box>
-                <Divider>
-                  <Chip
-                    onClick={addStepHandler}
-                    label="ADD TASK"
+                        <Stack spacing={3}>
+                          <Grid container spacing={2}>
+                            <Grid item xs={12} md={view === "Grid" ? 6 : 12}>
+                              <Divider style={{ marginBottom: "1rem" }}>
+                                <Badge
+                                  color="secondary"
+                                  badgeContent={`${UncompletedCount}`}
+                                  invisible={
+                                    isOpenUncompleted || UncompletedCount === 0
+                                  }
+                                >
+                                  <Chip
+                                    onClick={() =>
+                                      setOpenUncompleted(!isOpenUncompleted)
+                                    }
+                                    label={"UNCOMPLETED"}
+                                    color="primary"
+                                    size="medium"
+                                  />
+                                </Badge>
+                              </Divider>
+                              <Collapse in={isOpenUncompleted}>
+                                <Box>
+                                  {steps?.map((step) => {
+                                    return (
+                                      !step.completed && (
+                                        <Task
+                                          key={step.id}
+                                          id={step.id}
+                                          step={step.step}
+                                          completed={step.completed}
+                                          todo_id={step.todo_id}
+                                          updated_at={step.updated_at}
+                                          tags={step.tags}
+                                        />
+                                      )
+                                    );
+                                  })}
+                                </Box>
+                              </Collapse>
+                            </Grid>
+                            <Grid item xs={12} md={view === "Grid" ? 6 : 12}>
+                              <Divider style={{ marginBottom: "1rem" }}>
+                                <Badge
+                                  color="secondary"
+                                  badgeContent={`${CompletedCount}`}
+                                  invisible={
+                                    isOpenCompleted || CompletedCount === 0
+                                  }
+                                >
+                                  <Chip
+                                    onClick={() =>
+                                      setOpenCompleted(!isOpenCompleted)
+                                    }
+                                    label={`COMPLETED`}
+                                    color="primary"
+                                    size="medium"
+                                  />
+                                </Badge>
+                              </Divider>
+                              <Collapse in={isOpenCompleted}>
+                                {steps.map((step) => {
+                                  return (
+                                    step?.completed && (
+                                      <Task
+                                        key={step.id}
+                                        id={step.id}
+                                        step={step.step}
+                                        completed={step.completed}
+                                        todo_id={step.todo_id}
+                                        updated_at={step.updated_at}
+                                        tags={step.tags}
+                                      />
+                                    )
+                                  );
+                                })}
+                              </Collapse>
+                            </Grid>
+                          </Grid>
+                        </Stack>
+                      </CustomScrollbars>
+                    </Box>
+                    <Divider>
+                      <Chip
+                        onClick={addStepHandler}
+                        label="ADD TASK"
+                        color="primary"
+                        size="medium"
+                      />
+                    </Divider>
+                  </Fragment>
+                )}
+                <Stack
+                  direction={steps?.length === 0 ? "column" : "row"}
+                  className={classes.inputField}
+                  style={{ width: `${steps?.length === 0 ? "60%" : "100%"}` }}
+                >
+                  <TextField
+                    fullWidth
+                    component="form"
                     color="primary"
                     size="medium"
+                    placeholder="Add steps"
+                    onSubmit={addStepHandler}
+                    inputRef={stepRef}
+                    variant="filled"
+                    InputProps={{
+                      color: "primary",
+                      style: { color: "white", fontSize: "1.05rem" },
+                    }}
                   />
-                </Divider>
-              </Fragment>
+                  <TagsInput
+                    selectedTags={handleSelectedTags}
+                    fullWidth
+                    variant="filled"
+                    id="tags"
+                    placeholder="Enter to add Tags"
+                    selectedItem={selectedItem}
+                    setSelectedItem={setSelectedItem}
+                  />
+                  {steps?.length === 0 && (
+                    <Chip
+                      onClick={addStepHandler}
+                      color="primary"
+                      label="ADD TASK"
+                      size="medium"
+                      style={{
+                        width: "7rem",
+                        marginTop: "2rem",
+                      }}
+                    />
+                  )}
+                </Stack>
+              </Box>
+            </Grid>
+            {toggleDetails && (
+              <Grid item xs={0} md={4}>
+                <Box
+                  className={`${classes.main} ${
+                    steps?.length === 0 && classes.notask
+                  }`}
+                  style={{ height: "100%" }}
+                >
+                  {/* <StaticDatePickerLandscape /> */}
+                  <p>A work in progress...</p>
+                </Box>
+              </Grid>
             )}
-            <Stack
-              direction={steps?.length === 0 ? "column" : "row"}
-              className={classes.inputField}
-              style={{ width: `${steps?.length === 0 ? "50%" : "100%"}` }}
-            >
-              <TextField
-                fullWidth
-                component="form"
-                color="primary"
-                size="medium"
-                placeholder="Add steps"
-                onSubmit={addStepHandler}
-                inputRef={stepRef}
-                variant="filled"
-                InputProps={{
-                  color: "primary",
-                  style: { color: "white", fontSize: "1.05rem" },
-                }}
-              />
-              <TagsInput
-                selectedTags={handleSelectedTags}
-                fullWidth
-                variant="filled"
-                id="tags"
-                placeholder="Enter to add Tags"
-                selectedItem={selectedItem}
-                setSelectedItem={setSelectedItem}
-              />
-              {steps?.length === 0 && (
-                <Chip
-                  onClick={addStepHandler}
-                  color="primary"
-                  label="ADD TASK"
-                  size="medium"
-                  style={{
-                    width: "7rem",
-                    marginTop: "2rem",
-                  }}
-                />
-              )}
-            </Stack>
-          </Box>
+          </Grid>
         </Fragment>
       )}
     </Box>
