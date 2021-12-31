@@ -69,7 +69,7 @@ export const navStyles = makeStyles((theme) => ({
     width: 400,
     backgroundColor: theme.palette.background.tertiary,
     boxShadow: 24,
-    borderRadius: "4px",
+    borderRadius: "10px",
     p: 4,
   },
 }));

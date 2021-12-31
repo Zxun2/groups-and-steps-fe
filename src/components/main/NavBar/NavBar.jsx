@@ -73,7 +73,9 @@ const NavBar = (props) => {
               <Modal keepMounted open={open} onClose={handleClose}>
                 <Box className={classes.style}>
                   <CustomScrollbars
-                    style={{ height: "55vh" }}
+                    style={{
+                      height: "55vh",
+                    }}
                     autoHide
                     autoHideTimeout={500}
                     autoHideDuration={200}
