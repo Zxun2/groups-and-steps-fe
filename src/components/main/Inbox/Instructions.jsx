@@ -11,7 +11,6 @@ import { Button } from "@material-ui/core";
 import Check from "@mui/icons-material/Check";
 import { styled } from "@mui/material/styles";
 import StepConnector from "@mui/material/StepConnector";
-import { Divider } from "@material-ui/core";
 
 const steps = [
   {
@@ -116,7 +115,7 @@ const Instructions = () => {
         }}
         variant="subtitle1"
       >
-        Groups and Steps
+        For dummies.
       </Typography>
 
       <Typography
@@ -129,8 +128,9 @@ const Instructions = () => {
         variant="subtitle2"
         paragraph={true}
       >
-        A Web application built using Rails and React for CVWO 2021 assignment.
-        The design is inspired by Discord and Microsoft To-Do.
+        Groups and Steps — a Web application built using Rails and React for
+        CVWO 2021 assignment. The design is inspired by Discord and Microsoft
+        To-Do.
       </Typography>
       <Typography
         style={{
@@ -145,7 +145,7 @@ const Instructions = () => {
         You can revisit these instructions by clicking on the inbox icon at the
         top right hand corner.
       </Typography>
-      <Divider />
+
       <Box
         sx={{
           margin: "0 1rem 0 1rem",
@@ -164,12 +164,15 @@ const Instructions = () => {
                 StepIconComponent={StepIcon}
                 sx={{
                   "	.MuiStepLabel-label": {
-                    color: "#ffffff  !important",
+                    color: "#ffffff",
                     fontSize: "1.12rem",
+                  },
+                  "	.Mui-active": {
+                    color: "#ffffff",
                   },
                 }}
                 optional={
-                  index === 2 ? (
+                  index === 3 ? (
                     <Typography color="secondary" variant="caption">
                       Last step
                     </Typography>
