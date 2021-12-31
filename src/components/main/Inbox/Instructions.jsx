@@ -164,11 +164,8 @@ const Instructions = () => {
                 StepIconComponent={StepIcon}
                 sx={{
                   "	.MuiStepLabel-label": {
-                    color: "#ffffff",
+                    color: "#ffffff !important",
                     fontSize: "1.12rem",
-                  },
-                  "	.Mui-active": {
-                    color: "#ffffff",
                   },
                 }}
                 optional={
