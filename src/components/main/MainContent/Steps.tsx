@@ -23,7 +23,7 @@ const Steps = (props) => {
   const classes = stepStyles();
   const dispatch = useDispatch();
 
-  const stepRef = useRef();
+  const stepRef = useRef<HTMLInputElement>();
 
   const [isOpenUncompleted, setOpenUncompleted] = useState(true);
   const [isOpenCompleted, setOpenCompleted] = useState(true);

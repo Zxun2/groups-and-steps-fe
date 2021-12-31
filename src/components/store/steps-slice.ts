@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import { COMPLETED, FAIL, LOADING, SUCCESS } from "../../misc/constants";
-// import { uiAction } from "./ui-slice";
 
 // TO ADD: interfaces for initial state
 
@@ -19,46 +17,37 @@ import { createSlice } from "@reduxjs/toolkit";
  * }
  */
 
-/**
- * interface Step {
- *  completed: boolean;
- *  created_at: Date;
- *  id: number;
- *  step: string;
- *  tags: string[];
- *  todo_id: number;
- *  updated_at: Date;
- * }
- */
+interface Step {
+  completed: boolean;
+  created_at: Date;
+  id: number;
+  step: string;
+  tags: string[];
+  todo_id: number;
+  updated_at: Date;
+}
+
+interface stepState {
+  steps: Step[];
+  temp: Step[];
+  changed: boolean;
+}
 
 const stepSlice = createSlice({
-  // A name used in action types
   name: "steps",
-  // The initial state
   initialState: {
     steps: [],
     temp: [],
     changed: false,
-  },
-  // An object of "case reducers". Key names will be used to generate actions.
+  } as stepState,
   reducers: {
     replaceSteps(state, action) {
       state.steps = action.payload.steps;
       state.temp = state.steps;
     },
-    addNewStep(state, action) {
-      const newstep = action.payload;
-      state.changed = true;
-      state.steps.push({
-        id: newstep.id,
-        title: newstep.title,
-      });
-      state.temp = state.steps;
-    },
     removeStep(state, action) {
       state.changed = true;
-      const { id } = { ...action.payload };
-      state.steps = state.steps.filter((obj) => obj.id !== id);
+      state.steps = state.steps.filter((obj) => obj.id !== action.payload.id);
       state.temp = state.steps;
     },
     updateStep(state, action) {
@@ -90,56 +79,6 @@ const stepSlice = createSlice({
     },
   },
 });
-
-// export const StepCreators = (request, ...args) => {
-//   return async (dispatch) => {
-//     dispatch(
-//       uiAction.updateGlobalState({
-//         status: LOADING,
-//       })
-//     );
-
-//     const token = localStorage.getItem("token");
-
-//     try {
-//       const stepsData = await request(token, ...args);
-
-//       if (stepsData.status === 422) {
-//         throw new Error(stepsData.message);
-//       }
-
-//       if (stepsData?.steps) {
-//         dispatch(
-//           stepAction.replaceSteps({
-//             steps: stepsData.steps || [],
-//           })
-//         );
-//       }
-
-//       dispatch(
-//         uiAction.showNotification({
-//           status: SUCCESS,
-//           title: "Success!",
-//           message: stepsData.message,
-//         })
-//       );
-//     } catch (err) {
-//       dispatch(
-//         uiAction.showNotification({
-//           status: FAIL,
-//           title: "Error!",
-//           message: err.message || "Something went wrong!",
-//         })
-//       );
-//     }
-
-//     dispatch(
-//       uiAction.updateGlobalState({
-//         status: COMPLETED,
-//       })
-//     );
-//   };
-// };
 
 export const stepAction = stepSlice.actions;
 export default stepSlice;

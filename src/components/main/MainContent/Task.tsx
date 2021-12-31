@@ -44,7 +44,7 @@ export default function Task({
   ...others
 }) {
   const [expanded, setExpanded] = useState(false);
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>();
   const dispatch = useDispatch();
 
   const { sendRequest: updatesStep } = useHttp(updateStep);

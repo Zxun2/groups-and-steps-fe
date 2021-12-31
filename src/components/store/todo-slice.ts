@@ -1,11 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import { uiAction } from "./ui-slice";
-
-// TO ADD: interfaces for initial state
-
-// A function that accepts an initial state, an object of reducer functions,
-// and a "slice name", and automatically generates action creators and action types
-// that correspond to the reducers and state.
 
 /**
  * createSlice will return an object that looks like this
@@ -18,15 +11,18 @@ import { createSlice } from "@reduxjs/toolkit";
  * }
  */
 
-/**
- * interface Todo {
- *  created_at: Date;
- *  created_by: string;
- *  id: number;
- *  title: string;
- *  updated_at: Date;
- * }
- */
+interface Todo {
+  created_at: Date;
+  created_by: string;
+  id: number;
+  title: string;
+  updated_at: Date;
+}
+
+interface TodoState {
+  Todo: Todo[];
+  changed: boolean;
+}
 
 const todoSlice = createSlice({
   // A name used in action types
@@ -65,42 +61,6 @@ const todoSlice = createSlice({
     },
   },
 });
-
-// export const TodoCreators = (request, ...dataArgs) => {
-//   return async (dispatch) => {
-//     const token = localStorage.getItem("token");
-
-//     try {
-//       const todoData = await request(token, ...dataArgs);
-
-//       if (todoData.status === 422) {
-//         throw new Error(todoData.message);
-//       }
-
-//       dispatch(
-//         todoAction.replaceTodo({
-//           Todo: todoData.todos || [],
-//         })
-//       );
-
-//       dispatch(
-//         uiAction.showNotification({
-//           status: "success",
-//           title: "Success!",
-//           message: todoData.message,
-//         })
-//       );
-//     } catch (err) {
-//       dispatch(
-//         uiAction.showNotification({
-//           status: "error",
-//           title: "Error!",
-//           message: err.message || "Something went wrong!",
-//         })
-//       );
-//     }
-//   };
-// };
 
 export const todoAction = todoSlice.actions;
 export default todoSlice;

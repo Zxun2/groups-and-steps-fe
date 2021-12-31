@@ -8,8 +8,8 @@ import { USER_LOGGED_IN, USER_LOGGED_OUT } from "../../misc/constants";
 // that correspond to the reducers and state.
 
 /**
- * createSlice will return an object that looks like this
- * {
+ createSlice will return an object that looks like this
+ {
  *  name: string,
  *  reducer: ReducerFunction,
  *  actions: Record<string, ActionCreator>
@@ -18,20 +18,19 @@ import { USER_LOGGED_IN, USER_LOGGED_OUT } from "../../misc/constants";
  * }
  */
 
-/**
- * interface userState {
- *  currUser: {
- *      id: number,
- *      created_at: Date,
- *      updated_at: Date,
- *      email: string,
- *      name: string,
- *      password_digest: string,
- *    };
- *  status: USER_LOGGED_IN | USER_LOGGED_OUT;
- *  auth_token: string;
- * }
- */
+interface User {
+  id: number;
+  created_at: Date;
+  updated_at: Date;
+  email: string;
+  name: string;
+  password_digest: string;
+}
+interface userState {
+  currUser: User;
+  status: USER_LOGGED_IN | USER_LOGGED_OUT;
+  auth_token: string;
+}
 
 const userSlice = createSlice({
   name: "user",
@@ -39,7 +38,7 @@ const userSlice = createSlice({
     currUser: null,
     auth_token: "", // jwt token
     status: USER_LOGGED_OUT,
-  },
+  } as userState,
   reducers: {
     logUserIn(state, action) {
       state.currUser = action.payload.user;

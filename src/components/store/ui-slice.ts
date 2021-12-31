@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 } from "uuid";
 
 // TO ADD: interfaces for initial state
@@ -18,26 +18,27 @@ import { v4 } from "uuid";
  * }
  */
 
-/**
- * interface Notification {
- *  message: string;
- *  status: string;
- *  title: string;
- *  id: string;
- * }
- */
+interface Notification {
+  message: string;
+  status: string;
+  title: string;
+  id?: string;
+}
+
+interface NotificationState {
+  notification: Notification[];
+  globalState: boolean;
+}
 
 const uiSlice = createSlice({
   name: "ui",
   initialState: { notification: [], globalState: false },
   reducers: {
-    // Customizing Generated Action Creators
-    // This reducer must be an object with two properties, reducer and prepare.
     showNotification: {
-      reducer: (state, action) => {
+      reducer: (state, action: PayloadAction<Notification>) => {
         state.notification.push(action.payload);
       },
-      prepare: (payload) => {
+      prepare: (payload: Notification) => {
         const id = v4();
         return { payload: { ...payload, id } };
       },
