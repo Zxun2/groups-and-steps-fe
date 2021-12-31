@@ -115,7 +115,7 @@ const Instructions = () => {
         }}
         variant="subtitle1"
       >
-        For dummies.
+        Groups and Steps
       </Typography>
 
       <Typography
@@ -128,9 +128,8 @@ const Instructions = () => {
         variant="subtitle2"
         paragraph={true}
       >
-        Groups and Steps — a Web application built using Rails and React for
-        CVWO 2021 assignment. The design is inspired by Discord and Microsoft
-        To-Do.
+        A Web application built using Rails and React for CVWO 2021 assignment.
+        The design is inspired by Discord and Microsoft To-Do.
       </Typography>
       <Typography
         style={{
