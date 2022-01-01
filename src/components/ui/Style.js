@@ -102,7 +102,7 @@ export const stepStyles = makeStyles((theme) => ({
     },
   },
   root: {
-    height: "75vh",
+    height: "69vh",
     [theme.breakpoints.down("xs")]: {
       transition: "all 0.2s",
       height: "65vh",
@@ -125,7 +125,8 @@ export const tagInputStyles = makeStyles((theme) => ({
   },
   scrollbar: {
     display: "flex",
-    maxWidth: "13vw",
+    maxWidth: "80vw",
+    marginBottom: "1rem",
     borderRadius: "10px",
     [theme.breakpoints.down("medium")]: {
       maxWidth: "5vw",
@@ -133,12 +134,11 @@ export const tagInputStyles = makeStyles((theme) => ({
     overflowX: "scroll",
     "&::-webkit-scrollbar": {
       height: "0.1rem",
-      backgroundColor: "#5865f2",
     },
 
     "&::-webkit-scrollbar-thumb": {
       borderRadius: 6,
-      backgroundColor: "rgba(0,0,0,.1)",
+      backgroundColor: "#5865f2",
       outline: "1px solid slategrey",
     },
   },

@@ -89,7 +89,7 @@ const Steps = (props) => {
         flexGrow: 1,
         p: 3,
         backgroundColor: "#2f3136",
-        height: "100vh",
+        minHeight: "100vh",
       }}
     >
       {(props.title === "" || props.Todos.length === 0) && (
@@ -276,10 +276,21 @@ const Steps = (props) => {
                   </Fragment>
                 )}
                 <Stack
-                  direction={steps?.length === 0 ? "column" : "row"}
+                  direction={"column"}
                   className={classes.inputField}
-                  style={{ width: `${steps?.length === 0 ? "60%" : "100%"}` }}
+                  style={{
+                    width: `${steps?.length === 0 ? "70% " : "100% "}`,
+                  }}
                 >
+                  <TagsInput
+                    selectedTags={handleSelectedTags}
+                    fullWidth
+                    variant="filled"
+                    id="tags"
+                    placeholder="Enter to add Tags"
+                    selectedItem={selectedItem}
+                    setSelectedItem={setSelectedItem}
+                  />
                   <TextField
                     fullWidth
                     component="form"
@@ -294,27 +305,6 @@ const Steps = (props) => {
                       style: { color: "white", fontSize: "1.05rem" },
                     }}
                   />
-                  <TagsInput
-                    selectedTags={handleSelectedTags}
-                    fullWidth
-                    variant="filled"
-                    id="tags"
-                    placeholder="Enter to add Tags"
-                    selectedItem={selectedItem}
-                    setSelectedItem={setSelectedItem}
-                  />
-                  {steps?.length === 0 && (
-                    <Chip
-                      onClick={addStepHandler}
-                      color="primary"
-                      label="ADD TASK"
-                      size="medium"
-                      style={{
-                        width: "7rem",
-                        marginTop: "2rem",
-                      }}
-                    />
-                  )}
                 </Stack>
               </Box>
             </Grid>

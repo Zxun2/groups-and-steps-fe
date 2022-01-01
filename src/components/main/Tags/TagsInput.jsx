@@ -101,26 +101,25 @@ export default function TagsInput({
           });
           return (
             <div>
+              <Box className={classes.scrollbar}>
+                {selectedItem.map((item) => {
+                  const color = randomColor();
+                  return (
+                    <Chip
+                      key={item}
+                      tabIndex={-1}
+                      label={item}
+                      className={classes.chip}
+                      onDelete={handleDelete(item)}
+                      style={{ backgroundColor: `${color}` }}
+                    />
+                  );
+                })}
+              </Box>
               <TextField
                 InputProps={{
                   // Leading adornment for this input.
-                  startAdornment: (
-                    <Box className={classes.scrollbar}>
-                      {selectedItem.map((item) => {
-                        const color = randomColor();
-                        return (
-                          <Chip
-                            key={item}
-                            tabIndex={-1}
-                            label={item}
-                            className={classes.chip}
-                            onDelete={handleDelete(item)}
-                            style={{ backgroundColor: `${color}` }}
-                          />
-                        );
-                      })}
-                    </Box>
-                  ),
+                  // startAdornment:
                   onBlur,
                   onChange: (event) => {
                     handleInputChange(event);
