@@ -13,9 +13,14 @@ import { stepStyles } from "../../ui/Style";
 import { addStep } from "../../lib/api";
 import useHttp from "../../hooks/useHttp";
 import Grid from "@mui/material/Grid";
+import SelectLabels from "../FilterComponent/ViewSelect";
+import FilterLabel from "../FilterComponent/Filter";
 // import StaticDatePickerLandscape from "../FilterComponent/DateFilter";
+import CustomScrollbars from "../../ui/CustomScollBars";
 import RenderSteps from "./RenderSteps";
 import Landing from "./Landing";
+import { Chip } from "@material-ui/core";
+import { Divider } from "@mui/material";
 
 const Steps = (props) => {
   const classes = stepStyles();
@@ -128,21 +133,47 @@ const Steps = (props) => {
                   </Fragment>
                 )}
                 {steps?.length !== 0 && (
-                  <RenderSteps
-                    classes={classes}
-                    steps={steps}
-                    view={view}
-                    toggleDetails={toggleDetails}
-                    setToggleDetails={setToggleDetails}
-                    setView={setView}
-                    addStepHandler={addStepHandler}
-                    isOpenCompleted={isOpenCompleted}
-                    CompletedCount={CompletedCount}
-                    setOpenCompleted={setOpenCompleted}
-                    isOpenUncompleted={isOpenUncompleted}
-                    UncompletedCount={UncompletedCount}
-                    setOpenUncompleted={setOpenUncompleted}
-                  />
+                  <Fragment>
+                    <Box className={classes.root}>
+                      <CustomScrollbars
+                        style={{ height: "100%" }}
+                        autoHide
+                        autoHideTimeout={500}
+                        autoHideDuration={200}
+                      >
+                        <Box className={classes.filter}>
+                          <FilterLabel
+                            steps={steps}
+                            value={props.value}
+                            setValue={props.setValue}
+                          />
+                          <SelectLabels
+                            toggleDetails={toggleDetails}
+                            setToggleDetails={setToggleDetails}
+                            setView={setView}
+                          />
+                        </Box>
+                        <RenderSteps
+                          steps={steps}
+                          view={view}
+                          isOpenCompleted={isOpenCompleted}
+                          CompletedCount={CompletedCount}
+                          setOpenCompleted={setOpenCompleted}
+                          isOpenUncompleted={isOpenUncompleted}
+                          UncompletedCount={UncompletedCount}
+                          setOpenUncompleted={setOpenUncompleted}
+                        />
+                      </CustomScrollbars>
+                    </Box>
+                    <Divider>
+                      <Chip
+                        onClick={addStepHandler}
+                        label="ADD TASK"
+                        color="primary"
+                        size="medium"
+                      />
+                    </Divider>
+                  </Fragment>
                 )}
                 <Stack
                   direction={"column"}

@@ -23,8 +23,9 @@ const steps = [
   },
   {
     label: "Groups",
-    description: `To view your groups, simply open the sidebar (it should already be opened by default, unless you're on mobile then you'll be required to click on
-    the hamburger menu on the top left corner of your screen). Enter the title of your group at the bottom of the screen to create a new group. To delete or update a group, click on the settings icon beside the Group's title and a modal component similar to the one you're currently viewing will appear. 
+    description: `To view your groups, simply open the sidebar (it should already be opened by default, unless you're on mobile then you'll be required to click on the hamburger menu on the top left corner of your screen). Enter the title of your group at the bottom of the screen to create a new group. 
+    
+    To delete or update a group, click on the settings icon beside the Group's title and a modal component similar to the one you're currently viewing will appear. 
     
     Follow the instructions there.
     `,
