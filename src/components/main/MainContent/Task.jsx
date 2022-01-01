@@ -21,6 +21,8 @@ import { useDispatch } from "react-redux";
 import { stepAction } from "../../store/steps-slice";
 import { deleteStep, updateStep } from "../../lib/api";
 import useHttp from "../../hooks/useHttp";
+import TagsInput from "../Tags/TagsInput";
+import { tagInputStyles } from "../../ui/Style";
 
 // Styled Components
 const ExpandMore = styled((props) => {
@@ -43,15 +45,25 @@ export default function Task({
   tags,
   ...others
 }) {
+  const classes = tagInputStyles();
   const [expanded, setExpanded] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedItem, setSelectedItem] = useState([]);
+  const [newTags, setNewTags] = useState(tags);
+
   const inputRef = useRef();
   const dispatch = useDispatch();
 
   const { sendRequest: updatesStep } = useHttp(updateStep);
   const { sendRequest: deletesStep } = useHttp(deleteStep);
 
-  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
+  // Function is called in TagsInput.jsx
+  // To return selected tags
+  function handleSelectedTags(items) {
+    setNewTags(items);
+  }
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -73,9 +85,13 @@ export default function Task({
 
   const updateStepHandler = (e) => {
     e.preventDefault();
+
+    console.log(newTags);
+
     // UPDATE DATABASE
     updatesStep(todo_id, step_id, {
       step: inputRef.current.value,
+      tags: newTags,
     });
 
     // UPDATE UI
@@ -84,6 +100,7 @@ export default function Task({
         id: step_id,
         data: {
           step: inputRef.current.value,
+          tags: newTags,
         },
       })
     );
@@ -165,7 +182,7 @@ export default function Task({
         </CardContent>
         <CardActions disableSpacing={true} style={{ paddingBottom: "0" }}>
           {/* BUG: LIMIT WIDTH */}
-          <Box style={{ width: "100%" }}>
+          <Box className={classes.scrollbar}>
             {tags?.length > 0 && (
               <Stack
                 direction="row"
@@ -231,6 +248,16 @@ export default function Task({
                 Enter your new task below or click the delete button to delete
                 Todo.
               </Typography>
+              <TagsInput
+                fullWidth
+                variant="filled"
+                id="tags"
+                placeholder="Enter to add Tags"
+                selectedItem={selectedItem}
+                selectedTags={handleSelectedTags}
+                setSelectedItem={setSelectedItem}
+                tags={tags}
+              />
               <TextField
                 id="title"
                 component="form"
@@ -239,12 +266,12 @@ export default function Task({
                 size="medium"
                 variant="filled"
                 defaultValue={step}
-                style={{ marginTop: "1rem" }}
                 inputRef={inputRef}
                 InputProps={{
                   style: { color: "white", fontSize: "1.05rem" },
                 }}
               />
+
               <Box style={{ display: "inline-flex", justifyContent: "end" }}>
                 <Button
                   variant="outlined"

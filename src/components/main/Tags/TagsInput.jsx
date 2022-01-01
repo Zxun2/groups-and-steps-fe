@@ -12,6 +12,7 @@ export default function TagsInput({
   selectedItem,
   // Setter
   setSelectedItem,
+  // HandleSelectedTags so that i can use it
   selectedTags,
   placeholder,
   tags,

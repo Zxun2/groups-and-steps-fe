@@ -81,7 +81,7 @@ export default function FilterLabel(props) {
           <SettingsIcon />
         </Button>
         <Box style={{ "&:lastChild": { marginBottom: "2rem" } }}>
-          {props.value.map((label) => (
+          {props?.value?.map((label) => (
             <Box
               key={label.id}
               sx={{

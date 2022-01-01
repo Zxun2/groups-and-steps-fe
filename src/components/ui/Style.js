@@ -82,7 +82,7 @@ export const stepStyles = makeStyles((theme) => ({
     transition: "all 0.2s",
   },
   notask: {
-    height: "90vh",
+    height: "88vh",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -126,7 +126,7 @@ export const tagInputStyles = makeStyles((theme) => ({
   scrollbar: {
     display: "flex",
     maxWidth: "80vw",
-    marginBottom: "1rem",
+    marginBottom: "0.5rem",
     borderRadius: "10px",
     [theme.breakpoints.down("medium")]: {
       maxWidth: "5vw",
