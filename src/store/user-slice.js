@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { USER_LOGGED_IN, USER_LOGGED_OUT } from "../misc/constants";
-import { API_URL } from "../misc/apiUrl";
+import { API_URL } from "../misc/base-url";
 
 // POST /auth/auto_login
 export const autoLogin = createAsyncThunk(

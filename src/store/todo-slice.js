@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { API_URL } from "../misc/apiUrl";
+import { API_URL } from "../misc/base-url";
 
 // TO ADD: interfaces for initial state
 /**

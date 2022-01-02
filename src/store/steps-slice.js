@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { API_URL } from "../misc/apiUrl";
+import { API_URL } from "../misc/base-url";
 
 // interface Step {
 //  completed: boolean;

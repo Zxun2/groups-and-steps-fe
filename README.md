@@ -10,10 +10,6 @@ Backend Repo: https://github.com/Zxun2/cvwo-assignment-backend
 | :----------: | :------------------: |
 | Lee Zong Xun |      A0233594Y       |
 
-## Application details
-
-![image](https://user-images.githubusercontent.com/63457492/146907275-c48e3b2f-b5b9-4eb6-ae60-7dcad107ff2f.png)
-
 ### Tutorial account details for Web app :
 
 |       Email        | Password |
@@ -39,6 +35,7 @@ docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml up -d --build
 ```bash
 docker-compose -f docker-compose.yaml -f docker-compose-prod.yaml up -d --build
 ```
+
 ### Backend
 
 #### Running Backend Development Server on Docker
