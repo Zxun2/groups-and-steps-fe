@@ -94,7 +94,7 @@ const Steps = (props) => {
       {(props.title === "" || props.Todos.length === 0) && (
         <Landing classes={classes} userState={props.userState} />
       )}
-      {props.title !== "" && (
+      {props.title !== "" && props.Todos.length !== 0 && (
         <Fragment>
           <Toolbar />
           <Grid container spacing={2}>
