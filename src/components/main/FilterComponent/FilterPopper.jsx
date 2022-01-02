@@ -1,10 +1,9 @@
-import * as React from "react";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Autocomplete from "@mui/material/Autocomplete";
 import CloseIcon from "@mui/icons-material/Close";
 import DoneIcon from "@mui/icons-material/Done";
-import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
-// Returns a hex code for an attractive color
+import * as React from "react";
 import { v4 } from "uuid";
 import {
   StyledPopper,

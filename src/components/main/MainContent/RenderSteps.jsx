@@ -1,10 +1,10 @@
-import React from "react";
 import { Box, Stack, Collapse } from "@mui/material";
+import { Badge } from "@material-ui/core";
 import { Chip } from "@material-ui/core";
 import { Divider } from "@mui/material";
-import Task from "./Task";
 import Grid from "@mui/material/Grid";
-import { Badge } from "@material-ui/core";
+import React from "react";
+import Task from "./Task";
 
 const RenderSteps = (props) => {
   return (

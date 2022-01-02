@@ -4,11 +4,11 @@ import { Dashboard } from "./components/pages/Dashboard";
 import { Route, Switch } from "react-router-dom";
 import { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { userAction } from "./components/store/user-slice";
+import { autoLogin } from "./store/user-slice";
 import { useHistory } from "react-router-dom";
 import Notification from "./components/ui/Notification";
-import { uiAction } from "./components/store/ui-slice";
-import { API_URL } from "./misc/apiUrl";
+import { uiAction } from "./store/ui-slice";
+import { NOTICE } from "./misc/constants";
 
 function App() {
   const dispatch = useDispatch();
@@ -19,46 +19,29 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    const autoLogin = async () => {
-      if (token) {
-        try {
-          const response = await fetch(`${API_URL}/auth/auto_login`, {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          const data = await response.json();
-
-          if (response.status === 422) {
-            throw new Error(data.message);
-          }
-
-          dispatch(
-            userAction.logUserIn({
-              user: data,
-              token,
-            })
-          );
-
-          history.push("/dashboard");
-        } catch (err) {
-          dispatch(
-            uiAction.showNotification({
-              status: "error",
-              title: "Error!",
-              message: err.message,
-            })
-          );
-        }
-      } else {
-        history.push("/");
-        // TODO: ADD A PROMPT HERE
+    if (token) {
+      try {
+        dispatch(autoLogin(token));
+        history.push("/dashboard");
+      } catch (err) {
+        dispatch(
+          uiAction.showNotification({
+            status: "error",
+            title: "Error!",
+            message: err.message,
+          })
+        );
       }
-    };
-
-    autoLogin();
+    } else {
+      history.push("/");
+      dispatch(
+        uiAction.showNotification({
+          status: NOTICE,
+          title: "Take Note!",
+          message: "Your token has expired. Please sign in again!",
+        })
+      );
+    }
   }, [dispatch, history]);
 
   return (

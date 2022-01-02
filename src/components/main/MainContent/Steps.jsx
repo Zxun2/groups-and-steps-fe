@@ -1,26 +1,31 @@
-import { FAIL } from "../../../misc/constants";
-import { Toolbar, Box, Stack } from "@mui/material";
-import { Typography } from "@material-ui/core";
-import { useSelector } from "react-redux";
-import { Fragment, useRef } from "react";
-import { TextField } from "@material-ui/core";
-import AddTaskIcon from "../../svgs/AddtasksIcon";
-import TagsInput from "../Tags/TagsInput";
-import { useDispatch } from "react-redux";
-import { uiAction } from "../../store/ui-slice";
-import { useState } from "react";
-import { stepStyles } from "../../ui/Style";
-import { addStep } from "../../lib/api";
-import useHttp from "../../hooks/useHttp";
-import Grid from "@mui/material/Grid";
-import SelectLabels from "../FilterComponent/ViewSelect";
-import FilterLabel from "../FilterComponent/Filter";
 // import StaticDatePickerLandscape from "../FilterComponent/DateFilter";
+import {
+  createNewStep,
+  getAllSteps,
+  getCompletedCount,
+  getUncompletedCount,
+} from "../../../store/steps-slice";
+import SelectLabels from "../FilterComponent/ViewSelect";
 import CustomScrollbars from "../../ui/CustomScollBars";
-import RenderSteps from "./RenderSteps";
-import Landing from "./Landing";
+import { Toolbar, Box, Stack } from "@mui/material";
+import FilterLabel from "../FilterComponent/Filter";
+import { uiAction } from "../../../store/ui-slice";
+import AddTaskIcon from "../../svgs/AddtasksIcon";
+import { FAIL } from "../../../misc/constants";
+import { Typography } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
+import { useHttp2 } from "../../../hooks/useHttp";
+import { stepStyles } from "../../ui/Style";
+import { useSelector } from "react-redux";
+import TagsInput from "../tag/tags-input";
+import { useDispatch } from "react-redux";
+import { Fragment, useRef } from "react";
 import { Chip } from "@material-ui/core";
+import RenderSteps from "./RenderSteps";
 import { Divider } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import { useState } from "react";
+import Landing from "./Landing";
 
 const Steps = (props) => {
   const classes = stepStyles();
@@ -30,25 +35,18 @@ const Steps = (props) => {
 
   const [isOpenUncompleted, setOpenUncompleted] = useState(true);
   const [isOpenCompleted, setOpenCompleted] = useState(true);
+  const [toggleDetails, setToggleDetails] = useState(false);
   const [selectedItem, setSelectedItem] = useState([]);
   const [view, setView] = useState("Layered");
-  const [toggleDetails, setToggleDetails] = useState(false);
   const [tags, setTags] = useState([]);
 
-  const steps = useSelector((state) => state.step.temp);
-  const { sendRequest: createStep } = useHttp(addStep, true);
+  const steps = useSelector(getAllSteps);
+
+  const { sendRequest: createStep } = useHttp2(createNewStep);
 
   // Count
-  let UncompletedCount = 0;
-  let CompletedCount = 0;
-
-  steps?.map((step) => {
-    if (step.completed) {
-      return (CompletedCount += 1);
-    } else {
-      return (UncompletedCount += 1);
-    }
-  });
+  let UncompletedCount = useSelector(getUncompletedCount);
+  let CompletedCount = useSelector(getCompletedCount);
 
   const addStepToDatabase = () => {
     if (stepRef.current.value.trim() === "") {
@@ -60,13 +58,13 @@ const Steps = (props) => {
         })
       );
     } else {
-      createStep(
-        {
+      createStep({
+        content: {
           step: stepRef.current.value.trim(),
           tags: tags,
         },
-        props.todoId
-      );
+        todo_id: props.todoId,
+      });
     }
     stepRef.current.value = "";
   };

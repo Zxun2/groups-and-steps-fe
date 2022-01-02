@@ -1,4 +1,4 @@
-import Login from "../auth/Login";
+import Login from "../auth/login.jsx";
 
 // Home Page
 export const Home = (props) => {

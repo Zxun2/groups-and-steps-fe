@@ -1,6 +1,13 @@
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import { drawerWidth } from "../../../misc/constants";
+import PersonIcon from "@mui/icons-material/Person";
+import EmailIcon from "@mui/icons-material/Email";
+import CustomScrollbars from "../../ui/CustomScollBars";
+import TagIcon from "@mui/icons-material/Tag";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { dashboardStyles } from "../../ui/Style";
+import { TextField } from "@material-ui/core";
 import {
   Chip,
   Toolbar,
@@ -10,13 +17,6 @@ import {
   List,
   Divider,
 } from "@mui/material";
-import PersonIcon from "@mui/icons-material/Person";
-import EmailIcon from "@mui/icons-material/Email";
-import CustomScrollbars from "../../ui/CustomScollBars";
-import TagIcon from "@mui/icons-material/Tag";
-import SettingsIcon from "@mui/icons-material/Settings";
-import { dashboardStyles } from "../../ui/Style";
-import { TextField } from "@material-ui/core";
 
 export const SideBar = (props) => {
   const { window } = props;

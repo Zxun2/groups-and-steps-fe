@@ -13,16 +13,9 @@ const store = configureStore({
     todo: todoSlice.reducer,
     step: stepSlice.reducer,
   },
-  // getDefaultMiddleware includes
-  // Immutability-check, Serializability-check and redux-thunk middleware by default
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
-  // remove devtools in production
   devTools: process.env.NODE_ENV !== "production",
-  // support batched actions
   enhancers: [reduxBatch],
-  //TODO: Add preloaded state for instructions
 });
-
-// To Add RootState for TypeScript
 
 export default store;

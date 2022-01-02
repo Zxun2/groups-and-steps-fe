@@ -1,7 +1,7 @@
-import React from "react";
+import { Typography } from "@material-ui/core";
 import AppIcon from "../../svgs/AppIcon";
 import { Box } from "@mui/material";
-import { Typography } from "@material-ui/core";
+import React from "react";
 
 const Landing = (props) => {
   return (

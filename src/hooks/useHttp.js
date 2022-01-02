@@ -1,18 +1,17 @@
 import { useCallback } from "react";
 import { uiAction } from "../store/ui-slice";
-import { FAIL, SUCCESS } from "../../misc/constants";
+import { FAIL, SUCCESS } from "../misc/constants";
 
 import { useDispatch } from "react-redux";
-import { stepAction } from "../store/steps-slice";
-import { todoAction } from "../store/todo-slice";
 
 // Custom Hook for Sending HTTP requests
-function useHttp(requestFunction, startWithPending = false) {
+
+export function useHttp2(requestFunction) {
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
 
   const sendRequest = useCallback(
-    async function (...requestData) {
+    async function ({ ...requestData }) {
       try {
         // Set loading state to true
         dispatch(
@@ -22,35 +21,19 @@ function useHttp(requestFunction, startWithPending = false) {
         );
 
         // Request
-        const response = await requestFunction(token, ...requestData);
+        const response = await dispatch(
+          requestFunction({ token, ...requestData })
+        );
 
-        if (response.status === 422) {
-          if (response) {
-            throw new Error(response.message);
-          }
-        }
-
-        if (response?.steps) {
-          dispatch(
-            stepAction.replaceSteps({
-              steps: response.steps || [],
-            })
-          );
-        }
-
-        if (response?.todos) {
-          dispatch(
-            todoAction.replaceTodo({
-              Todo: response.todos || [],
-            })
-          );
+        if (response.error) {
+          throw new Error(response.payload.message);
         }
 
         dispatch(
           uiAction.showNotification({
             status: SUCCESS,
             title: "Success!",
-            message: response.message,
+            message: response.payload.message || "The request is successful.",
           })
         );
       } catch (error) {
@@ -79,5 +62,3 @@ function useHttp(requestFunction, startWithPending = false) {
     sendRequest,
   };
 }
-
-export default useHttp;

@@ -1,13 +1,12 @@
-import * as React from "react";
-import { useTheme } from "@mui/material/styles";
 import SettingsIcon from "@mui/icons-material/Settings";
-import Box from "@mui/material/Box";
-// Returns a hex code for an attractive color
-import randomColor from "randomcolor";
-import { stepAction } from "../../store/steps-slice";
-import { useDispatch } from "react-redux";
+import { stepAction } from "../../../store/steps-slice";
 import { Button } from "./FilterCustomStyledPopper";
+import { useTheme } from "@mui/material/styles";
+import { useDispatch } from "react-redux";
+import randomColor from "randomcolor";
 import Popper from "./FilterPopper";
+import Box from "@mui/material/Box";
+import * as React from "react";
 
 /**
  * FILTER COMPONENT

@@ -1,4 +1,4 @@
-import { uiAction } from "../store/ui-slice";
+import { uiAction } from "../../store/ui-slice";
 import React, { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FAIL, SUCCESS } from "../../misc/constants";

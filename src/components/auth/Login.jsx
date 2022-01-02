@@ -1,24 +1,29 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { useDispatch } from "react-redux";
-import { userAction } from "../store/user-slice";
-import { useHistory } from "react-router-dom";
+import {
+  getLoadingStatus,
+  RegisterUser,
+  userLoggedIn,
+} from "../../store/user-slice";
 import { Box, LinearProgress } from "@material-ui/core";
-import { LogUser, Register } from "../lib/api";
-import LoginForm from "./LoginForm";
-import useInput from "../hooks/useInput";
-import LandingIcon from "../svgs/LandingPage";
-import { uiAction } from "../store/ui-slice";
 import { FAIL, SUCCESS } from "../../misc/constants";
+import { uiAction } from "../../store/ui-slice";
+import { useHistory } from "react-router-dom";
+import LandingIcon from "../svgs/LandingPage";
+import useInput from "../../hooks/useInput";
+import { useDispatch, useSelector } from "react-redux";
 import { homeStyles } from "../ui/Style";
+import LoginForm from "./login-form";
 
 // Component responsible for Form Validation and Login/Registration State
 const Login = (props) => {
   const classes = homeStyles();
-  const dispatch = useDispatch();
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  const loadingStatus = useSelector(getLoadingStatus);
+
   const [formIsValid, setFormIsValid] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
-  const [loading, setIsLoading] = useState(false);
 
   // Validate Email
   const {
@@ -116,7 +121,7 @@ const Login = (props) => {
     enteredPasswordConfirmationIsValid,
   ]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formIsValid) {
@@ -124,30 +129,33 @@ const Login = (props) => {
     }
 
     const LoggedIn = async () => {
-      setIsLoading(true);
       try {
         let responseData;
         if (!isRegistering) {
-          responseData = await LogUser(enteredEmail, enteredPassword);
+          responseData = await dispatch(
+            userLoggedIn({ email: enteredEmail, password: enteredPassword })
+          );
         } else {
-          responseData = await Register(
-            enteredName,
-            enteredEmail,
-            enteredPassword,
-            enteredPasswordConfirmation
+          responseData = await dispatch(
+            RegisterUser({
+              name: enteredName,
+              email: enteredEmail,
+              password: enteredPassword,
+              password_confirmation: enteredPasswordConfirmation,
+            })
           );
         }
-        const { user, token, ...message } = responseData;
+
+        console.log(responseData, "FROM LOGIN!!!");
+
+        if (responseData.error) {
+          throw new Error(responseData.payload.message);
+        }
+
+        const { user, token, ...message } = responseData.payload;
 
         // Change to a more secure method
         localStorage.setItem("token", token);
-
-        dispatch(
-          userAction.logUserIn({
-            user,
-            token,
-          })
-        );
 
         dispatch(
           uiAction.showNotification({
@@ -159,10 +167,8 @@ const Login = (props) => {
           })
         );
 
-        setIsLoading(false);
         history.push("/dashboard");
       } catch (err) {
-        setIsLoading(false);
         dispatch(
           uiAction.showNotification({
             status: FAIL,
@@ -173,6 +179,7 @@ const Login = (props) => {
         );
       }
     };
+
     LoggedIn();
 
     resetPasswordInput();
@@ -181,11 +188,11 @@ const Login = (props) => {
 
   return (
     <Fragment>
-      {loading && <LinearProgress />}
+      {loadingStatus && <LinearProgress />}
       <Box className={`${classes.root} ${classes.login}`}>
         <LoginForm
           handleSubmit={handleSubmit}
-          loading={loading}
+          loading={loadingStatus}
           form={formValidation}
           isRegistering={isRegistering}
           setIsRegistering={setIsRegistering}

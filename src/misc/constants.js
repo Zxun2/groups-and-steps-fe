@@ -1,8 +1,9 @@
 // Fetch data
-export const SUCCESS = "success";
-export const FAIL = "error";
-export const LOADING = "loading";
-export const COMPLETED = "completed";
+export const SUCCESS = "Success";
+export const FAIL = "Error";
+export const LOADING = ":oading";
+export const COMPLETED = "Completed";
+export const NOTICE = "Notice";
 
 // Status
 export const USER_LOGGED_IN = "LOGGED_IN";

@@ -7,8 +7,8 @@ import DialogContentText from "@mui/material/DialogContentText";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import { v4 } from "uuid";
 import { Box } from "@material-ui/core";
-import { addTodo } from "../../lib/api";
-import useHttp from "../../hooks/useHttp";
+import { postTodo } from "../../../store/todo-slice";
+import { useHttp2 } from "../../../hooks/useHttp";
 
 const filter = createFilterOptions();
 
@@ -24,7 +24,7 @@ export default function NavInput(props) {
   const searchRef = useRef();
   const todoRef = useRef();
 
-  const { sendRequest: createTodo } = useHttp(addTodo);
+  const { sendRequest: createTodo } = useHttp2(postTodo);
 
   const handleClose = () => {
     // Empty Input
@@ -48,7 +48,7 @@ export default function NavInput(props) {
     const title = todoRef.current.value.trim();
 
     if (title !== "") {
-      createTodo({ title: title });
+      createTodo({ content: { title } });
     }
 
     todoRef.current.value = "";

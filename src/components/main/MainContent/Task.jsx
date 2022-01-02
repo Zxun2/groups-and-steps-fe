@@ -1,3 +1,4 @@
+import { Typography, TextField, CardHeader } from "@material-ui/core";
 import React, { Fragment, useRef, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
@@ -5,7 +6,6 @@ import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
-import { Typography, TextField, CardHeader } from "@material-ui/core";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Stack from "@mui/material/Stack";
@@ -14,15 +14,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { Divider } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-// Returns a hex code for an attractive color
 import randomColor from "randomcolor";
 import { Chip } from "@material-ui/core";
-import { useDispatch } from "react-redux";
-import { stepAction } from "../../store/steps-slice";
-import { deleteStep, updateStep } from "../../lib/api";
-import useHttp from "../../hooks/useHttp";
-import TagsInput from "../Tags/TagsInput";
+import { useHttp2 } from "../../../hooks/useHttp";
+import TagsInput from "../tag/tags-input";
 import { tagInputStyles } from "../../ui/Style";
+import { updateCurrStep, deleteCurrStep } from "../../../store/steps-slice";
 
 // Styled Components
 const ExpandMore = styled((props) => {
@@ -52,10 +49,9 @@ export default function Task({
   const [newTags, setNewTags] = useState(tags);
 
   const inputRef = useRef();
-  const dispatch = useDispatch();
 
-  const { sendRequest: updatesStep } = useHttp(updateStep);
-  const { sendRequest: deletesStep } = useHttp(deleteStep);
+  const { sendRequest: updateStep } = useHttp2(updateCurrStep);
+  const { sendRequest: deleteStep } = useHttp2(deleteCurrStep);
 
   const open = Boolean(anchorEl);
 
@@ -65,59 +61,35 @@ export default function Task({
     setNewTags(items);
   }
 
-  const handleClose = () => {
+  const handleClose = async () => {
     setAnchorEl(null);
-    // UPDATE DATABASE
-    updatesStep(todo_id, step_id, {
-      completed: completed ? false : true,
-    });
 
-    // UPDATE UI
-    dispatch(
-      stepAction.updateStep({
-        id: step_id,
-        data: {
-          completed: completed ? false : true,
-        },
-      })
-    );
+    updateStep({
+      todo_id,
+      step_id,
+      content: {
+        completed: completed ? false : true,
+      },
+    });
   };
 
   const updateStepHandler = (e) => {
     e.preventDefault();
 
-    console.log(newTags);
-
-    // UPDATE DATABASE
-    updatesStep(todo_id, step_id, {
-      step: inputRef.current.value,
-      tags: newTags,
+    updateStep({
+      todo_id,
+      step_id,
+      content: {
+        step: inputRef.current.value,
+        tags: newTags,
+      },
     });
-
-    // UPDATE UI
-    dispatch(
-      stepAction.updateStep({
-        id: step_id,
-        data: {
-          step: inputRef.current.value,
-          tags: newTags,
-        },
-      })
-    );
 
     setExpanded(!expanded);
   };
 
   const deleteStepHandler = () => {
-    // UPDATE DATABASE
-    deletesStep(todo_id, step_id);
-
-    // UPDATE UI
-    dispatch(
-      stepAction.removeStep({
-        id: step_id,
-      })
-    );
+    deleteStep({ todo_id, step_id });
 
     setExpanded(!expanded);
   };

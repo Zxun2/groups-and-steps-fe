@@ -16,12 +16,13 @@ import NavInput from "./NavInput";
 import { useSelector } from "react-redux";
 import { LinearProgress } from "@material-ui/core";
 import { drawerWidth } from "../../../misc/constants";
+import { getLoadingState } from "../../../store/ui-slice";
 
 const NavBar = (props) => {
   const classes = navStyles();
   const [open, setOpen] = useState(true);
   const handleOpen = () => setOpen(true);
-  const status = useSelector((state) => state.ui.globalState);
+  const status = useSelector(getLoadingState);
 
   const handleClose = () => setOpen(false);
 

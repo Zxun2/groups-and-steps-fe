@@ -1,16 +1,16 @@
-import { Typography } from "@material-ui/core";
-import { Fragment } from "react";
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
+import StepConnector from "@mui/material/StepConnector";
 import StepContent from "@mui/material/StepContent";
-import Paper from "@mui/material/Paper";
-import { Button } from "@material-ui/core";
+import StepLabel from "@mui/material/StepLabel";
+import { Typography } from "@material-ui/core";
 import Check from "@mui/icons-material/Check";
 import { styled } from "@mui/material/styles";
-import StepConnector from "@mui/material/StepConnector";
+import Stepper from "@mui/material/Stepper";
+import { Button } from "@material-ui/core";
+import Paper from "@mui/material/Paper";
+import Step from "@mui/material/Step";
+import Box from "@mui/material/Box";
+import { Fragment } from "react";
+import * as React from "react";
 
 const steps = [
   {
@@ -181,7 +181,7 @@ const Instructions = () => {
               <StepContent>
                 {step.description.split("\n").map((para) => {
                   return (
-                    <Typography paragraph color="secondary">
+                    <Typography key={Math.random()} paragraph color="secondary">
                       {para}
                     </Typography>
                   );

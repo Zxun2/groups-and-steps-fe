@@ -1,9 +1,9 @@
 import { Typography, Button, CircularProgress, Paper } from "@material-ui/core";
-import SendIcon from "@mui/icons-material/Send";
-import { Fragment } from "react";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { Box } from "@material-ui/core";
+import SendIcon from "@mui/icons-material/Send";
 import { loginStyles } from "../ui/Style";
+import { Box } from "@material-ui/core";
+import { Fragment } from "react";
 
 // Form Component
 const LoginForm = (props) => {

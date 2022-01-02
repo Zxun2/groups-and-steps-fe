@@ -5,7 +5,7 @@ import { userModalStyle } from "../../ui/Style";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { userAction } from "../../store/user-slice";
+import { userAction } from "../../../store/user-slice";
 
 function UserModal(props) {
   const history = useHistory();

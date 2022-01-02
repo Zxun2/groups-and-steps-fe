@@ -1,22 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { v4 } from "uuid";
 
-// TO ADD: interfaces for initial state
-
 // A function that accepts an initial state, an object of reducer functions,
 // and a "slice name", and automatically generates action creators and action types
 // that correspond to the reducers and state.
-
-/**
- * createSlice will return an object that looks like this
- * {
- *  name: string,
- *  reducer: ReducerFunction,
- *  actions: Record<string, ActionCreator>
- *  caseReducers: Record<string, CaseReducer>,
- *  getInitialState: () => State
- * }
- */
 
 /**
  * interface Notification {
@@ -50,6 +37,8 @@ const uiSlice = createSlice({
     },
   },
 });
+
+export const getLoadingState = (state) => state.ui.globalState;
 
 export const uiAction = uiSlice.actions;
 export default uiSlice;

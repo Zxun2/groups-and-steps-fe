@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import store from "./components/store";
+import store from "./store";
 import { ThemeProvider } from "@material-ui/core";
 import theme from "./components/themes";
 
