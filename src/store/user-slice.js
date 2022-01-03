@@ -11,6 +11,7 @@ export const autoLogin = createAsyncThunk(
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
+          "Access-Control-Allow-Origin": "*",
         },
       });
 

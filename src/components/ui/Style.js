@@ -326,10 +326,3 @@ export const homeStyles = makeStyles((theme) => ({
     },
   },
 }));
-
-export const dateStyles = makeStyles((theme) => ({
-  date: {
-    backgroundColor: "red",
-    borderRadius: "10px",
-  },
-}));

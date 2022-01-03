@@ -1,5 +1,6 @@
 import { Typography, TextField, CardHeader } from "@material-ui/core";
 import React, { Fragment, useRef, useState } from "react";
+import { format } from "date-fns";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -21,6 +22,10 @@ import TagsInput from "../tag/tags-input";
 import { tagInputStyles } from "../../ui/Style";
 import { updateCurrStep, deleteCurrStep } from "../../../store/steps-slice";
 
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DatePicker from "@mui/lab/DatePicker";
+
 // Styled Components
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -40,6 +45,7 @@ export default function Task({
   completed,
   todo_id,
   tags,
+  deadline,
   ...others
 }) {
   const classes = tagInputStyles();
@@ -54,6 +60,13 @@ export default function Task({
   const { sendRequest: deleteStep } = useHttp2(deleteCurrStep);
 
   const open = Boolean(anchorEl);
+
+  const ref = useRef();
+  const [dateValue, setDateValue] = useState(
+    deadline ? format(new Date(deadline), "MM/dd/yyyy") : null
+  );
+
+  let newDeadline = "";
 
   // Function is called in TagsInput.jsx
   // To return selected tags
@@ -76,12 +89,18 @@ export default function Task({
   const updateStepHandler = (e) => {
     e.preventDefault();
 
+    if (ref.current.value !== "") {
+      const newDate = new Date(ref.current.value);
+      newDeadline = format(newDate, "dd/MM/yyyy");
+    }
+
     updateStep({
       todo_id,
       step_id,
       content: {
         step: inputRef.current.value,
         tags: newTags,
+        deadline: newDeadline || "",
       },
     });
 
@@ -151,9 +170,18 @@ export default function Task({
               );
             }
           })}
+          {deadline && (
+            <Typography
+              variant="subtitle2"
+              color="secondary"
+              style={{ fontWeight: "400", fontStyle: "italic" }}
+            >
+              <span style={{ color: "red" }}>Take note </span>: You have an
+              upcoming deadline: {deadline}
+            </Typography>
+          )}
         </CardContent>
         <CardActions disableSpacing={true} style={{ paddingBottom: "0" }}>
-          {/* BUG: LIMIT WIDTH */}
           <Box className={classes.scrollbar}>
             {tags?.length > 0 && (
               <Stack
@@ -244,7 +272,52 @@ export default function Task({
                 }}
               />
 
-              <Box style={{ display: "inline-flex", justifyContent: "end" }}>
+              <Box
+                style={{
+                  display: "inline-flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "1rem 0 ",
+                }}
+              >
+                <Box
+                  style={{
+                    display: "flex",
+                    alignItems: "end",
+                  }}
+                >
+                  <Typography
+                    variant="subtitle1"
+                    color="secondary"
+                    style={{ marginRight: "1rem" }}
+                  >
+                    Set a deadline :
+                  </Typography>
+                  <Box component="form" onSubmit={updateStepHandler}>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DatePicker
+                        mask="__/__/____"
+                        openTo="year"
+                        views={["year", "month", "day"]}
+                        value={dateValue}
+                        format="DD-MM-YYYY"
+                        InputProps={{
+                          style: {
+                            color: "#ffffff",
+                            fontSize: "1.2 rem",
+                          },
+                        }}
+                        onChange={(newValue) => {
+                          setDateValue(newValue);
+                        }}
+                        disableCloseOnSelect
+                        inputRef={ref}
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                    </LocalizationProvider>
+                  </Box>
+                </Box>
+
                 <Button
                   variant="outlined"
                   color="error"

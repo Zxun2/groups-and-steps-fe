@@ -37,11 +37,12 @@ const RenderSteps = (props) => {
                     <Task
                       key={step.id}
                       id={step.id}
-                      step={step.step}
+                      step={step.step} // name
                       completed={step.completed}
                       todo_id={step.todo_id}
                       updated_at={step.updated_at}
                       tags={step.tags}
+                      deadline={step.deadline}
                     />
                   )
                 );
