@@ -177,7 +177,7 @@ export default function Task({
               style={{ fontWeight: "400", fontStyle: "italic" }}
             >
               <span style={{ color: "red" }}>Take note </span>: You have an
-              upcoming deadline: {deadline}
+              upcoming deadline on {deadline}
             </Typography>
           )}
         </CardContent>
