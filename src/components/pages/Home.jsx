@@ -1,4 +1,4 @@
-import Login from "../auth/login";
+import Login from "../auth/Login";
 
 // Home Page
 export const Home = (props) => {
