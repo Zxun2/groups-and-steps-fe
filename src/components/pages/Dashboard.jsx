@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerWidth } from "../../misc/constants";
 import NavBar from "../main/NavBar/NavBar";
@@ -27,8 +27,8 @@ export const Dashboard = (props) => {
   // STATE
   const [openUserModal, setOpenUserModal] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState([]);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState([]);
   const [activeTodoId, setTodoId] = useState(-1);
   const [updatedTodo, setChange] = useState("");
   const [title, setTitle] = useState("");
@@ -43,13 +43,7 @@ export const Dashboard = (props) => {
 
   // Fetch Todos
   useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchTodos({});
-    });
-
-    return () => {
-      clearTimeout(timer);
-    };
+    fetchTodos({});
   }, [fetchTodos]);
 
   // Todo Modal
@@ -93,7 +87,6 @@ export const Dashboard = (props) => {
     [dispatch]
   );
 
-  // Create Todo
   const createTodoHandler = useCallback(
     (e) => {
       e.preventDefault();
@@ -105,14 +98,19 @@ export const Dashboard = (props) => {
     [Todo, createTodo]
   );
 
-  // Delete Todo
   const deleteTodoHandler = useCallback(
     (id) => {
       removeTodo({ id });
+
+      // Reset view
+      setTodoId(-1);
+      setTitle("");
+      dispatch(stepAction.resetStepState());
+
       // Close Modal
       setOpen(false);
     },
-    [removeTodo]
+    [removeTodo, dispatch]
   );
 
   const updateTodoHandler = useCallback(
@@ -136,7 +134,7 @@ export const Dashboard = (props) => {
   );
 
   return (
-    <React.Fragment>
+    <Fragment>
       <TodoModal
         open={open}
         handleClose={handleClose}
@@ -178,6 +176,6 @@ export const Dashboard = (props) => {
           />
         </Box>
       </div>
-    </React.Fragment>
+    </Fragment>
   );
 };

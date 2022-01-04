@@ -57,7 +57,7 @@ const Popper = (props) => {
               ) {
                 return;
               }
-
+              // newValue is the newPendingValue
               // SET NEW VALUE
               props.setPendingValue(newValue);
             }}

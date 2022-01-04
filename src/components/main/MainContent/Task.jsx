@@ -20,11 +20,16 @@ import { Chip } from "@material-ui/core";
 import { useHttp2 } from "../../../hooks/useHttp";
 import TagsInput from "../tag/tags-input";
 import { tagInputStyles } from "../../ui/Style";
-import { updateCurrStep, deleteCurrStep } from "../../../store/steps-slice";
+import {
+  updateCurrStep,
+  deleteCurrStep,
+  stepAction,
+} from "../../../store/steps-slice";
 
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
+import { useDispatch } from "react-redux";
 
 // Styled Components
 const ExpandMore = styled((props) => {
@@ -46,9 +51,12 @@ export default function Task({
   todo_id,
   tags,
   deadline,
+  setValue,
   ...others
 }) {
   const classes = tagInputStyles();
+  const dispatch = useDispatch();
+
   const [expanded, setExpanded] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedItem, setSelectedItem] = useState([]);
@@ -108,6 +116,17 @@ export default function Task({
   };
 
   const deleteStepHandler = () => {
+    // Reset filters
+    dispatch(
+      stepAction.filterStep({
+        filterArr: [],
+      })
+    );
+
+    setValue((prev) => {
+      prev.filter((tags) => tags.id !== step_id);
+    });
+
     deleteStep({ todo_id, step_id });
 
     setExpanded(!expanded);

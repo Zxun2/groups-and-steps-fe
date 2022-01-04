@@ -1,15 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { API_URL } from "../misc/base-url";
 
-// interface Step {
-//  completed: boolean;
-//  created_at: Date;
-//  id: number;
-//  step: string;
-//  tags: string[];
-//  todo_id: number;
-//  updated_at: Date;
-// }
+/*
+interface Step {
+ completed: boolean;
+ created_at: Date;
+ id: number;
+ step: string;
+ tags: string[];
+ todo_id: number;
+ updated_at: Date;
+}
+*/
 
 // GET /todos/:id/items
 export const fetchAllStep = createAsyncThunk(
@@ -128,15 +130,17 @@ export const deleteCurrStep = createAsyncThunk(
   }
 );
 
+const stepState = {
+  steps: [],
+  // temp array to account for filtering and ordering of steps
+  temp: [],
+  completedCount: 0,
+  unCompletedCount: 0,
+};
+
 const stepSlice = createSlice({
   name: "steps",
-  initialState: {
-    steps: [],
-    // temp array to account for filtering and ordering of steps
-    temp: [],
-    completedCount: 0,
-    unCompletedCount: 0,
-  },
+  initialState: stepState,
   reducers: {
     filterStep(state, action) {
       const filter = action.payload.filterArr;
@@ -151,6 +155,12 @@ const stepSlice = createSlice({
         state.temp = state.steps;
       }
     },
+    resetStepState(state, _) {
+      state.steps = [];
+      state.temp = [];
+      state.completedCount = 0;
+      state.unCompletedCount = 0;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -158,9 +168,13 @@ const stepSlice = createSlice({
         const { item: step } = payload;
 
         const objIndex = state.steps.findIndex((obj) => obj.id === step.id);
+        const tempIndex = state.temp.findIndex((obj) => obj.id === step.id);
 
         state.steps[objIndex] = step;
-        state.temp = state.steps;
+
+        if (tempIndex !== -1) {
+          state.temp[tempIndex] = step;
+        }
 
         step.completed
           ? (state.completedCount += 1)
@@ -178,7 +192,7 @@ const stepSlice = createSlice({
       .addCase(createNewStep.fulfilled, (state, { payload }) => {
         const { step } = payload;
         state.steps.push(step);
-        state.temp = state.steps;
+        state.temp.push(step);
       })
       .addCase(fetchAllStep.fulfilled, (state, { payload }) => {
         state.steps = payload.steps;

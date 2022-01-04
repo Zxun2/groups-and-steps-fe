@@ -6,16 +6,16 @@ import { useDispatch } from "react-redux";
 import randomColor from "randomcolor";
 import Popper from "./FilterPopper";
 import Box from "@mui/material/Box";
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 
 /**
  * FILTER COMPONENT
  */
 export default function FilterLabel(props) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   // "NEW" FILTERS
-  const [pendingValue, setPendingValue] = React.useState([]);
-  const [filterArr, setFilterArr] = React.useState([]);
+  const [pendingValue, setPendingValue] = useState([]);
+  const [filterArr, setFilterArr] = useState([]);
 
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -37,28 +37,23 @@ export default function FilterLabel(props) {
   labels = labels.concat(data);
 
   const handleClick = (event) => {
-    setPendingValue(props.value);
+    setPendingValue(props.value || []); // initially an empty arr - means dont select anything on start
     setAnchorEl(event.currentTarget);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     // on mount
-    const timer = setTimeout(() => {
-      dispatch(
-        stepAction.filterStep({
-          filterArr: filterArr,
-        })
-      );
-    });
-
-    return () => {
-      clearTimeout(timer);
-    };
+    dispatch(
+      stepAction.filterStep({
+        filterArr: filterArr,
+      })
+    );
   }, [filterArr, dispatch]);
 
   const handleClose = () => {
-    // transfer to new state
+    // transfer currState to newState
     props.setValue(pendingValue);
+
     // for rendering of ui (remove duplicates)
     setFilterArr([...new Set(pendingValue.map((filter) => filter.id))]);
 
@@ -66,6 +61,7 @@ export default function FilterLabel(props) {
     if (anchorEl) {
       anchorEl.focus();
     }
+
     setAnchorEl(null);
   };
 

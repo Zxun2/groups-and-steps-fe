@@ -3,10 +3,22 @@ import { Badge } from "@material-ui/core";
 import { Chip } from "@material-ui/core";
 import { Divider } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import React from "react";
+import React, { useState } from "react";
 import Task from "./Task";
+import { useSelector } from "react-redux";
+import {
+  getCompletedCount,
+  getUncompletedCount,
+} from "../../../store/steps-slice";
 
 const RenderSteps = (props) => {
+  const [isOpenUncompleted, setOpenUncompleted] = useState(true);
+  const [isOpenCompleted, setOpenCompleted] = useState(true);
+
+  // Count
+  const UncompletedCount = useSelector(getUncompletedCount);
+  const CompletedCount = useSelector(getCompletedCount);
+
   return (
     <Stack spacing={3}>
       <Grid container spacing={2}>
@@ -14,22 +26,18 @@ const RenderSteps = (props) => {
           <Divider style={{ marginBottom: "1rem" }}>
             <Badge
               color="secondary"
-              badgeContent={`${props.UncompletedCount}`}
-              invisible={
-                props.isOpenUncompleted || props.UncompletedCount === 0
-              }
+              badgeContent={`${UncompletedCount}`}
+              invisible={isOpenUncompleted || UncompletedCount === 0}
             >
               <Chip
-                onClick={() =>
-                  props.setOpenUncompleted(!props.isOpenUncompleted)
-                }
+                onClick={() => setOpenUncompleted(!isOpenUncompleted)}
                 label={"UNCOMPLETED"}
                 color="primary"
                 size="medium"
               />
             </Badge>
           </Divider>
-          <Collapse in={props.isOpenUncompleted}>
+          <Collapse in={isOpenUncompleted}>
             <Box>
               {props.steps?.map((step) => {
                 return (
@@ -37,6 +45,7 @@ const RenderSteps = (props) => {
                     <Task
                       key={step.id}
                       id={step.id}
+                      setValue={props.setValue}
                       step={step.step} // name
                       completed={step.completed}
                       todo_id={step.todo_id}
@@ -54,18 +63,18 @@ const RenderSteps = (props) => {
           <Divider style={{ marginBottom: "1rem" }}>
             <Badge
               color="secondary"
-              badgeContent={`${props.CompletedCount}`}
-              invisible={props.isOpenCompleted || props.CompletedCount === 0}
+              badgeContent={`${CompletedCount}`}
+              invisible={isOpenCompleted || CompletedCount === 0}
             >
               <Chip
-                onClick={() => props.setOpenCompleted(!props.isOpenCompleted)}
+                onClick={() => setOpenCompleted(!isOpenCompleted)}
                 label={`COMPLETED`}
                 color="primary"
                 size="medium"
               />
             </Badge>
           </Divider>
-          <Collapse in={props.isOpenCompleted}>
+          <Collapse in={isOpenCompleted}>
             {props.steps.map((step) => {
               return (
                 step?.completed && (
