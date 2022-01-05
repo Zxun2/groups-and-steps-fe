@@ -2,15 +2,15 @@
 
 <div id="#top"></div>
 
-Frontend Repo: https://github.com/Zxun2/cvwo-assignment-frontend
+Frontend Repo: <https://github.com/Zxun2/cvwo-assignment-frontend>
 
-Backend Repo: https://github.com/Zxun2/cvwo-assignment-backend
+Backend Repo: <https://github.com/Zxun2/cvwo-assignment-backend>
 
 |     Name     | Matriculation Number |
 | :----------: | :------------------: |
 | Lee Zong Xun |      A0233594Y       |
 
-### Tutorial account details for Web app :
+### Tutorial account details for Web app
 
 |       Email        | Password |
 | :----------------: | :------: |
@@ -19,6 +19,14 @@ Backend Repo: https://github.com/Zxun2/cvwo-assignment-backend
 ## Overview
 
 Groups and Steps 📝 is a web application built using Rails and React for CVWO 2021/2022 assignment. It allows you to manage your tasks into groups, and further break them down into steps.
+
+### Features to look out for
+
+1. Tags to categorise your steps
+2. Notification system
+3. User profile
+4. Search functionality
+5. Deadlines
 
 ## Setting up
 
