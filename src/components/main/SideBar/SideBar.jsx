@@ -17,10 +17,15 @@ import {
   List,
   Divider,
 } from "@mui/material";
+import { useSelector } from "react-redux";
+import { getUserState } from "../../../store/user-slice";
+import { getAllTodo } from "../../../store/todo-slice";
 
 export const SideBar = (props) => {
   const { window } = props;
   const classes = dashboardStyles();
+  const userState = useSelector(getUserState);
+  const Todos = useSelector(getAllTodo);
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
@@ -36,13 +41,13 @@ export const SideBar = (props) => {
           <ListItemIcon>
             <PersonIcon />
           </ListItemIcon>
-          <ListItemText primary={props.userState?.currUser?.name} />
+          <ListItemText primary={userState?.currUser?.name} />
         </ListItem>
         <ListItem button onClick={() => props.setOpenUserModal(true)}>
           <ListItemIcon>
             <EmailIcon />
           </ListItemIcon>
-          <ListItemText primary={props.userState?.currUser?.email} />
+          <ListItemText primary={userState?.currUser?.email} />
         </ListItem>
       </List>
 
@@ -56,7 +61,7 @@ export const SideBar = (props) => {
         autoHideDuration={200}
       >
         <List>
-          {props.Todos.map((Todo) => (
+          {Todos.map((Todo) => (
             <ListItem
               button
               onClick={props.changeContentHandler.bind(

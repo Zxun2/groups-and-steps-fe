@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import Task from "./Task";
 import { useSelector } from "react-redux";
 import {
+  getAllSteps,
   getCompletedCount,
   getUncompletedCount,
 } from "../../../store/steps-slice";
@@ -18,6 +19,8 @@ const RenderSteps = (props) => {
   // Count
   const UncompletedCount = useSelector(getUncompletedCount);
   const CompletedCount = useSelector(getCompletedCount);
+
+  const steps = useSelector(getAllSteps);
 
   return (
     <Stack spacing={3}>
@@ -39,7 +42,7 @@ const RenderSteps = (props) => {
           </Divider>
           <Collapse in={isOpenUncompleted}>
             <Box>
-              {props.steps?.map((step) => {
+              {steps?.map((step) => {
                 return (
                   !step.completed && (
                     <Task
@@ -52,6 +55,7 @@ const RenderSteps = (props) => {
                       updated_at={step.updated_at}
                       tags={step.tags}
                       deadline={step.deadline}
+                      created_at={step.created_at}
                     />
                   )
                 );
@@ -75,7 +79,7 @@ const RenderSteps = (props) => {
             </Badge>
           </Divider>
           <Collapse in={isOpenCompleted}>
-            {props.steps.map((step) => {
+            {steps.map((step) => {
               return (
                 step?.completed && (
                   <Task

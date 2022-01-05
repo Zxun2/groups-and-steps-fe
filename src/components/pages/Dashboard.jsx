@@ -13,16 +13,15 @@ import {
   fetchAllTodos,
   postTodo,
   deleteCurrTodo,
-  getAllTodo,
   updateCurrTodo,
 } from "../../store/todo-slice";
 
 import { useHttp2 } from "../../hooks/useHttp";
+import { getUserState } from "../../store/user-slice";
 
-export const Dashboard = (props) => {
+export const Dashboard = () => {
   const dispatch = useDispatch();
-  const userState = useSelector((state) => state.user);
-  const Todos = useSelector(getAllTodo);
+  const userState = useSelector(getUserState);
 
   // STATE
   const [openUserModal, setOpenUserModal] = useState(false);
@@ -41,7 +40,6 @@ export const Dashboard = (props) => {
   const { sendRequest: removeTodo } = useHttp2(deleteCurrTodo);
   const { sendRequest: changeTodo } = useHttp2(updateCurrTodo);
 
-  // Fetch Todos
   useEffect(() => {
     fetchTodos({});
   }, [fetchTodos]);
@@ -52,12 +50,9 @@ export const Dashboard = (props) => {
     setTodoId(id);
   };
 
-  // Todo Modal close
   const handleClose = () => setOpen(false);
-  // User Modal close
   const handleUserClose = () => setOpenUserModal(false);
 
-  // Drawer toggle
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -151,15 +146,12 @@ export const Dashboard = (props) => {
             handleDrawerToggle={handleDrawerToggle}
             drawerWidth={drawerWidth}
             title={title}
-            todos={Todos}
             changeContentHandler={changeContentHandler}
           />
           <SideBar
             handleDrawerToggle={handleDrawerToggle}
             mobileOpen={mobileOpen}
             setOpenUserModal={setOpenUserModal}
-            userState={userState}
-            Todos={Todos}
             changeContentHandler={changeContentHandler}
             openModalHandler={openModalHandler}
             createTodoHandler={createTodoHandler}
@@ -170,7 +162,6 @@ export const Dashboard = (props) => {
             todoId={activeTodoId}
             title={title}
             userState={userState}
-            Todos={Todos}
             value={value}
             setValue={setValue}
           />

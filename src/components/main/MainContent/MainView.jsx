@@ -4,7 +4,7 @@ import FilterLabel from "../FilterComponent/Filter";
 import AddTaskIcon from "../../svgs/AddtasksIcon";
 import { Typography } from "@material-ui/core";
 import { TextField } from "@material-ui/core";
-import TagsInput from "../tag/tags-input";
+import TagsInput from "../Tag/TagsInput";
 import { Fragment } from "react";
 import RenderSteps from "./RenderSteps";
 import { Divider } from "@mui/material";
@@ -12,10 +12,11 @@ import { Box } from "@material-ui/core";
 import Grid from "@mui/material/Grid";
 import { Chip } from "@material-ui/core";
 import { Stack } from "@mui/material";
+import { useSelector } from "react-redux";
+import { getAllSteps } from "../../../store/steps-slice";
+import { stepStyles } from "../../ui/Style";
 
 const MainView = ({
-  steps,
-  classes,
   toggleDetails,
   setToggleDetails,
   todoId,
@@ -29,6 +30,9 @@ const MainView = ({
   setSelectedItem,
   stepRef,
 }) => {
+  const steps = useSelector(getAllSteps);
+  const classes = stepStyles();
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={toggleDetails ? 8 : 12}>
@@ -50,7 +54,7 @@ const MainView = ({
                   variant="h4"
                   color="secondary"
                   style={{
-                    fontWeight: "400",
+                    fontWeight: "600",
                     textAlign: "center",
                     margin: "2rem 0 0 0",
                   }}
@@ -71,18 +75,14 @@ const MainView = ({
                   autoHideDuration={200}
                 >
                   <Box className={classes.filter}>
-                    <FilterLabel
-                      steps={steps}
-                      value={value}
-                      setValue={setValue}
-                    />
+                    <FilterLabel value={value} setValue={setValue} />
                     <SelectLabels
                       toggleDetails={toggleDetails}
                       setToggleDetails={setToggleDetails}
                       setView={setView}
                     />
                   </Box>
-                  <RenderSteps steps={steps} view={view} setValue={setValue} />
+                  <RenderSteps view={view} setValue={setValue} />
                 </CustomScrollbars>
               </Box>
               <Divider>
@@ -136,7 +136,6 @@ const MainView = ({
             }`}
             style={{ height: "100%" }}
           >
-            {/* <StaticDatePickerLandscape /> */}
             <p>A work in progress...</p>
           </Box>
         </Grid>

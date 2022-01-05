@@ -21,6 +21,7 @@ const LoginForm = (props) => {
           Groups and Steps - A knowledge repository 📝
         </Typography>
 
+        {/* Name */}
         {props.isRegistering && (
           <Fragment>
             <label htmlFor="name">Name</label>
@@ -41,6 +42,8 @@ const LoginForm = (props) => {
             )}
           </Fragment>
         )}
+
+        {/* Email */}
         <label htmlFor="email">E-Mail Address</label>
         <input
           type="email"
@@ -55,6 +58,8 @@ const LoginForm = (props) => {
         {props.form.emailInputHasError && (
           <p className={classes.error_text}>Email format is wrong!</p>
         )}
+
+        {/* Password */}
         <label htmlFor="password">Password</label>
         <input
           type="password"
@@ -71,6 +76,8 @@ const LoginForm = (props) => {
             Password must be more than 6 characters!
           </p>
         )}
+
+        {/* Password Confirmation */}
         {props.isRegistering && (
           <Fragment>
             <label htmlFor="password_confirmation">Confirm Password</label>

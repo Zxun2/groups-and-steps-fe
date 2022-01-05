@@ -26,7 +26,7 @@ export function useHttp2(requestFunction) {
         );
 
         if (response.error) {
-          throw new Error(response.payload.message);
+          throw new Error(response.error.message);
         }
 
         dispatch(
@@ -43,7 +43,7 @@ export function useHttp2(requestFunction) {
             title: "Error!",
             message:
               error.message ||
-              "There was an error sending a request. Please reload.",
+              "There was an error sending the request. Please reload.",
           })
         );
       }

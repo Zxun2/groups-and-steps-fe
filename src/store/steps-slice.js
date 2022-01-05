@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { API_URL } from "../misc/base-url";
+import randomColor from "randomcolor";
 
 /*
 interface Step {
@@ -16,117 +17,99 @@ interface Step {
 // GET /todos/:id/items
 export const fetchAllStep = createAsyncThunk(
   "steps/fetchAllStep",
-  async (fetchStep, { rejectWithValue }) => {
-    try {
-      const { token, id } = fetchStep;
+  async (fetchStep, _) => {
+    const { token, id } = fetchStep;
 
-      const response = await fetch(`${API_URL}/todos/${id}/items`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+    const response = await fetch(`${API_URL}/todos/${id}/items`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-      if (!response.ok) {
-        throw new Error("There was an error fetching the Steps.");
-      }
-      const data = await response.json();
-
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
+    if (!response.ok) {
+      throw new Error("There was an error fetching the Steps.");
     }
+
+    const data = await response.json();
+    return data;
   }
 );
 
 // PUT /todos/:id/items/:item_id
 export const updateCurrStep = createAsyncThunk(
   "steps/updateStep",
-  async (newStepData, { rejectWithValue }) => {
-    try {
-      const { token, todo_id, step_id, content } = newStepData;
-      const response = await fetch(
-        `${API_URL}/todos/${todo_id}/items/${step_id}`,
-        {
-          method: "PUT",
-          body: JSON.stringify(content),
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("There was an error updating the Step.");
+  async (newStepData, _) => {
+    const { token, todo_id, step_id, content } = newStepData;
+    const response = await fetch(
+      `${API_URL}/todos/${todo_id}/items/${step_id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(content),
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       }
-      const data = await response.json();
+    );
 
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
+    if (!response.ok) {
+      throw new Error("There was an error updating the Step.");
     }
+
+    const data = await response.json();
+    return data;
   }
 );
 
 // POST /todos/:id/items
 export const createNewStep = createAsyncThunk(
   "steps/createStep",
-  async (newStepData, { rejectWithValue }) => {
-    try {
-      const { token, content, todo_id } = newStepData;
+  async (newStepData, _) => {
+    const { token, content, todo_id } = newStepData;
 
-      const newStep = { ...content, completed: false };
+    const newStep = { ...content, completed: false };
 
-      const response = await fetch(`${API_URL}/todos/${todo_id}/items`, {
-        method: "POST",
-        body: JSON.stringify(newStep),
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+    const response = await fetch(`${API_URL}/todos/${todo_id}/items`, {
+      method: "POST",
+      body: JSON.stringify(newStep),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-      if (!response.ok) {
-        throw new Error("There was an error creating the Step.");
-      }
-      const data = await response.json();
-
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
+    if (!response.ok) {
+      throw new Error("There was an error creating the Step.");
     }
+    const data = await response.json();
+    return data;
   }
 );
 
 // DELETE /todos/:id/items/:item_id
 export const deleteCurrStep = createAsyncThunk(
   "steps/deleteStep",
-  async (currStepData, { rejectWithValue }) => {
-    try {
-      const { token, todo_id, step_id } = currStepData;
+  async (currStepData, _) => {
+    const { token, todo_id, step_id } = currStepData;
 
-      const response = await fetch(
-        `${API_URL}/todos/${todo_id}/items/${step_id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("There was an error deleting the Step.");
+    const response = await fetch(
+      `${API_URL}/todos/${todo_id}/items/${step_id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       }
-      const data = await response.json();
+    );
 
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
+    if (!response.ok) {
+      throw new Error("There was an error deleting the Step.");
     }
+    const data = await response.json();
+    return data;
   }
 );
 
@@ -187,16 +170,19 @@ const stepSlice = createSlice({
       .addCase(deleteCurrStep.fulfilled, (state, { payload }) => {
         const { item } = payload;
         state.steps = state.steps.filter((obj) => obj.id !== item.id);
-        state.temp = state.steps;
+        state.temp = [...state.steps];
       })
       .addCase(createNewStep.fulfilled, (state, { payload }) => {
         const { step } = payload;
         state.steps.push(step);
         state.temp.push(step);
+
+        state.unCompletedCount += 1;
       })
       .addCase(fetchAllStep.fulfilled, (state, { payload }) => {
         state.steps = payload.steps;
-        state.temp = state.steps;
+        state.temp = [...state.steps];
+
         state.completedCount = 0;
         state.unCompletedCount = 0;
 
@@ -214,6 +200,20 @@ const stepSlice = createSlice({
 export const getAllSteps = (state) => state.step.temp;
 export const getCompletedCount = (state) => state.step.completedCount;
 export const getUncompletedCount = (state) => state.step.unCompletedCount;
+
+export const getFilterLabels = (state) => {
+  const steps = getAllSteps(state);
+  return steps.map((step, _) => {
+    const color = randomColor();
+    const tags = step.tags; // array
+    return {
+      tags: [...tags],
+      step: step.step,
+      color,
+      id: step.id,
+    };
+  });
+};
 
 export const stepAction = stepSlice.actions;
 export default stepSlice;

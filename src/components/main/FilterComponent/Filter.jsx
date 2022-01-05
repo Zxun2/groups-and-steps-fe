@@ -1,9 +1,8 @@
 import SettingsIcon from "@mui/icons-material/Settings";
-import { stepAction } from "../../../store/steps-slice";
+import { getFilterLabels, stepAction } from "../../../store/steps-slice";
 import { Button } from "./FilterCustomStyledPopper";
 import { useTheme } from "@mui/material/styles";
-import { useDispatch } from "react-redux";
-import randomColor from "randomcolor";
+import { useDispatch, useSelector } from "react-redux";
 import Popper from "./FilterPopper";
 import Box from "@mui/material/Box";
 import React, { useState, useEffect } from "react";
@@ -20,20 +19,10 @@ export default function FilterLabel(props) {
   const theme = useTheme();
   const dispatch = useDispatch();
 
+  const data = useSelector(getFilterLabels);
+
   // Reformat steps into desirable format for filter
   let labels = [];
-
-  const data = props?.steps?.map((step, index) => {
-    const color = randomColor();
-    const tags = step.tags; // array
-    return {
-      tags: [...tags],
-      step: step.step,
-      color,
-      id: step.id,
-    };
-  });
-
   labels = labels.concat(data);
 
   const handleClick = (event) => {

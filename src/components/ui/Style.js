@@ -53,7 +53,6 @@ export const navStyles = makeStyles((theme) => ({
   group: {
     display: "flex",
     alignItems: "center",
-    // width: "20vw",
   },
   inboxIcon: {
     marginLeft: "1rem",

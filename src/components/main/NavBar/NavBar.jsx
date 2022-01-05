@@ -17,12 +17,14 @@ import { useSelector } from "react-redux";
 import { LinearProgress } from "@material-ui/core";
 import { drawerWidth } from "../../../misc/constants";
 import { getLoadingState } from "../../../store/ui-slice";
+import { getAllTodo } from "../../../store/todo-slice";
 
 const NavBar = (props) => {
   const classes = navStyles();
   const [open, setOpen] = useState(true);
   const handleOpen = () => setOpen(true);
   const status = useSelector(getLoadingState);
+  const Todos = useSelector(getAllTodo);
 
   const handleClose = () => setOpen(false);
 
@@ -61,13 +63,13 @@ const NavBar = (props) => {
               style={{ alignItems: "center", display: "flex" }}
             >
               <TagIcon />
-              {props.title === "" || props.todos.length === 0
+              {props.title === "" || Todos.length === 0
                 ? "Welcome"
                 : props.title}
             </Typography>
             <div className={classes.group}>
               <NavInput
-                Todos={props.todos}
+                Todos={Todos}
                 changeContentHandler={props.changeContentHandler}
               />
               <InboxIcon onClick={handleOpen} className={classes.inboxIcon} />
@@ -81,8 +83,6 @@ const NavBar = (props) => {
                     autoHideTimeout={500}
                     autoHideDuration={200}
                   >
-                    {/* <CustomizedTimeline /> */}
-
                     <Instructions />
                   </CustomScrollbars>
                 </Box>

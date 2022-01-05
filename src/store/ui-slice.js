@@ -1,10 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { v4 } from "uuid";
 
-// A function that accepts an initial state, an object of reducer functions,
-// and a "slice name", and automatically generates action creators and action types
-// that correspond to the reducers and state.
-
 /**
  * interface Notification {
  *  message: string;

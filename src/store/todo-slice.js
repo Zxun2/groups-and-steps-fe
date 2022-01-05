@@ -15,107 +15,98 @@ import { API_URL } from "../misc/base-url";
 // GET /todos
 export const fetchAllTodos = createAsyncThunk(
   "Todo/fetchAllTodos",
-  async (fetchTodo, { rejectWithValue }) => {
+  async (fetchTodo, _) => {
     const { token } = fetchTodo;
-    try {
-      const response = await fetch(`${API_URL}/todos`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) {
-        throw new Error("There was an error creating the Step.");
-      }
-      const data = await response.json();
+    const response = await fetch(`${API_URL}/todos`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
+    if (!response.ok) {
+      throw new Error(
+        "There was an error fetching your groups. Please reload."
+      );
     }
+
+    const data = await response.json();
+    return data;
   }
 );
 
 // POST /todos
 export const postTodo = createAsyncThunk(
   "Todo/createTodo",
-  async (todoData, { rejectWithValue }) => {
+  async (todoData, _) => {
     const { token, content } = todoData;
 
-    try {
-      const response = await fetch(`${API_URL}/todos`, {
-        method: "POST",
-        body: JSON.stringify(content),
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
+    const response = await fetch(`${API_URL}/todos`, {
+      method: "POST",
+      body: JSON.stringify(content),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-      if (response.status === 422) {
-        throw new Error(data.message);
-      }
+    const data = await response.json();
 
-      return data;
-    } catch (error) {
-      return rejectWithValue(error);
+    if (response.status === 422 || !response.ok) {
+      throw new Error(
+        data.message || "There was an error creating the group. Please reload."
+      );
     }
+
+    return data;
   }
 );
 
 // PUT /todos/:id
 export const updateCurrTodo = createAsyncThunk(
   "Todo/updateTodo",
-  async (todoUpdate, { rejectWithValue }) => {
+  async (todoUpdate, _) => {
     const { token, id, content } = todoUpdate;
 
-    try {
-      const response = await fetch(`${API_URL}/todos/${id}`, {
-        method: "PUT",
-        body: JSON.stringify(content),
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+    const response = await fetch(`${API_URL}/todos/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(content),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-      if (!response.ok) {
-        throw new Error("There was an error updating the Todo.");
-      }
-      const data = await response.json();
-
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
+    if (!response.ok) {
+      throw new Error(
+        "There was an error updating the group's title. Please reload."
+      );
     }
+    const data = await response.json();
+    return data;
   }
 );
 
 // DELETE /todos/:id
 export const deleteCurrTodo = createAsyncThunk(
   "Todo/deleteTodo",
-  async (todoDetail, { rejectWithValue }) => {
+  async (todoDetail, _) => {
     const { token, id } = todoDetail;
 
-    try {
-      const response = await fetch(`${API_URL}/todos/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+    const response = await fetch(`${API_URL}/todos/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-      if (!response.ok) {
-        throw new Error("There was an error deleting the Todo.");
-      }
-      const data = await response.json();
-
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
+    if (!response.ok) {
+      throw new Error("There was an error deleting the group.");
     }
+    const data = await response.json();
+
+    return data;
   }
 );
 

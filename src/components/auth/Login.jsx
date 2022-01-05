@@ -12,7 +12,7 @@ import LandingIcon from "../svgs/LandingPage";
 import useInput from "../../hooks/useInput";
 import { useDispatch, useSelector } from "react-redux";
 import { homeStyles } from "../ui/Style";
-import LoginForm from "./login-form";
+import LoginForm from "./LoginForm";
 
 // Component responsible for Form Validation and Login/Registration State
 const Login = (props) => {
@@ -145,8 +145,6 @@ const Login = (props) => {
             })
           );
         }
-
-        console.log(responseData, "FROM LOGIN!!!");
 
         if (responseData.error) {
           throw new Error(responseData.payload.message);

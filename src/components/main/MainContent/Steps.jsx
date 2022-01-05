@@ -1,16 +1,15 @@
-// import StaticDatePickerLandscape from "../FilterComponent/DateFilter";
-import { createNewStep, getAllSteps } from "../../../store/steps-slice";
+import { createNewStep } from "../../../store/steps-slice";
 import { Toolbar, Box } from "@mui/material";
 import { uiAction } from "../../../store/ui-slice";
 import { FAIL } from "../../../misc/constants";
 import { useHttp2 } from "../../../hooks/useHttp";
 import { stepStyles } from "../../ui/Style";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Fragment, useRef } from "react";
 import { useState } from "react";
 import Landing from "./Landing";
 import MainView from "./MainView";
+import { getAllTodo } from "../../../store/todo-slice";
 
 const Steps = (props) => {
   const classes = stepStyles();
@@ -23,9 +22,8 @@ const Steps = (props) => {
   const [view, setView] = useState("Layered");
   const [tags, setTags] = useState([]);
 
-  const steps = useSelector(getAllSteps);
-
   const { sendRequest: createStep } = useHttp2(createNewStep);
+  const Todos = useSelector(getAllTodo);
 
   const addStepToDatabase = () => {
     if (stepRef.current.value.trim() === "") {
@@ -70,17 +68,15 @@ const Steps = (props) => {
         minHeight: "100vh",
       }}
     >
-      {(props.Todos.length === 0 || props.todoId === -1) && (
+      {(Todos.length === 0 || props.todoId === -1) && (
         <Landing classes={classes} userState={props.userState} />
       )}
-      {props.title !== "" && props.Todos.length !== 0 && (
+      {props.title !== "" && Todos.length !== 0 && (
         <Fragment>
           <Toolbar />
           <MainView
             toggleDetails={toggleDetails}
             setToggleDetails={setToggleDetails}
-            classes={classes}
-            steps={steps}
             todoId={props.todoId}
             view={view}
             setView={setView}

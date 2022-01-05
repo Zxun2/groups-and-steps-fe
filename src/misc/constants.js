@@ -1,7 +1,7 @@
 // Fetch data
 export const SUCCESS = "Success";
 export const FAIL = "Error";
-export const LOADING = ":oading";
+export const LOADING = "Loading";
 export const COMPLETED = "Completed";
 export const NOTICE = "Notice";
 
