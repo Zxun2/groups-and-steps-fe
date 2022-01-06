@@ -101,7 +101,8 @@ export default function TagsInput({
             placeholder,
           });
           return (
-            <>
+            // Must return a div
+            <div>
               <Box className={classes.scrollbar}>
                 {selectedItem.map((item) => {
                   const color = randomColor();
@@ -136,7 +137,7 @@ export default function TagsInput({
                 {...other}
                 {...inputProps}
               />
-            </>
+            </div>
           );
         }}
       </Downshift>
