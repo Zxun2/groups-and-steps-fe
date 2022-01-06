@@ -5,7 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import Downshift from "downshift";
 import randomColor from "randomcolor";
 import { Box } from "@mui/material";
-import { tagInputStyles } from "../../ui/Style";
+import { tagInputStyles } from "../../../styles/Style";
 
 export default function TagsInput({
   // Array of Tags
@@ -101,7 +101,7 @@ export default function TagsInput({
             placeholder,
           });
           return (
-            <div>
+            <>
               <Box className={classes.scrollbar}>
                 {selectedItem.map((item) => {
                   const color = randomColor();
@@ -136,7 +136,7 @@ export default function TagsInput({
                 {...other}
                 {...inputProps}
               />
-            </div>
+            </>
           );
         }}
       </Downshift>

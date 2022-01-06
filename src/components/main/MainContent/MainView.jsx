@@ -14,7 +14,7 @@ import { Chip } from "@material-ui/core";
 import { Stack } from "@mui/material";
 import { useSelector } from "react-redux";
 import { getAllSteps } from "../../../store/steps-slice";
-import { stepStyles } from "../../ui/Style";
+import { stepStyles } from "../../../styles/Style";
 
 const MainView = ({
   toggleDetails,
@@ -136,7 +136,7 @@ const MainView = ({
             }`}
             style={{ height: "100%" }}
           >
-            <p>A work in progress...</p>
+            <h1>This section is in progress...</h1>
           </Box>
         </Grid>
       )}

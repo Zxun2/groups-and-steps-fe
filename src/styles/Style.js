@@ -217,7 +217,7 @@ export const loginStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     width: "auto",
-    backgroundColor: theme.palette.background.secondary,
+    backgroundColor: "#2f3136 !important",
     padding: "2rem",
     margin: "0 5rem 0 5rem",
     [theme.breakpoints.down("sm")]: {

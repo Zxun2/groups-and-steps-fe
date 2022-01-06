@@ -3,7 +3,7 @@ import { Toolbar, Box } from "@mui/material";
 import { uiAction } from "../../../store/ui-slice";
 import { FAIL } from "../../../misc/constants";
 import { useHttp2 } from "../../../hooks/useHttp";
-import { stepStyles } from "../../ui/Style";
+import { stepStyles } from "../../../styles/Style";
 import { useDispatch, useSelector } from "react-redux";
 import { Fragment, useRef } from "react";
 import { useState } from "react";

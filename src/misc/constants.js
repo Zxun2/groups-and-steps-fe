@@ -1,13 +1,13 @@
 // Fetch data
-export const SUCCESS = "Success";
-export const FAIL = "Error";
-export const LOADING = "Loading";
-export const COMPLETED = "Completed";
-export const NOTICE = "Notice";
+export const SUCCESS = "is-success";
+export const FAIL = "is-error";
+export const LOADING = "is-loading";
+export const COMPLETED = "is-completed";
+export const NOTICE = "notice";
 
 // Status
-export const USER_LOGGED_IN = "LOGGED_IN";
-export const USER_LOGGED_OUT = "LOGGED_OUT";
+export const USER_LOGGED_IN = "is-logged-in";
+export const USER_LOGGED_OUT = "is-logged-out";
 
 // Dashboard
 export const drawerWidth = 250;

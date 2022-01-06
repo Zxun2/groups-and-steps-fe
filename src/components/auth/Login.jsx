@@ -11,7 +11,7 @@ import { useHistory } from "react-router-dom";
 import LandingIcon from "../svgs/LandingPage";
 import useInput from "../../hooks/useInput";
 import { useDispatch, useSelector } from "react-redux";
-import { homeStyles } from "../ui/Style";
+import { homeStyles } from "../../styles/Style";
 import LoginForm from "./LoginForm";
 
 // Component responsible for Form Validation and Login/Registration State
@@ -131,20 +131,17 @@ const Login = (props) => {
     const LoggedIn = async () => {
       try {
         let responseData;
-        if (!isRegistering) {
-          responseData = await dispatch(
-            userLoggedIn({ email: enteredEmail, password: enteredPassword })
-          );
-        } else {
-          responseData = await dispatch(
-            RegisterUser({
-              name: enteredName,
-              email: enteredEmail,
-              password: enteredPassword,
-              password_confirmation: enteredPasswordConfirmation,
-            })
-          );
+
+        const payload = { email: enteredEmail, password: enteredPassword };
+
+        if (isRegistering) {
+          payload.name = enteredName;
+          payload.password_confirmation = enteredPasswordConfirmation;
         }
+
+        responseData = await dispatch(
+          isRegistering ? RegisterUser(payload) : userLoggedIn(payload)
+        );
 
         if (responseData.error) {
           throw new Error(responseData.payload.message);
@@ -152,7 +149,6 @@ const Login = (props) => {
 
         const { user, token, ...message } = responseData.payload;
 
-        // Change to a more secure method
         localStorage.setItem("token", token);
 
         dispatch(

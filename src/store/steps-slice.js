@@ -1,39 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { API_URL } from "../misc/base-url";
 import randomColor from "randomcolor";
-
-/*
-interface Step {
- completed: boolean;
- created_at: Date;
- id: number;
- step: string;
- tags: string[];
- todo_id: number;
- updated_at: Date;
-}
-*/
+import request from "../api";
 
 // GET /todos/:id/items
 export const fetchAllStep = createAsyncThunk(
   "steps/fetchAllStep",
   async (fetchStep, _) => {
-    const { token, id } = fetchStep;
+    const { token, id: todo_id } = fetchStep;
 
-    const response = await fetch(`${API_URL}/todos/${id}/items`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("There was an error fetching the Steps.");
-    }
-
-    const data = await response.json();
-    return data;
+    return request(
+      "GET",
+      { headers: { Authorization: `Bearer ${token}` } },
+      "There was an error fetching the steps",
+      `${API_URL}/todos/${todo_id}/items`
+    );
   }
 );
 
@@ -42,24 +23,13 @@ export const updateCurrStep = createAsyncThunk(
   "steps/updateStep",
   async (newStepData, _) => {
     const { token, todo_id, step_id, content } = newStepData;
-    const response = await fetch(
-      `${API_URL}/todos/${todo_id}/items/${step_id}`,
-      {
-        method: "PUT",
-        body: JSON.stringify(content),
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
+
+    return request(
+      "PUT",
+      { headers: { Authorization: `Bearer ${token}` }, content },
+      "There was an error updating the step.",
+      `${API_URL}/todos/${todo_id}/items/${step_id}`
     );
-
-    if (!response.ok) {
-      throw new Error("There was an error updating the Step.");
-    }
-
-    const data = await response.json();
-    return data;
   }
 );
 
@@ -68,23 +38,14 @@ export const createNewStep = createAsyncThunk(
   "steps/createStep",
   async (newStepData, _) => {
     const { token, content, todo_id } = newStepData;
-
     const newStep = { ...content, completed: false };
 
-    const response = await fetch(`${API_URL}/todos/${todo_id}/items`, {
-      method: "POST",
-      body: JSON.stringify(newStep),
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("There was an error creating the Step.");
-    }
-    const data = await response.json();
-    return data;
+    return request(
+      "POST",
+      { headers: { Authorization: `Bearer ${token}` }, content: newStep },
+      "There was an error creating the step.",
+      `${API_URL}/todos/${todo_id}/items`
+    );
   }
 );
 
@@ -94,22 +55,12 @@ export const deleteCurrStep = createAsyncThunk(
   async (currStepData, _) => {
     const { token, todo_id, step_id } = currStepData;
 
-    const response = await fetch(
-      `${API_URL}/todos/${todo_id}/items/${step_id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
+    return request(
+      "DELETE",
+      { headers: { Authorization: `Bearer ${token}` } },
+      "There was an error deleting the step.",
+      `${API_URL}/todos/${todo_id}/items/${step_id}`
     );
-
-    if (!response.ok) {
-      throw new Error("There was an error deleting the Step.");
-    }
-    const data = await response.json();
-    return data;
   }
 );
 
@@ -200,6 +151,21 @@ const stepSlice = createSlice({
 export const getAllSteps = (state) => state.step.temp;
 export const getCompletedCount = (state) => state.step.completedCount;
 export const getUncompletedCount = (state) => state.step.unCompletedCount;
+export const getCompletedAndUncompletedSteps = (state) => {
+  const steps = getAllSteps(state);
+  const completed = [];
+  const uncompleted = [];
+
+  steps.map((step) => {
+    if (step.completed) {
+      return completed.push(step);
+    } else {
+      return uncompleted.push(step);
+    }
+  });
+
+  return { completed, uncompleted };
+};
 
 export const getFilterLabels = (state) => {
   const steps = getAllSteps(state);
@@ -217,3 +183,15 @@ export const getFilterLabels = (state) => {
 
 export const stepAction = stepSlice.actions;
 export default stepSlice;
+
+/*
+interface Step {
+ completed: boolean;
+ created_at: Date;
+ id: number;
+ step: string;
+ tags: string[];
+ todo_id: number;
+ updated_at: Date;
+}
+*/

@@ -1,7 +1,5 @@
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Autocomplete from "@mui/material/Autocomplete";
-import CloseIcon from "@mui/icons-material/Close";
-import DoneIcon from "@mui/icons-material/Done";
 import Box from "@mui/material/Box";
 import * as React from "react";
 import { v4 } from "uuid";
@@ -10,6 +8,7 @@ import {
   PopperComponent,
   StyledInput,
 } from "./FilterCustomStyledPopper";
+import FilterLabelItem from "./FilterLabelItem";
 
 /**
  * FILTER POPPER COMPONENT
@@ -85,49 +84,7 @@ const Popper = (props) => {
             renderOption={(props, option, { selected }) => (
               // Unique key id necessary for React to distinguish the components
               <li {...props} key={v4()}>
-                <Box
-                  component={DoneIcon}
-                  sx={{
-                    width: 17,
-                    height: 17,
-                    mr: "5px",
-                    ml: "-2px",
-                  }}
-                  style={{
-                    visibility: selected ? "visible" : "hidden",
-                  }}
-                />
-                <Box
-                  component="span"
-                  sx={{
-                    width: 14,
-                    height: 14,
-                    flexShrink: 0,
-                    borderRadius: "3px",
-                    mr: 1,
-                    mt: "2px",
-                  }}
-                  style={{ backgroundColor: option.color }}
-                />
-                <Box
-                  sx={{
-                    flexGrow: 1,
-                    "& span": {
-                      color: "#8b949e",
-                    },
-                  }}
-                >
-                  {option.step}
-                  <br />
-                  <span>{option.tags.join(", ")}</span>
-                </Box>
-                <Box
-                  component={CloseIcon}
-                  sx={{ opacity: 0.6, width: 18, height: 18 }}
-                  style={{
-                    visibility: selected ? "visible" : "hidden",
-                  }}
-                />
+                <FilterLabelItem option={option} selected={selected} />
               </li>
             )}
             options={[...props.labels].sort((a, b) => {

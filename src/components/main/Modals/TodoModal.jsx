@@ -3,7 +3,7 @@ import { Modal, Box, Button } from "@mui/material";
 import { TextField } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { todoModalStyle } from "../../ui/Style";
+import { todoModalStyle } from "../../../styles/Style";
 
 function TodoModal(props) {
   const classes = todoModalStyle();

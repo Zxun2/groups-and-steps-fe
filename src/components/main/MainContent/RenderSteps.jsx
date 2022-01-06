@@ -7,7 +7,7 @@ import React, { useState } from "react";
 import Task from "./Task";
 import { useSelector } from "react-redux";
 import {
-  getAllSteps,
+  getCompletedAndUncompletedSteps,
   getCompletedCount,
   getUncompletedCount,
 } from "../../../store/steps-slice";
@@ -20,7 +20,9 @@ const RenderSteps = (props) => {
   const UncompletedCount = useSelector(getUncompletedCount);
   const CompletedCount = useSelector(getCompletedCount);
 
-  const steps = useSelector(getAllSteps);
+  const { uncompleted, completed } = useSelector(
+    getCompletedAndUncompletedSteps
+  );
 
   return (
     <Stack spacing={3}>
@@ -42,22 +44,20 @@ const RenderSteps = (props) => {
           </Divider>
           <Collapse in={isOpenUncompleted}>
             <Box>
-              {steps?.map((step) => {
+              {uncompleted?.map((step) => {
                 return (
-                  !step.completed && (
-                    <Task
-                      key={step.id}
-                      id={step.id}
-                      setValue={props.setValue}
-                      step={step.step} // name
-                      completed={step.completed}
-                      todo_id={step.todo_id}
-                      updated_at={step.updated_at}
-                      tags={step.tags}
-                      deadline={step.deadline}
-                      created_at={step.created_at}
-                    />
-                  )
+                  <Task
+                    key={step.id}
+                    id={step.id}
+                    setValue={props.setValue}
+                    step={step.step} // name
+                    completed={step.completed}
+                    todo_id={step.todo_id}
+                    updated_at={step.updated_at}
+                    tags={step.tags}
+                    deadline={step.deadline}
+                    created_at={step.created_at}
+                  />
                 );
               })}
             </Box>
@@ -79,19 +79,17 @@ const RenderSteps = (props) => {
             </Badge>
           </Divider>
           <Collapse in={isOpenCompleted}>
-            {steps.map((step) => {
+            {completed.map((step) => {
               return (
-                step?.completed && (
-                  <Task
-                    key={step.id}
-                    id={step.id}
-                    step={step.step}
-                    completed={step.completed}
-                    todo_id={step.todo_id}
-                    updated_at={step.updated_at}
-                    tags={step.tags}
-                  />
-                )
+                <Task
+                  key={step.id}
+                  id={step.id}
+                  step={step.step}
+                  completed={step.completed}
+                  todo_id={step.todo_id}
+                  updated_at={step.updated_at}
+                  tags={step.tags}
+                />
               );
             })}
           </Collapse>

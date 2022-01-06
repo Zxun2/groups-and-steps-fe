@@ -8,12 +8,6 @@ import store from "./store";
 import { ThemeProvider } from "@material-ui/core";
 import theme from "./components/themes";
 
-// Redux
-// MUI Theme
-// Router
-// Strict
-// App
-
 ReactDOM.render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>

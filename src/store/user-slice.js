@@ -1,30 +1,25 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { USER_LOGGED_IN, USER_LOGGED_OUT } from "../misc/constants";
 import { API_URL } from "../misc/base-url";
+import request from "../api";
 
 // POST /auth/auto_login
 export const autoLogin = createAsyncThunk(
   "User/autologin",
   async (token, _) => {
-    const response = await fetch(`${API_URL}/auth/auto_login`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Access-Control-Allow-Origin": "*",
+    const data = await request(
+      "POST",
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
-
-    const data = await response.json();
-
-    if (response.status === 422 || !response.ok) {
-      if (!response.ok) {
-        throw new Error("Something went wrong! Please try again.");
-      }
-      throw new Error(data.message);
-    }
+      "Something went wrong! Please try again.",
+      `${API_URL}/auth/auto_login`
+    );
 
     const user = data;
-
     return { user, token };
   }
 );
@@ -35,27 +30,16 @@ export const userLoggedIn = createAsyncThunk(
   async (userDetails, _) => {
     const { email, password } = userDetails;
 
-    const response = await fetch(`${API_URL}/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+    const content = { email, password };
+    const data = await request(
+      "POST",
+      {
+        headers: { "Access-Control-Allow-Origin": "*" },
+        content,
       },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    });
-
-    const data = await response.json();
-
-    // Error is handled by the Try-Catch block in Login.jsx
-    if (response.status === 422 || !response.ok) {
-      if (!response.ok) {
-        throw new Error("Something went wrong! Please try again.");
-      }
-      throw new Error(data.message);
-    }
+      "Something went wrong! Please try again.",
+      `${API_URL}/auth/login`
+    );
 
     const token = data.auth_token;
     const user = data.user;
@@ -70,29 +54,17 @@ export const RegisterUser = createAsyncThunk(
   async (userDetails, _) => {
     const { name, email, password, password_confirmation } = userDetails;
 
-    const response = await fetch(`${API_URL}/signup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+    const content = { name, email, password, password_confirmation };
+
+    const data = await request(
+      "POST",
+      {
+        headers: { "Access-Control-Allow-Origin": "*" },
+        content,
       },
-      body: JSON.stringify({
-        name,
-        email,
-        password,
-        password_confirmation,
-      }),
-    });
-
-    const data = await response.json();
-
-    // Error is handled by the Try-Catch block in Login.jsx
-    if (response.status === 422 || !response.ok) {
-      if (!response.ok) {
-        throw new Error("Something went wrong! Please try again.");
-      }
-      throw new Error(data.message);
-    }
+      "Something went wrong! Please try again.",
+      `${API_URL}/signup`
+    );
 
     const { message, auth_token: token, user } = data;
     return { message, user, token };

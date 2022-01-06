@@ -6,7 +6,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import CustomScrollbars from "../../ui/CustomScollBars";
 import TagIcon from "@mui/icons-material/Tag";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { dashboardStyles } from "../../ui/Style";
+import { dashboardStyles } from "../../../styles/Style";
 import { TextField } from "@material-ui/core";
 import {
   Chip,

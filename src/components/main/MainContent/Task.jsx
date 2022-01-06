@@ -1,4 +1,4 @@
-import { Typography, TextField, CardHeader } from "@material-ui/core";
+import { Typography, TextField, Badge } from "@material-ui/core";
 import React, { Fragment, useRef, useState } from "react";
 import { format } from "date-fns";
 import { styled } from "@mui/material/styles";
@@ -8,24 +8,15 @@ import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import Stack from "@mui/material/Stack";
-import { Box, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Divider } from "@mui/material";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import randomColor from "randomcolor";
-import { Chip } from "@material-ui/core";
+import { Box, Button, Divider } from "@mui/material";
 import { useHttp2 } from "../../../hooks/useHttp";
 import TagsInput from "../Tag/TagsInput";
-import { tagInputStyles } from "../../ui/Style";
 import {
   updateCurrStep,
   deleteCurrStep,
   stepAction,
 } from "../../../store/steps-slice";
-
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
@@ -35,8 +26,9 @@ import { FAIL } from "../../../misc/constants";
 import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
-
-import { Badge } from "@material-ui/core";
+import TaskContent from "./TaskContent";
+import TaskHeader from "./TaskHeader";
+import TaskTags from "./TaskTags";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -73,13 +65,10 @@ function getNumberOfDays(start, end) {
 
   // One day in milliseconds
   const oneDay = 1000 * 60 * 60 * 24;
-
   // Calculating the time difference between two dates
   const diffInTime = Math.abs(date2.getTime() - date1.getTime());
-
   // Calculating the no. of days between two dates
   const diffInDays = Math.round(diffInTime / oneDay);
-
   return diffInDays;
 }
 
@@ -95,7 +84,6 @@ export default function Task({
   setValue,
   ...others
 }) {
-  const classes = tagInputStyles();
   const dispatch = useDispatch();
 
   const [expanded, setExpanded] = useState(false);
@@ -117,7 +105,6 @@ export default function Task({
 
   let newDeadline = "";
   const currDeadline = deadline;
-
   const daysApart =
     deadline && updated_at
       ? getNumberOfDays(new Date(created_at), new Date(deadline))
@@ -129,7 +116,6 @@ export default function Task({
       : "";
 
   const daysLeft = daysApart - daysPassed;
-
   const progress = Math.ceil((daysPassed / daysApart) * 100);
 
   // Function is called in TagsInput.jsx
@@ -192,8 +178,11 @@ export default function Task({
       })
     );
 
+    // Clean up filters
     setValue((prev) => {
-      prev.filter((tags) => tags.id !== step_id);
+      if (prev) {
+        prev.filter((tags) => tags.id !== step_id);
+      }
     });
 
     deleteStep({ todo_id, step_id });
@@ -207,105 +196,29 @@ export default function Task({
     <Fragment>
       {/* EXPLORE GRID HERE */}
       <Card sx={{ maxWidth: "100%", backgroundColor: "#2f3136" }}>
-        <CardHeader
-          action={
-            <Fragment>
-              <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
-                <MoreVertIcon style={{ color: "#ffffff" }} />
-              </IconButton>
-              <Menu
-                color="primary"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={() => setAnchorEl(null)}
-              >
-                <MenuItem onClick={handleClose}>
-                  {completed ? "Uncomplete Task" : "Complete task"}
-                </MenuItem>
-              </Menu>
-            </Fragment>
-          }
-          title={date}
-          titleTypographyProps={{ variant: "body2", color: "secondary" }}
-          style={{ paddingBottom: "0" }}
+        <TaskHeader
+          date={date}
+          completed={completed}
+          handleClose={handleClose}
+          setAnchorEl={setAnchorEl}
+          open={open}
+          anchorEl={anchorEl}
         />
+
         {/* Explore how to add markdown content here */}
-        <CardContent style={{ paddingBottom: "0", paddingTop: "0.5rem" }}>
-          {step.split("\\n").map((str, idx) => {
-            if (idx === 0) {
-              return (
-                <Typography
-                  key={idx}
-                  variant="subtitle1"
-                  color="secondary"
-                  style={{ fontWeight: "700" }}
-                  paragraph={true}
-                >
-                  {str.trim()}
-                </Typography>
-              );
-            } else {
-              return (
-                <Typography
-                  key={idx}
-                  variant="subtitle2"
-                  color="secondary"
-                  style={{ fontWeight: "500" }}
-                  paragraph={true}
-                >
-                  {str.trim()}
-                </Typography>
-              );
-            }
-          })}
-          {deadline && (
-            <>
-              <Typography
-                variant="subtitle2"
-                color="secondary"
-                style={{ fontWeight: "400", fontStyle: "italic" }}
-              >
-                <span style={{ color: "#B33A3A" }}>Take note </span>: This step
-                {daysLeft > 0 ? " is expiring" : " has expired"} on{" "}
-                {currDeadline}
-              </Typography>
-            </>
-          )}
-        </CardContent>
+        <TaskContent
+          step={step}
+          deadline={deadline}
+          daysLeft={daysLeft}
+          currDeadline={currDeadline}
+        />
+
         <CardActions disableSpacing={true} style={{ paddingBottom: "0" }}>
-          <Box className={classes.scrollbar}>
-            {tags?.length > 0 && (
-              <Stack
-                direction="row"
-                spacing={1}
-                style={{
-                  paddingLeft: "0.5rem",
-                  alignItems: "center",
-                  width: "100%",
-                }}
-              >
-                {/* TAGS ARE RENDERED HERE */}
-                <Typography color="secondary" variant="body2">
-                  Tags:
-                </Typography>
-                {tags.map((tag, index) => {
-                  const color = randomColor();
-                  return (
-                    <Chip
-                      key={index}
-                      label={tag}
-                      variant="outlined"
-                      color="primary"
-                      style={{ color: `${color}` }}
-                    />
-                  );
-                })}
-              </Stack>
-            )}
-          </Box>
+          <TaskTags tags={tags} />
+
           {/* STYLED COMPONENT USED HERE */}
           <ExpandMore expand={expanded} onClick={() => setExpanded(!expanded)}>
-            {daysLeft < 3 && deadline ? (
+            {daysLeft < 4 && deadline ? (
               <Badge color="error" invisible={expanded} variant="dot">
                 <ExpandMoreIcon style={{ color: "#ffffff" }} />
               </Badge>
@@ -314,6 +227,7 @@ export default function Task({
             )}
           </ExpandMore>
         </CardActions>
+
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent style={{ paddingTop: "0" }}>
             {deadline && (
