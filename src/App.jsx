@@ -7,13 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { autoLogin } from "./store/user-slice";
 import { useHistory } from "react-router-dom";
 import Notification from "./components/ui/Notification";
-import { uiAction } from "./store/ui-slice";
+import { getAllNotifications, uiAction } from "./store/ui-slice";
 import { NOTICE } from "./misc/constants";
 
 function App() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const notifications = useSelector((state) => state.ui.notification);
+  const notifications = useSelector(getAllNotifications);
 
   // Auto Login
   useEffect(() => {
@@ -52,7 +52,7 @@ function App() {
             <Notification
               key={note.id}
               status={note.status}
-              title={note.title}
+              title={note._title}
               message={note.message}
               id={note.id}
             />

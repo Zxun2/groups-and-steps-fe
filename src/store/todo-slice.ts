@@ -1,9 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { RootState } from ".";
 import request from "../api";
 import { API_URL } from "../misc/base-url";
+import { Todo } from "../types";
 
+// TODO: Fix types
 // GET /todos
-export const fetchAllTodos = createAsyncThunk(
+export const fetchAllTodos = createAsyncThunk<any, { token: string }>(
   "Todo/fetchAllTodos",
   async (fetchTodo, _) => {
     const { token } = fetchTodo;
@@ -18,7 +21,7 @@ export const fetchAllTodos = createAsyncThunk(
 );
 
 // POST /todos
-export const postTodo = createAsyncThunk(
+export const postTodo = createAsyncThunk<any, { token: string; content: any }>(
   "Todo/createTodo",
   async (todoData, _) => {
     const { token, content } = todoData;
@@ -33,40 +36,44 @@ export const postTodo = createAsyncThunk(
 );
 
 // PUT /todos/:id
-export const updateCurrTodo = createAsyncThunk(
-  "Todo/updateTodo",
-  async (todoUpdate, _) => {
-    const { token, id, content } = todoUpdate;
+export const updateCurrTodo = createAsyncThunk<
+  any,
+  { token: string; id: string; content: any }
+>("Todo/updateTodo", async (todoUpdate, _) => {
+  const { token, id, content } = todoUpdate;
 
-    return request(
-      "PUT",
-      { headers: { Authorization: `Bearer ${token}` }, content },
-      "There was an error updating the group's title. Please reload.",
-      `${API_URL}/todos/${id}`
-    );
-  }
-);
+  return request(
+    "PUT",
+    { headers: { Authorization: `Bearer ${token}` }, content },
+    "There was an error updating the group's title. Please reload.",
+    `${API_URL}/todos/${id}`
+  );
+});
 
 // DELETE /todos/:id
-export const deleteCurrTodo = createAsyncThunk(
-  "Todo/deleteTodo",
-  async (todoDetail, _) => {
-    const { token, id } = todoDetail;
+export const deleteCurrTodo = createAsyncThunk<
+  any,
+  { token: string; id: string }
+>("Todo/deleteTodo", async (todoDetail, _) => {
+  const { token, id } = todoDetail;
 
-    return request(
-      "DELETE",
-      { headers: { Authorization: `Bearer ${token}` } },
-      "There was an error deleting the group.",
-      `${API_URL}/todos/${id}`
-    );
-  }
-);
+  return request(
+    "DELETE",
+    { headers: { Authorization: `Bearer ${token}` } },
+    "There was an error deleting the group.",
+    `${API_URL}/todos/${id}`
+  );
+});
+
+interface TodoState {
+  Todo: Todo[];
+}
 
 const todoSlice = createSlice({
   name: "todo",
   initialState: {
     Todo: [],
-  },
+  } as TodoState,
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -92,7 +99,7 @@ const todoSlice = createSlice({
   },
 });
 
-export const getAllTodo = (state) => state.todo.Todo;
+export const getAllTodo = (state: RootState) => state.todo.Todo;
 
 export const todoAction = todoSlice.actions;
 export default todoSlice;

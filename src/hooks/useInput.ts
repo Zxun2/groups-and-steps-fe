@@ -1,7 +1,11 @@
 import { useState } from "react";
 
+interface Validation {
+  (value: string): boolean | RegExpMatchArray | null;
+}
+
 // Custom Hook for Form Validation
-const useInput = (validateValue) => {
+const useInput = (validateValue: Validation) => {
   const [enteredValue, setEnteredValue] = useState("");
   const [isTouched, setIsTouched] = useState(false);
 
@@ -10,11 +14,11 @@ const useInput = (validateValue) => {
   // Input was touched but value is invalid
   const hasError = !valueIsValid && isTouched;
 
-  const inputChangeHandler = (event) => {
+  const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEnteredValue(event.target.value);
   };
 
-  const InputBlurHandler = (e) => {
+  const InputBlurHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setIsTouched(true);
   };
 

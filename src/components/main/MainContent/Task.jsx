@@ -146,7 +146,7 @@ export default function Task({
         dispatch(
           uiAction.showNotification({
             status: FAIL,
-            title: "Error!",
+            _title: "Error!",
             message: "Please ensure that your deadline is valid.",
           })
         );

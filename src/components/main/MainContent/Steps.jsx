@@ -30,7 +30,7 @@ const Steps = (props) => {
       dispatch(
         uiAction.showNotification({
           status: FAIL,
-          title: "Error",
+          _title: "Error",
           message: "Step must not be empty!",
         })
       );

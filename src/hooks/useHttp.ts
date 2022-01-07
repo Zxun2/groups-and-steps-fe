@@ -2,13 +2,13 @@ import { useCallback } from "react";
 import { uiAction } from "../store/ui-slice";
 import { FAIL, SUCCESS } from "../misc/constants";
 
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "./useHooks";
 
 // Custom Hook for Sending HTTP requests
 
-export function useHttp2(requestFunction) {
+export function useHttp2(requestFunction: any) {
   const token = localStorage.getItem("token");
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const sendRequest = useCallback(
     async function ({ ...requestData }) {
@@ -32,15 +32,15 @@ export function useHttp2(requestFunction) {
         dispatch(
           uiAction.showNotification({
             status: SUCCESS,
-            title: "Success!",
+            _title: "Success!",
             message: response.payload.message || "The request is successful.",
           })
         );
-      } catch (error) {
+      } catch (error: any) {
         dispatch(
           uiAction.showNotification({
             status: FAIL,
-            title: "Error!",
+            _title: "Error!",
             message:
               error.message ||
               "There was an error sending the request. Please reload.",

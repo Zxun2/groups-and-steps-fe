@@ -119,7 +119,7 @@ export const Dashboard = () => {
         dispatch(
           uiAction.showNotification({
             status: "error",
-            title: "Error!",
+            _title: "Error!",
             message: "Todo title must not be empty",
           })
         );

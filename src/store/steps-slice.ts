@@ -2,71 +2,81 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { API_URL } from "../misc/base-url";
 import randomColor from "randomcolor";
 import request from "../api";
+import { RootState } from ".";
+import { Step } from "../types/index";
 
+// TODO: FIXED TYPES
 // GET /todos/:id/items
-export const fetchAllStep = createAsyncThunk(
-  "steps/fetchAllStep",
-  async (fetchStep, _) => {
-    const { token, id: todo_id } = fetchStep;
+export const fetchAllStep = createAsyncThunk<
+  any,
+  { token: string; id: string }
+>("steps/fetchAllStep", async (fetchStep, _) => {
+  const { token, id: todo_id } = fetchStep;
 
-    return request(
-      "GET",
-      { headers: { Authorization: `Bearer ${token}` } },
-      "There was an error fetching the steps",
-      `${API_URL}/todos/${todo_id}/items`
-    );
-  }
-);
+  return request(
+    "GET",
+    { headers: { Authorization: `Bearer ${token}` } },
+    "There was an error fetching the steps",
+    `${API_URL}/todos/${todo_id}/items`
+  );
+});
 
+// TODO: FIXED TYPES
 // PUT /todos/:id/items/:item_id
-export const updateCurrStep = createAsyncThunk(
-  "steps/updateStep",
-  async (newStepData, _) => {
-    const { token, todo_id, step_id, content } = newStepData;
+export const updateCurrStep = createAsyncThunk<
+  any,
+  { token: string; todo_id: string; step_id: string; content: any }
+>("steps/updateStep", async (newStepData, _) => {
+  const { token, todo_id, step_id, content } = newStepData;
 
-    return request(
-      "PUT",
-      { headers: { Authorization: `Bearer ${token}` }, content },
-      "There was an error updating the step.",
-      `${API_URL}/todos/${todo_id}/items/${step_id}`
-    );
-  }
-);
+  return request(
+    "PUT",
+    { headers: { Authorization: `Bearer ${token}` }, content },
+    "There was an error updating the step.",
+    `${API_URL}/todos/${todo_id}/items/${step_id}`
+  );
+});
 
 // POST /todos/:id/items
-export const createNewStep = createAsyncThunk(
-  "steps/createStep",
-  async (newStepData, _) => {
-    const { token, content, todo_id } = newStepData;
-    const newStep = { ...content, completed: false };
+export const createNewStep = createAsyncThunk<
+  any,
+  { token: string; todo_id: string; content: any }
+>("steps/createStep", async (newStepData, _) => {
+  const { token, content, todo_id } = newStepData;
+  const newStep = { ...content, completed: false };
 
-    return request(
-      "POST",
-      { headers: { Authorization: `Bearer ${token}` }, content: newStep },
-      "There was an error creating the step.",
-      `${API_URL}/todos/${todo_id}/items`
-    );
-  }
-);
+  return request(
+    "POST",
+    { headers: { Authorization: `Bearer ${token}` }, content: newStep },
+    "There was an error creating the step.",
+    `${API_URL}/todos/${todo_id}/items`
+  );
+});
 
 // DELETE /todos/:id/items/:item_id
-export const deleteCurrStep = createAsyncThunk(
-  "steps/deleteStep",
-  async (currStepData, _) => {
-    const { token, todo_id, step_id } = currStepData;
+export const deleteCurrStep = createAsyncThunk<
+  any,
+  { token: string; todo_id: string; step_id: string }
+>("steps/deleteStep", async (currStepData, _) => {
+  const { token, todo_id, step_id } = currStepData;
 
-    return request(
-      "DELETE",
-      { headers: { Authorization: `Bearer ${token}` } },
-      "There was an error deleting the step.",
-      `${API_URL}/todos/${todo_id}/items/${step_id}`
-    );
-  }
-);
+  return request(
+    "DELETE",
+    { headers: { Authorization: `Bearer ${token}` } },
+    "There was an error deleting the step.",
+    `${API_URL}/todos/${todo_id}/items/${step_id}`
+  );
+});
 
-const stepState = {
+interface StepState {
+  steps: Step[];
+  temp: Step[];
+  completedCount: number;
+  unCompletedCount: number;
+}
+
+const initialState = {
   steps: [],
-  // temp array to account for filtering and ordering of steps
   temp: [],
   completedCount: 0,
   unCompletedCount: 0,
@@ -74,7 +84,7 @@ const stepState = {
 
 const stepSlice = createSlice({
   name: "steps",
-  initialState: stepState,
+  initialState: initialState as StepState,
   reducers: {
     filterStep(state, action) {
       const filter = action.payload.filterArr;
@@ -137,7 +147,7 @@ const stepSlice = createSlice({
         state.completedCount = 0;
         state.unCompletedCount = 0;
 
-        payload.steps.map((step) => {
+        payload.steps.map((step: Step) => {
           if (step.completed) {
             return (state.completedCount += 1);
           } else {
@@ -148,15 +158,17 @@ const stepSlice = createSlice({
   },
 });
 
-export const getAllSteps = (state) => state.step.temp;
-export const getCompletedCount = (state) => state.step.completedCount;
-export const getUncompletedCount = (state) => state.step.unCompletedCount;
-export const getCompletedAndUncompletedSteps = (state) => {
+export const getAllSteps = (state: RootState) => state.step.temp;
+export const getCompletedCount = (state: RootState) =>
+  state.step.completedCount;
+export const getUncompletedCount = (state: RootState) =>
+  state.step.unCompletedCount;
+export const getCompletedAndUncompletedSteps = (state: RootState) => {
   const steps = getAllSteps(state);
-  const completed = [];
-  const uncompleted = [];
+  const completed: Step[] = [];
+  const uncompleted: Step[] = [];
 
-  steps.map((step) => {
+  steps.map((step: Step) => {
     if (step.completed) {
       return completed.push(step);
     } else {
@@ -167,9 +179,9 @@ export const getCompletedAndUncompletedSteps = (state) => {
   return { completed, uncompleted };
 };
 
-export const getFilterLabels = (state) => {
+export const getFilterLabels = (state: RootState) => {
   const steps = getAllSteps(state);
-  return steps.map((step, _) => {
+  return steps.map((step: Step, _) => {
     const color = randomColor();
     const tags = step.tags; // array
     return {
@@ -183,15 +195,3 @@ export const getFilterLabels = (state) => {
 
 export const stepAction = stepSlice.actions;
 export default stepSlice;
-
-/*
-interface Step {
- completed: boolean;
- created_at: Date;
- id: number;
- step: string;
- tags: string[];
- todo_id: number;
- updated_at: Date;
-}
-*/

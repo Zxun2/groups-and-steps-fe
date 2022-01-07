@@ -1,5 +1,25 @@
-async function request(method, params, error, url) {
-  const options = {
+type Params = {
+  content?: Object;
+  headers: {
+    [key: string]: string;
+  };
+};
+
+interface Options {
+  method: string;
+  headers: {
+    [key: string]: string;
+  };
+  body?: string;
+}
+
+async function request(
+  method: string,
+  params: Params,
+  error: string,
+  url: string
+) {
+  const options: Options = {
     method,
     headers: {
       "Content-Type": "application/json",

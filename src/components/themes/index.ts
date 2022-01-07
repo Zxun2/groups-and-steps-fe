@@ -16,13 +16,16 @@ const theme = createTheme({
       main: "#B33A3A",
     },
     text: {
+      // @ts-ignore
       main: "#000000",
       contrast: "#FFFFFF",
     },
     background: {
+      // @ts-ignore
       primary: "#282424",
       secondary: "#2f3136",
       tertiary: "#36393f",
+      default: "#36393f",
     },
   },
   shape: {

@@ -1,10 +1,26 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { USER_LOGGED_IN, USER_LOGGED_OUT } from "../misc/constants";
+import { STATUS } from "../misc/constants";
 import { API_URL } from "../misc/base-url";
 import request from "../api";
+import { User } from "../types/index";
+import { RootState } from ".";
+import { UserDetail } from "../components/auth/Login";
+
+export interface UserData {
+  user: User;
+  token: string;
+  message?: string;
+}
+
+interface UserState {
+  currUser: User | null;
+  auth_token: string | null;
+  status: STATUS.USER_LOGGED_IN | STATUS.USER_LOGGED_OUT;
+  fetching: boolean;
+}
 
 // POST /auth/auto_login
-export const autoLogin = createAsyncThunk(
+export const autoLogin = createAsyncThunk<UserData, string>(
   "User/autologin",
   async (token, _) => {
     const data = await request(
@@ -20,12 +36,12 @@ export const autoLogin = createAsyncThunk(
     );
 
     const user = data;
-    return { user, token };
+    return { user, token } as UserData;
   }
 );
 
 // POST /auth/login
-export const userLoggedIn = createAsyncThunk(
+export const userLoggedIn = createAsyncThunk<UserData, UserDetail>(
   "User/login",
   async (userDetails, _) => {
     const { email, password } = userDetails;
@@ -44,12 +60,12 @@ export const userLoggedIn = createAsyncThunk(
     const token = data.auth_token;
     const user = data.user;
 
-    return { user, token };
+    return { user, token } as UserData;
   }
 );
 
 // POST /signup
-export const RegisterUser = createAsyncThunk(
+export const RegisterUser = createAsyncThunk<UserData, UserDetail>(
   "User/register",
   async (userDetails, _) => {
     const { name, email, password, password_confirmation } = userDetails;
@@ -67,7 +83,7 @@ export const RegisterUser = createAsyncThunk(
     );
 
     const { message, auth_token: token, user } = data;
-    return { message, user, token };
+    return { message, user, token } as UserData;
   }
 );
 
@@ -76,14 +92,14 @@ const userSlice = createSlice({
   initialState: {
     currUser: null,
     auth_token: "", // jwt token
-    status: USER_LOGGED_OUT,
+    status: STATUS.USER_LOGGED_OUT,
     fetching: false,
-  },
+  } as UserState,
   reducers: {
     logUserOut(state) {
       state.currUser = null;
       state.auth_token = null;
-      state.status = USER_LOGGED_OUT;
+      state.status = STATUS.USER_LOGGED_OUT;
     },
   },
   extraReducers: (builder) => {
@@ -96,7 +112,7 @@ const userSlice = createSlice({
 
         state.currUser = user;
         state.auth_token = token;
-        state.status = USER_LOGGED_IN;
+        state.status = STATUS.USER_LOGGED_IN;
         state.fetching = false;
       })
       .addCase(userLoggedIn.rejected, (state, _) => {
@@ -109,7 +125,7 @@ const userSlice = createSlice({
         const { token, user } = payload;
         state.currUser = user;
         state.auth_token = token;
-        state.status = USER_LOGGED_IN;
+        state.status = STATUS.USER_LOGGED_IN;
         state.fetching = false;
       })
       .addCase(RegisterUser.rejected, (state, _) => {
@@ -120,13 +136,13 @@ const userSlice = createSlice({
 
         state.currUser = user;
         state.auth_token = token;
-        state.status = USER_LOGGED_IN;
+        state.status = STATUS.USER_LOGGED_IN;
       });
   },
 });
 
-export const getLoadingStatus = (state) => state.user.fetching;
-export const getUserState = (state) => state.user;
+export const getLoadingStatus = (state: RootState) => state.user.fetching;
+export const getUserState = (state: RootState) => state.user;
 
 export const userAction = userSlice.actions;
 export default userSlice;

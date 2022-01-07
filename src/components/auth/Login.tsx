@@ -2,6 +2,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import {
   getLoadingStatus,
   RegisterUser,
+  UserData,
   userLoggedIn,
 } from "../../store/user-slice";
 import { Box, LinearProgress } from "@material-ui/core";
@@ -10,17 +11,35 @@ import { uiAction } from "../../store/ui-slice";
 import { useHistory } from "react-router-dom";
 import LandingIcon from "../svgs/LandingPage";
 import useInput from "../../hooks/useInput";
-import { useDispatch, useSelector } from "react-redux";
 import { homeStyles } from "../../styles/Style";
 import LoginForm from "./LoginForm";
+import { useAppDispatch, useAppSelector } from "../../hooks/useHooks";
+
+export interface UserDetail {
+  name?: string;
+  email: string;
+  password: string;
+  password_confirmation?: string;
+}
+
+export interface ResponseObject {
+  meta: any;
+  payload: UserData;
+  type: string;
+  error?: {
+    name: string;
+    stack: string;
+    message: string;
+  };
+}
 
 // Component responsible for Form Validation and Login/Registration State
-const Login = (props) => {
+const Login = () => {
   const classes = homeStyles();
   const history = useHistory();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const loadingStatus = useSelector(getLoadingStatus);
+  const loadingStatus = useAppSelector(getLoadingStatus);
 
   const [formIsValid, setFormIsValid] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
@@ -121,7 +140,10 @@ const Login = (props) => {
     enteredPasswordConfirmationIsValid,
   ]);
 
-  const handleSubmit = async (e) => {
+  // TODO: DOUBLE CHECK THIS!
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     e.preventDefault();
 
     if (!formIsValid) {
@@ -132,19 +154,26 @@ const Login = (props) => {
       try {
         let responseData;
 
-        const payload = { email: enteredEmail, password: enteredPassword };
+        const payload: UserDetail = {
+          email: enteredEmail,
+          password: enteredPassword,
+        };
 
         if (isRegistering) {
           payload.name = enteredName;
           payload.password_confirmation = enteredPasswordConfirmation;
         }
 
-        responseData = await dispatch(
-          isRegistering ? RegisterUser(payload) : userLoggedIn(payload)
-        );
+        let args = isRegistering
+          ? RegisterUser(payload)
+          : userLoggedIn(payload);
+
+        responseData = (await dispatch(args)) as ResponseObject;
+
+        console.log(responseData, "HELLLOOOO ");
 
         if (responseData.error) {
-          throw new Error(responseData.payload.message);
+          throw new Error(responseData.error.message);
         }
 
         const { user, token, ...message } = responseData.payload;
@@ -154,7 +183,7 @@ const Login = (props) => {
         dispatch(
           uiAction.showNotification({
             status: SUCCESS,
-            title: "Success",
+            _title: "Success",
             message: message.message
               ? message.message
               : "Logged in successfully",
@@ -162,13 +191,13 @@ const Login = (props) => {
         );
 
         history.push("/dashboard");
-      } catch (err) {
+      } catch (err: any) {
         dispatch(
           uiAction.showNotification({
             status: FAIL,
-            title: "Error!",
+            _title: "Error!",
             message:
-              "Something went wrong! Please double check your credentials.",
+              err.message || "Something went wrong! Please try again later.",
           })
         );
       }
@@ -178,6 +207,10 @@ const Login = (props) => {
 
     resetPasswordInput();
     resetEmailInput();
+    if (isRegistering) {
+      resetNameInput();
+      resetPasswordConfirmationInput();
+    }
   };
 
   return (
