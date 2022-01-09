@@ -13,6 +13,8 @@ export enum ACTION {
   NOTICE = "notice",
 }
 
+export type NotificationStatus = ACTION.SUCCESS | ACTION.FAIL | ACTION.NOTICE;
+
 export enum STATUS {
   USER_LOGGED_IN = "is-logged-in",
   USER_LOGGED_OUT = "is-logged-out",

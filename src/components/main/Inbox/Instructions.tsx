@@ -4,7 +4,7 @@ import StepLabel from "@mui/material/StepLabel";
 import { Typography } from "@material-ui/core";
 import Check from "@mui/icons-material/Check";
 import Stepper from "@mui/material/Stepper";
-import { Button } from "@material-ui/core";
+import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Step from "@mui/material/Step";
 import Box from "@mui/material/Box";
@@ -12,8 +12,9 @@ import { Fragment } from "react";
 import * as React from "react";
 import steps from "./data";
 import StepIconRoot from "./StepIconRoot";
+import { StepIconProps } from "@mui/material/StepIcon";
 
-function StepIcon(props) {
+function StepIcon(props: StepIconProps) {
   const { active, completed, className } = props;
 
   return (
@@ -137,16 +138,19 @@ const Instructions = () => {
                     <Button
                       variant="contained"
                       onClick={handleNext}
-                      color="primary"
-                      sx={{ mt: 1, mr: 1 }}
+                      sx={{
+                        mt: 1,
+                        mr: 1,
+                        backgroundColor: "#5865f2",
+                        "&: hover": { backgroundColor: "#404ff0" },
+                      }}
                     >
                       {index === steps.length - 1 ? "Finish" : "Continue"}
                     </Button>
                     <Button
                       disabled={index === 0}
                       onClick={handleBack}
-                      sx={{ mt: 1, mr: 1 }}
-                      color="secondary"
+                      sx={{ mt: 1, mr: 1, color: "white" }}
                     >
                       Back
                     </Button>
@@ -159,7 +163,10 @@ const Instructions = () => {
         {activeStep === steps.length && (
           <Paper square elevation={0} sx={{ p: 2 }}>
             <Typography>All steps are completed - that's it!.</Typography>
-            <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
+            <Button
+              onClick={handleReset}
+              sx={{ mt: 1, mr: 1, color: "#5865f2" }}
+            >
               Read again
             </Button>
           </Paper>

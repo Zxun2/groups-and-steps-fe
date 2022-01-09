@@ -132,9 +132,6 @@ export const tagInputStyles = makeStyles((theme: Theme) =>
       maxWidth: "80vw",
       marginBottom: "0.5rem",
       borderRadius: "10px",
-      [theme.breakpoints.down("md")]: {
-        maxWidth: "5vw",
-      },
       overflowX: "scroll",
       "&::-webkit-scrollbar": {
         height: "0.1rem",

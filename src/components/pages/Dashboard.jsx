@@ -33,6 +33,8 @@ export const Dashboard = () => {
   const [title, setTitle] = useState("");
   const [Todo, setTodo] = useState("");
 
+  console.log(value, "Value");
+
   // HTTP REQUESTS
   const { sendRequest: fetchTodos } = useHttp2(fetchAllTodos);
   const { sendRequest: fetchStep } = useHttp2(fetchAllStep);

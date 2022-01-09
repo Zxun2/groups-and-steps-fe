@@ -2,19 +2,23 @@ import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import DoneIcon from "@mui/icons-material/Done";
 import { Box } from "@material-ui/core";
+import { LabelType } from "../../../store/steps-slice";
 
-const FilterLabelItem = (props) => {
+interface FilterLabelItemProps {
+  option: LabelType;
+  selected: boolean;
+}
+
+const FilterLabelItem = (props: FilterLabelItemProps) => {
   return (
     <>
       <Box
         component={DoneIcon}
-        sx={{
+        style={{
           width: 17,
           height: 17,
-          mr: "5px",
-          ml: "-2px",
-        }}
-        style={{
+          marginRight: "5px",
+          marginLeft: "-2px",
           visibility: props.selected ? "visible" : "hidden",
         }}
       />
@@ -31,8 +35,9 @@ const FilterLabelItem = (props) => {
         style={{ backgroundColor: props.option.color }}
       />
       <Box
-        sx={{
+        style={{
           flexGrow: 1,
+          // @ts-ignore
           "& span": {
             color: "#8b949e",
           },
@@ -44,8 +49,10 @@ const FilterLabelItem = (props) => {
       </Box>
       <Box
         component={CloseIcon}
-        sx={{ opacity: 0.6, width: 18, height: 18 }}
         style={{
+          opacity: "0.6",
+          width: 18,
+          height: 18,
           visibility: props.selected ? "visible" : "hidden",
         }}
       />

@@ -62,6 +62,7 @@
   },
   "devDependencies": {
     "@types/randomcolor": "^0.5.6",
+    "@types/react-custom-scrollbars": "^4.0.10",
     "@types/react-router-dom": "^5.3.2",
     "@types/redux-logger": "^3.0.9",
     "@types/uuid": "^8.3.4"

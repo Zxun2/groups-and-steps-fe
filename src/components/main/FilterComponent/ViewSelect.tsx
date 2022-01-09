@@ -6,10 +6,10 @@ import LayersIcon from "@mui/icons-material/Layers";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 import { Button } from "@material-ui/core";
-import Menu from "@mui/material/Menu";
+import Menu, { MenuProps } from "@mui/material/Menu";
 import * as React from "react";
 
-const StyledMenu = styled((props) => (
+const StyledMenu = styled((props: MenuProps) => (
   <Menu
     elevation={0}
     anchorOrigin={{
@@ -52,18 +52,24 @@ const StyledMenu = styled((props) => (
   },
 }));
 
+interface SelectLabelsProps {
+  toggleDetails: boolean;
+  setToggleDetails: React.Dispatch<React.SetStateAction<boolean>>;
+  setView: React.Dispatch<React.SetStateAction<string>>;
+}
+
 // Can use enum here
-export default function CustomizedMenus(props) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+export default function SelectLabels(props: SelectLabelsProps) {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const changeViewHandler = (view) => {
+  const changeViewHandler = (view: string) => {
     props.setView(view);
     handleClose();
   };

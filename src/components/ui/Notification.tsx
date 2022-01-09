@@ -1,27 +1,26 @@
-import { uiAction } from "../../store/ui-slice";
+import { uiAction, getAllNotifications } from "../../store/ui-slice";
 import React, { useState, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { FAIL, SUCCESS } from "../../misc/constants";
+import { ACTION, NotificationStatus } from "../../misc/constants";
+import { useAppDispatch, useAppSelector } from "../../hooks/useHooks";
 
 // Logic for app-wide notifications
-/** Props received
- * {
- *  status: ERROR | SUCCESS | LOADING
- *  title: string
- *  message: string
- *  id: string
- * }
- */
-const Notification = (props) => {
+interface NotificationProps {
+  status: NotificationStatus;
+  title: string;
+  message: string;
+  id: string;
+}
+
+const Notification: React.FC<NotificationProps> = (props) => {
   const [exit, setExit] = useState(false);
-  const notifications = useSelector((state) => state.ui.notification);
-  const dispatch = useDispatch();
+  const notifications = useAppSelector(getAllNotifications);
+  const dispatch = useAppDispatch();
   const [width, setWidth] = useState(0);
-  const [intervalID, setIntervalID] = useState(null);
+  const [intervalID, setIntervalID] = useState<NodeJS.Timer | null>(null);
 
   // Limit number of notifications on screen
   if (notifications.length > 3) {
-    dispatch(uiAction.removeNotification());
+    dispatch(uiAction.removeNotification({}));
   }
 
   const handleStartTimer = () => {
@@ -40,16 +39,16 @@ const Notification = (props) => {
     setIntervalID(id);
   };
 
+  // clear timer
   const handlePauseTimer = useCallback(() => {
-    // clear timer
-    clearInterval(intervalID);
+    clearInterval(intervalID as NodeJS.Timer);
   }, [intervalID]);
 
   const handleCloseNotification = useCallback(() => {
     // remove timer
     handlePauseTimer();
     setExit(true);
-    dispatch(uiAction.removeNotification());
+    dispatch(uiAction.removeNotification({}));
   }, [dispatch, handlePauseTimer]);
 
   React.useEffect(() => {
@@ -69,9 +68,9 @@ const Notification = (props) => {
       onMouseEnter={handlePauseTimer}
       onMouseLeave={handleStartTimer}
       className={`notification-item ${
-        props.status === SUCCESS
+        props.status === ACTION.SUCCESS
           ? "success"
-          : props.status === FAIL
+          : props.status === ACTION.FAIL
           ? "error"
           : "notice"
       } ${exit ? "exit" : ""}`}

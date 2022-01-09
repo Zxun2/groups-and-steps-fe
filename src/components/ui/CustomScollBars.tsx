@@ -1,6 +1,12 @@
 import { Scrollbars } from "react-custom-scrollbars";
 
-const renderThumb = ({ style, ...props }) => {
+interface CustomScrollbarProps {
+  style?: {
+    [key: string]: string;
+  };
+}
+
+const renderThumb: React.FC<CustomScrollbarProps> = ({ style, ...props }) => {
   const thumbStyle = {
     borderRadius: 6,
     backgroundColor: "#5865f2",
@@ -8,7 +14,7 @@ const renderThumb = ({ style, ...props }) => {
   return <div style={{ ...style, ...thumbStyle }} {...props} />;
 };
 
-const CustomScrollbars = (props) => {
+const CustomScrollbars: React.FC<CustomScrollbarProps> = (props) => {
   return (
     <Scrollbars
       renderThumbHorizontal={renderThumb}

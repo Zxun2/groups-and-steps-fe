@@ -3,8 +3,12 @@ import ButtonBase from "@mui/material/ButtonBase";
 import InputBase from "@mui/material/InputBase";
 import { styled } from "@mui/material/styles";
 import Popper from "@mui/material/Popper";
-import PropTypes from "prop-types";
-import * as React from "react";
+
+interface PopperComponentProps {
+  anchorEl?: any;
+  disablePortal?: boolean;
+  open: boolean;
+}
 
 // Auto Complete Popper
 export const StyledAutocompletePopper = styled("div")(({ theme }) => ({
@@ -37,15 +41,9 @@ export const StyledAutocompletePopper = styled("div")(({ theme }) => ({
 }));
 
 // Custom popper
-export const PopperComponent = (props) => {
+export const PopperComponent = (props: PopperComponentProps) => {
   const { disablePortal, anchorEl, open, ...other } = props;
   return <StyledAutocompletePopper {...other} />;
-};
-
-PopperComponent.propTypes = {
-  anchorEl: PropTypes.any,
-  disablePortal: PropTypes.bool,
-  open: PropTypes.bool.isRequired,
 };
 
 export const StyledPopper = styled(Popper)(({ theme }) => ({

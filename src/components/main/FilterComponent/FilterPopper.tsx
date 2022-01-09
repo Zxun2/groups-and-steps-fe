@@ -9,11 +9,23 @@ import {
   StyledInput,
 } from "./FilterCustomStyledPopper";
 import FilterLabelItem from "./FilterLabelItem";
+import { LabelType } from "../../../store/steps-slice";
 
 /**
  * FILTER POPPER COMPONENT
  */
-const Popper = (props) => {
+interface PopperProps {
+  id: "Todo-tags" | undefined;
+  open: boolean;
+  anchorEl?: any;
+  handleClose: () => void;
+  pendingValue: LabelType[];
+  setPendingValue: React.Dispatch<React.SetStateAction<LabelType[]>>;
+  labels: LabelType[];
+  value: any;
+}
+
+const Popper = (props: PopperProps) => {
   return (
     <StyledPopper
       id={props.id}
@@ -51,7 +63,7 @@ const Popper = (props) => {
             onChange={(event, newValue, reason) => {
               if (
                 event.type === "keydown" &&
-                event.key === "Backspace" &&
+                (event as React.KeyboardEvent).key === "Backspace" &&
                 reason === "removeOption"
               ) {
                 return;
@@ -64,6 +76,7 @@ const Popper = (props) => {
             PopperComponent={PopperComponent}
             noOptionsText="No labels"
             ListboxProps={{
+              // @ts-ignore
               sx: {
                 overflowY: "scroll",
                 "&::-webkit-scrollbar": {
@@ -89,13 +102,19 @@ const Popper = (props) => {
             )}
             options={[...props.labels].sort((a, b) => {
               // Display the selected labels first.
-              let ai = props.value?.findIndex((elem) => a.id === elem.id);
+              let ai = props.value?.findIndex(
+                (elem: LabelType) => a.id === elem.id
+              );
               ai =
                 ai === -1
                   ? props.value?.length +
-                    props.labels?.findIndex((elem) => a.id === elem.id)
+                    props.labels?.findIndex(
+                      (elem: LabelType) => a.id === elem.id
+                    )
                   : ai;
-              let bi = props.value?.findIndex((elem) => b.id === elem.id);
+              let bi = props.value?.findIndex(
+                (elem: LabelType) => b.id === elem.id
+              );
               bi =
                 bi === -1
                   ? props.value?.length +

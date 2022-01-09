@@ -2,30 +2,36 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { getFilterLabels, stepAction } from "../../../store/steps-slice";
 import { Button } from "./FilterCustomStyledPopper";
 import { useTheme } from "@mui/material/styles";
-import { useDispatch, useSelector } from "react-redux";
 import Popper from "./FilterPopper";
 import Box from "@mui/material/Box";
 import React, { useState, useEffect } from "react";
+import { LabelType } from "../../../store/steps-slice";
+import { useAppDispatch, useAppSelector } from "../../../hooks/useHooks";
 
 /**
  * FILTER COMPONENT
  */
-export default function FilterLabel(props) {
-  const [anchorEl, setAnchorEl] = useState(null);
+
+interface FilterLabelProps {
+  value: LabelType[];
+  setValue: React.Dispatch<React.SetStateAction<LabelType[]>>;
+}
+
+export default function FilterLabel(props: FilterLabelProps) {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   // "NEW" FILTERS
-  const [pendingValue, setPendingValue] = useState([]);
-  const [filterArr, setFilterArr] = useState([]);
+  const [pendingValue, setPendingValue] = useState<LabelType[]>([]);
+  const [filterArr, setFilterArr] = useState<number[] | []>([]);
 
   const theme = useTheme();
-  const dispatch = useDispatch();
-
-  const data = useSelector(getFilterLabels);
+  const dispatch = useAppDispatch();
+  const data = useAppSelector(getFilterLabels);
 
   // Reformat steps into desirable format for filter
-  let labels = [];
-  labels = labels.concat(data);
+  let labels: LabelType[] = [];
+  labels = data;
 
-  const handleClick = (event) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setPendingValue(props.value || []); // initially an empty arr - means dont select anything on start
     setAnchorEl(event.currentTarget);
   };
@@ -34,7 +40,7 @@ export default function FilterLabel(props) {
     // on mount
     dispatch(
       stepAction.filterStep({
-        filterArr: filterArr,
+        filterArr,
       })
     );
   }, [filterArr, dispatch]);
@@ -64,8 +70,8 @@ export default function FilterLabel(props) {
           <span>Filter</span>
           <SettingsIcon />
         </Button>
-        <Box style={{ "&:lastChild": { marginBottom: "2rem" } }}>
-          {props?.value?.map((label) => (
+        <Box>
+          {props?.value?.map((label: LabelType) => (
             <Box
               key={label.id}
               sx={{

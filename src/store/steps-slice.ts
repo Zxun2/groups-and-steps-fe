@@ -179,7 +179,14 @@ export const getCompletedAndUncompletedSteps = (state: RootState) => {
   return { completed, uncompleted };
 };
 
-export const getFilterLabels = (state: RootState) => {
+export interface LabelType {
+  tags: string[];
+  step: string;
+  color: string;
+  id: number;
+}
+
+export const getFilterLabels = (state: RootState): LabelType[] => {
   const steps = getAllSteps(state);
   return steps.map((step: Step, _) => {
     const color = randomColor();
