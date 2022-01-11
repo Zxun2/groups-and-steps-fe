@@ -89,6 +89,9 @@ const RenderSteps = (props) => {
                   todo_id={step.todo_id}
                   updated_at={step.updated_at}
                   tags={step.tags}
+                  setValue={props.setValue}
+                  deadline={step.deadline}
+                  created_at={step.created_at}
                 />
               );
             })}

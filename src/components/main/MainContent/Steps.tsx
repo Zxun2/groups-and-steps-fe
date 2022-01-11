@@ -1,32 +1,39 @@
-import { createNewStep } from "../../../store/steps-slice";
+import { createNewStep, LabelType } from "../../../store/steps-slice";
 import { Toolbar, Box } from "@mui/material";
 import { uiAction } from "../../../store/ui-slice";
 import { FAIL } from "../../../misc/constants";
 import { useHttp2 } from "../../../hooks/useHttp";
-import { stepStyles } from "../../../styles/Style";
-import { useDispatch, useSelector } from "react-redux";
 import { Fragment, useRef } from "react";
 import { useState } from "react";
 import Landing from "./Landing";
 import MainView from "./MainView";
 import { getAllTodo } from "../../../store/todo-slice";
+import { useAppDispatch, useAppSelector } from "../../../hooks/useHooks";
 
-const Steps = (props) => {
-  const classes = stepStyles();
-  const dispatch = useDispatch();
+interface StepsProps {
+  todoId: number;
+  title: string;
+  value: LabelType[];
+  setValue: React.Dispatch<React.SetStateAction<LabelType[]>>;
+}
 
-  const stepRef = useRef();
+const Steps: React.FC<StepsProps> = (props) => {
+  const dispatch = useAppDispatch();
+
+  const stepRef = useRef<HTMLInputElement>();
 
   const [toggleDetails, setToggleDetails] = useState(false);
-  const [selectedItem, setSelectedItem] = useState([]);
+  const [selectedItem, setSelectedItem] = useState<string[] | []>([]);
   const [view, setView] = useState("Layered");
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState<string[] | []>([]);
+
+  console.log(selectedItem, "FROM STEPS");
 
   const { sendRequest: createStep } = useHttp2(createNewStep);
-  const Todos = useSelector(getAllTodo);
+  const Todos = useAppSelector(getAllTodo);
 
   const addStepToDatabase = () => {
-    if (stepRef.current.value.trim() === "") {
+    if (stepRef.current!.value.trim() === "") {
       dispatch(
         uiAction.showNotification({
           status: FAIL,
@@ -37,16 +44,16 @@ const Steps = (props) => {
     } else {
       createStep({
         content: {
-          step: stepRef.current.value.trim(),
+          step: stepRef.current!.value.trim(),
           tags: tags,
         },
         todo_id: props.todoId,
       });
     }
-    stepRef.current.value = "";
+    stepRef.current!.value = "";
   };
 
-  const addStepHandler = (e) => {
+  const addStepHandler = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
     addStepToDatabase();
     setSelectedItem([]);
@@ -54,7 +61,7 @@ const Steps = (props) => {
 
   // Function is called in TagsInput.jsx
   // To return selected tags
-  function handleSelectedTags(items) {
+  function handleSelectedTags(items: string[]) {
     setTags(items);
   }
 
@@ -68,9 +75,7 @@ const Steps = (props) => {
         minHeight: "100vh",
       }}
     >
-      {(Todos.length === 0 || props.todoId === -1) && (
-        <Landing classes={classes} userState={props.userState} />
-      )}
+      {(Todos.length === 0 || props.todoId === -1) && <Landing />}
       {props.title !== "" && Todos.length !== 0 && (
         <Fragment>
           <Toolbar />

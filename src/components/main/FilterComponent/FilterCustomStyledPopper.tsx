@@ -26,13 +26,12 @@ export const StyledAutocompletePopper = styled("div")(({ theme }) => ({
       minHeight: "auto",
       alignItems: "flex-start",
       padding: "0.6rem",
-      //   borderBottom: `1px solid  ${"#30363d"}`,
-      '&[aria-selected="true"]': {
-        backgroundColor: "transparent",
-      },
-      '&[data-focus="true"], &[data-focus="true"][aria-selected="true"]': {
-        backgroundColor: theme.palette.action.hover,
-      },
+      // '&[aria-selected="true"]': {
+      //   backgroundColor: "transparent",
+      // },
+      // '&[data-focus="true"], &[data-focus="true"][aria-selected="true"]': {
+      //   backgroundColor: theme.palette.action.hover,
+      // },
     },
   },
   [`&.${autocompleteClasses.popperDisablePortal}`]: {

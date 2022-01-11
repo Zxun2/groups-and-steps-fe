@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState, Fragment } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { drawerWidth } from "../../misc/constants";
 import NavBar from "../main/NavBar/NavBar";
 import { SideBar } from "../main/SideBar/SideBar";
 import { Box, CssBaseline } from "@mui/material";
 import { uiAction } from "../../store/ui-slice";
 import { fetchAllStep, stepAction } from "../../store/steps-slice";
-import Steps from "../main/MainContent/Steps";
+import Steps from "../main/MainContent/Steps.tsx";
 import TodoModal from "../main/Modals/TodoModal";
 import UserModal from "../main/Modals/UserModal";
 import {
@@ -15,13 +15,10 @@ import {
   deleteCurrTodo,
   updateCurrTodo,
 } from "../../store/todo-slice";
-
 import { useHttp2 } from "../../hooks/useHttp";
-import { getUserState } from "../../store/user-slice";
 
 export const Dashboard = () => {
   const dispatch = useDispatch();
-  const userState = useSelector(getUserState);
 
   // STATE
   const [openUserModal, setOpenUserModal] = useState(false);
@@ -32,8 +29,6 @@ export const Dashboard = () => {
   const [updatedTodo, setChange] = useState("");
   const [title, setTitle] = useState("");
   const [Todo, setTodo] = useState("");
-
-  console.log(value, "Value");
 
   // HTTP REQUESTS
   const { sendRequest: fetchTodos } = useHttp2(fetchAllTodos);
@@ -163,7 +158,6 @@ export const Dashboard = () => {
           <Steps
             todoId={activeTodoId}
             title={title}
-            userState={userState}
             value={value}
             setValue={setValue}
           />

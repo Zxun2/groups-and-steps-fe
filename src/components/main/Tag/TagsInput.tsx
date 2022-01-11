@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import Chip from "@material-ui/core/Chip";
 import TextField from "@material-ui/core/TextField";
 import Downshift from "downshift";
@@ -7,7 +6,14 @@ import randomColor from "randomcolor";
 import { Box } from "@mui/material";
 import { tagInputStyles } from "../../../styles/Style";
 
-export default function TagsInput({
+interface TagsInputProps {
+  selectedItem: string[];
+  setSelectedItem: React.Dispatch<React.SetStateAction<string[]>>;
+  placeholder: string;
+  selectedTags: (items: string[]) => void;
+}
+
+const TagsInput: React.FC<TagsInputProps> = ({
   // Array of Tags
   selectedItem,
   // Setter
@@ -15,26 +21,25 @@ export default function TagsInput({
   // HandleSelectedTags so that i can use it
   selectedTags,
   placeholder,
-  tags,
   ...other
-}) {
+}) => {
   const classes = tagInputStyles();
   const [inputValue, setInputValue] = useState("");
 
-  useEffect(() => {
-    setSelectedItem(tags);
-  }, [tags, setSelectedItem]);
+  // useEffect(() => {
+  //   setSelectedItem();
+  // }, [tags, setSelectedItem]);
 
   useEffect(() => {
     selectedTags(selectedItem);
   }, [selectedItem, selectedTags]);
 
-  function handleKeyDown(event) {
-    if (event.key === "Enter") {
+  function handleKeyDown(event: React.SyntheticEvent) {
+    if ((event as React.KeyboardEvent<HTMLDivElement>).key === "Enter") {
       const newSelectedItem = [...selectedItem];
 
       const duplicatedValues = newSelectedItem.indexOf(
-        event.target.value.trim()
+        (event as React.ChangeEvent<HTMLInputElement>).target.value.trim()
       );
 
       // Check duplicates
@@ -44,10 +49,18 @@ export default function TagsInput({
       }
 
       // \s means "match whitespace" and the g is a flag which means "global", i.e. Match all whitespace, not just the first.
-      if (!event.target.value.replace(/\s/g, "").length) return;
+      if (
+        !(event as React.ChangeEvent<HTMLInputElement>).target.value.replace(
+          /\s/g,
+          ""
+        ).length
+      )
+        return;
 
       // Add tag to array
-      newSelectedItem.push(event.target.value.trim());
+      newSelectedItem.push(
+        (event as React.ChangeEvent<HTMLInputElement>).target.value.trim()
+      );
       setSelectedItem(newSelectedItem);
       setInputValue("");
     }
@@ -55,27 +68,27 @@ export default function TagsInput({
     // This checks for the BACKSPACE keydown event.
     // Validates presence of current tags and remove the last item in the list
     if (
-      selectedItem.length &&
-      !inputValue.length &&
-      event.key === "Backspace"
+      selectedItem?.length &&
+      !inputValue?.length &&
+      (event as React.KeyboardEvent<HTMLDivElement>).key === "Backspace"
     ) {
-      setSelectedItem(selectedItem.slice(0, selectedItem.length - 1));
+      setSelectedItem(selectedItem.slice(0, selectedItem?.length - 1));
     }
   }
 
-  function handleChange(item) {
-    let newSelectedItem = [...selectedItem];
+  // function handleChange(item: any) {
+  //   let newSelectedItem = [...selectedItem];
 
-    // Validates input by checking for duplication
-    // If valid, add new tag into array
-    if (newSelectedItem.indexOf(item) === -1) {
-      newSelectedItem = [...newSelectedItem, item];
-    }
-    setInputValue("");
-    setSelectedItem(newSelectedItem);
-  }
+  //   // Validates input by checking for duplication
+  //   // If valid, add new tag into array
+  //   if (item && newSelectedItem.indexOf(item) === -1) {
+  //     newSelectedItem = [...newSelectedItem, item];
+  //   }
+  //   setInputValue("");
+  //   setSelectedItem(newSelectedItem);
+  // }
 
-  const handleDelete = (item) => () => {
+  const handleDelete = (item: string) => () => {
     // DO NOT MUTATE ORIGINAL ARRAY
     const newSelectedItem = [...selectedItem];
     // Look for item in array and splice it
@@ -83,28 +96,27 @@ export default function TagsInput({
     setSelectedItem(newSelectedItem);
   };
 
-  function handleInputChange(event) {
+  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     setInputValue(event.target.value);
   }
 
   return (
     <React.Fragment>
       <Downshift
-        id="downshift-multiple"
-        inputValue={inputValue}
-        onChange={handleChange}
         selectedItem={selectedItem}
+        inputValue={inputValue}
+        // onChange={handleChange}
       >
         {({ getInputProps }) => {
-          const { onBlur, onChange, onFocus, ...inputProps } = getInputProps({
-            onKeyDown: handleKeyDown,
-            placeholder,
-          });
+          // const { onBlur, onChange, onFocus } = getInputProps({
+          //   onKeyDown: handleKeyDown,
+          //   placeholder,
+          // });
           return (
             // Must return a div
             <div>
               <Box className={classes.scrollbar}>
-                {selectedItem.map((item) => {
+                {selectedItem?.map((item) => {
                   const color = randomColor();
                   return (
                     <Chip
@@ -119,23 +131,19 @@ export default function TagsInput({
                 })}
               </Box>
               <TextField
+                variant="standard"
                 InputProps={{
-                  // Leading adornment for this input.
-                  // startAdornment:
-                  onBlur,
-                  onChange: (event) => {
+                  onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
                     handleInputChange(event);
-                    onChange(event);
                   },
-                  onFocus,
-                  color: "primary",
                   style: {
                     color: "white",
                     fontSize: "1.05rem",
                   },
                 }}
                 {...other}
-                {...inputProps}
+                onKeyDown={handleKeyDown}
+                placeholder={placeholder}
               />
             </div>
           );
@@ -143,11 +151,6 @@ export default function TagsInput({
       </Downshift>
     </React.Fragment>
   );
-}
-TagsInput.defaultProps = {
-  tags: [],
 };
-TagsInput.propTypes = {
-  selectedTags: PropTypes.func.isRequired,
-  tags: PropTypes.arrayOf(PropTypes.string),
-};
+
+export default TagsInput;

@@ -2,8 +2,14 @@ import { Typography } from "@material-ui/core";
 import AppIcon from "../../svgs/AppIcon";
 import { Box } from "@mui/material";
 import React from "react";
+import { stepStyles } from "../../../styles/Style";
+import { useAppSelector } from "../../../hooks/useHooks";
+import { getUserState } from "../../../store/user-slice";
 
-const Landing = (props) => {
+const Landing = () => {
+  const classes = stepStyles();
+  const userState = useAppSelector(getUserState);
+
   return (
     <Box
       style={{
@@ -18,18 +24,15 @@ const Landing = (props) => {
       <Typography
         variant="h4"
         color="secondary"
-        className={props.classes.text}
+        className={classes.text}
         style={{ fontWeight: "600", display: "inline" }}
       >
         Welcome{" "}
-        <span style={{ color: "#5865f2" }}>
-          {props.userState?.currUser?.name}
-        </span>
-        ,
+        <span style={{ color: "#5865f2" }}>{userState?.currUser?.name}</span>,
       </Typography>
 
       <Typography
-        className={props.classes.text}
+        className={classes.text}
         variant="h4"
         color="secondary"
         style={{ fontWeight: "600", marginBottom: "2rem" }}

@@ -89,11 +89,10 @@ const stepSlice = createSlice({
     filterStep(state, action) {
       const filter = action.payload.filterArr;
       state.temp = [];
-      if (filter?.length > 0) {
+      if (filter.length > 0) {
         for (const obj of filter) {
-          const step = state.steps.filter((step) => step.id === obj);
-
-          state.temp = state.temp.concat(step);
+          const step = state.steps.find((elem) => elem.id === obj) as Step;
+          state.temp.push(step);
         }
       } else {
         state.temp = state.steps;
@@ -187,7 +186,7 @@ export interface LabelType {
 }
 
 export const getFilterLabels = (state: RootState): LabelType[] => {
-  const steps = getAllSteps(state);
+  const steps = state.step.steps;
   return steps.map((step: Step, _) => {
     const color = randomColor();
     const tags = step.tags; // array

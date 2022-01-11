@@ -1,7 +1,7 @@
-import React from "react";
+import React, { Fragment } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import DoneIcon from "@mui/icons-material/Done";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import { LabelType } from "../../../store/steps-slice";
 
 interface FilterLabelItemProps {
@@ -11,7 +11,7 @@ interface FilterLabelItemProps {
 
 const FilterLabelItem = (props: FilterLabelItemProps) => {
   return (
-    <>
+    <Fragment>
       <Box
         component={DoneIcon}
         style={{
@@ -56,7 +56,7 @@ const FilterLabelItem = (props: FilterLabelItemProps) => {
           visibility: props.selected ? "visible" : "hidden",
         }}
       />
-    </>
+    </Fragment>
   );
 };
 

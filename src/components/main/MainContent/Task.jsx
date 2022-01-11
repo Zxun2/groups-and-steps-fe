@@ -82,7 +82,6 @@ export default function Task({
   tags,
   deadline,
   setValue,
-  ...others
 }) {
   const dispatch = useDispatch();
 

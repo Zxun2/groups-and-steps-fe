@@ -28,11 +28,11 @@ export default function FilterLabel(props: FilterLabelProps) {
   const data = useAppSelector(getFilterLabels);
 
   // Reformat steps into desirable format for filter
-  let labels: LabelType[] = [];
-  labels = data;
+  let labels: LabelType[] = data;
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setPendingValue(props.value || []); // initially an empty arr - means dont select anything on start
+    // initially an empty arr - means dont select anything on start
+    setPendingValue(props.value || []);
     setAnchorEl(event.currentTarget);
   };
 

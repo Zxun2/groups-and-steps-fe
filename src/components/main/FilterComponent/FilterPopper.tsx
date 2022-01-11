@@ -22,7 +22,7 @@ interface PopperProps {
   pendingValue: LabelType[];
   setPendingValue: React.Dispatch<React.SetStateAction<LabelType[]>>;
   labels: LabelType[];
-  value: any;
+  value: LabelType[];
 }
 
 const Popper = (props: PopperProps) => {
@@ -52,7 +52,7 @@ const Popper = (props: PopperProps) => {
             isOptionEqualToValue={(option, value) => {
               return option.id === value.id;
             }}
-            onClose={(event, reason) => {
+            onClose={(_, reason) => {
               if (reason === "escape") {
                 // handles state transfer (old vs new)
                 props.handleClose();
@@ -83,7 +83,6 @@ const Popper = (props: PopperProps) => {
                   // Width of scrollbar
                   width: "0.4rem",
                 },
-
                 "&::-webkit-scrollbar-track": {
                   // Color of track
                   background: "transparent",
@@ -102,23 +101,23 @@ const Popper = (props: PopperProps) => {
             )}
             options={[...props.labels].sort((a, b) => {
               // Display the selected labels first.
-              let ai = props.value?.findIndex(
+              let ai = props?.value?.findIndex(
                 (elem: LabelType) => a.id === elem.id
               );
               ai =
                 ai === -1
-                  ? props.value?.length +
-                    props.labels?.findIndex(
+                  ? props?.value?.length +
+                    props.labels.findIndex(
                       (elem: LabelType) => a.id === elem.id
                     )
                   : ai;
-              let bi = props.value?.findIndex(
+              let bi = props?.value?.findIndex(
                 (elem: LabelType) => b.id === elem.id
               );
               bi =
                 bi === -1
-                  ? props.value?.length +
-                    props.labels?.findIndex((elem) => b.id === elem.id)
+                  ? props?.value?.length +
+                    props?.labels?.findIndex((elem) => b.id === elem.id)
                   : bi;
 
               // ai < bi iff ai is selected
