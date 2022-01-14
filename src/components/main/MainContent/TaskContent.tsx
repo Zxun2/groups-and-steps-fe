@@ -2,7 +2,19 @@ import React from "react";
 import { Typography } from "@material-ui/core";
 import CardContent from "@mui/material/CardContent";
 
-const TaskContent = ({ step, deadline, currDeadline, daysLeft }) => {
+interface TaskContentProps {
+  step: string;
+  deadline: Date;
+  daysLeft: number;
+  currDeadline: Date;
+}
+
+const TaskContent: React.FC<TaskContentProps> = ({
+  step,
+  deadline,
+  currDeadline,
+  daysLeft,
+}) => {
   return (
     <CardContent style={{ paddingBottom: "0", paddingTop: "0.5rem" }}>
       {step.split("\\n").map((str, idx) => {

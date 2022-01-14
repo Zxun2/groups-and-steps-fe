@@ -3,17 +3,17 @@ import { Home } from "./components/pages/Home";
 import { Dashboard } from "./components/pages/Dashboard";
 import { Route, Switch } from "react-router-dom";
 import { Fragment, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { autoLogin } from "./store/user-slice";
 import { useHistory } from "react-router-dom";
 import Notification from "./components/ui/Notification";
 import { getAllNotifications, uiAction } from "./store/ui-slice";
-import { NOTICE } from "./misc/constants";
+import { ACTION } from "./misc/constants";
+import { useAppDispatch, useAppSelector } from "./hooks/useHooks";
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
-  const notifications = useSelector(getAllNotifications);
+  const notifications = useAppSelector(getAllNotifications);
 
   // Auto Login
   useEffect(() => {
@@ -23,11 +23,11 @@ function App() {
       try {
         dispatch(autoLogin(token));
         history.push("/dashboard");
-      } catch (err) {
+      } catch (err: any) {
         dispatch(
           uiAction.showNotification({
-            status: "error",
-            title: "Error!",
+            status: ACTION.FAIL,
+            _title: "Error!",
             message: err.message,
           })
         );
@@ -36,8 +36,8 @@ function App() {
       history.push("/");
       dispatch(
         uiAction.showNotification({
-          status: NOTICE,
-          title: "Take Note!",
+          status: ACTION.NOTICE,
+          _title: "Take Note!",
           message: "Your token has expired. Please sign in again!",
         })
       );

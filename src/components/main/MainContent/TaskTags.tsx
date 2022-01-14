@@ -4,7 +4,11 @@ import { Typography } from "@material-ui/core";
 import { tagInputStyles } from "../../../styles/Style";
 import randomColor from "randomcolor";
 
-const TaskTags = ({ tags }) => {
+interface TaskTagsProps {
+  tags: string[];
+}
+
+const TaskTags: React.FC<TaskTagsProps> = ({ tags }) => {
   const classes = tagInputStyles();
 
   return (

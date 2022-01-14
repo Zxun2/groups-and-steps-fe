@@ -7,22 +7,37 @@ import DialogContentText from "@mui/material/DialogContentText";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import { v4 } from "uuid";
 import { Box } from "@material-ui/core";
-import { postTodo } from "../../../store/todo-slice";
+import { getAllTodo, postTodo } from "../../../store/todo-slice";
 import { useHttp2 } from "../../../hooks/useHttp";
+import { useAppSelector } from "../../../hooks/useHooks";
 
-const filter = createFilterOptions();
+interface TodoOptionType {
+  title: string;
+  id?: number;
+  inputValue?: string;
+}
 
-export default function NavInput(props) {
-  const options = [...props.Todos];
+const filter = createFilterOptions<TodoOptionType>();
+
+interface NavInputProps {
+  changeContentHandler: (title: string, id: number) => void;
+}
+
+export default function NavInput(props: NavInputProps) {
+  const Todos = useAppSelector(getAllTodo);
+
+  const options: TodoOptionType[] = Todos.map((todo) => {
+    return { title: todo.title, id: todo.id };
+  });
 
   const [dialogValue, setDialogValue] = useState({
     title: "",
   });
   const [open, toggleOpen] = useState(false);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState<TodoOptionType | null>(null);
 
-  const searchRef = useRef();
-  const todoRef = useRef();
+  const searchRef = useRef<HTMLInputElement | null>(null);
+  const todoRef = useRef<HTMLInputElement | null>(null);
 
   const { sendRequest: createTodo } = useHttp2(postTodo);
 
@@ -36,43 +51,39 @@ export default function NavInput(props) {
     toggleOpen(false);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault();
-
-    setValue({
-      title: dialogValue.title,
-    });
 
     // Validation already done once by searchSubmitHandler
     // No need for further validation
-    const title = todoRef.current.value.trim();
+    const title = todoRef.current!.value.trim();
 
     if (title !== "") {
       createTodo({ content: { title } });
     }
 
-    todoRef.current.value = "";
-    searchRef.current.value = "";
+    todoRef.current!.value = "";
+    searchRef.current!.value = "";
 
     handleClose();
   };
 
-  const searchSubmitHandler = (e) => {
+  const searchSubmitHandler = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
 
-    if (searchRef.current.value.trim() !== "") {
+    if (searchRef.current!.value.trim() !== "") {
       const index = options.findIndex(
-        (Todo) => Todo.title === searchRef.current.value.trim()
+        (Todo) => Todo.title === searchRef.current!.value.trim()
       );
 
       if (index !== -1) {
         const { title, id } = options[index];
         // Change Content of screen
-        props.changeContentHandler(title, id);
+        props.changeContentHandler(title, id as number);
       }
     }
 
-    setValue("");
+    setValue(null);
   };
 
   return (
@@ -81,23 +92,12 @@ export default function NavInput(props) {
         value={value}
         autoComplete={true}
         // Does not actually mean onChange (more-of onEnter)
-        onChange={(event, newValue) => {
+        onChange={(_, newValue) => {
+          console.log("Newvalue is ", newValue);
           if (typeof newValue === "string") {
-            // timeout to avoid instant validation of the dialog's form.
-            setTimeout(() => {
-              if (searchRef.current.value.trim() !== "") {
-                const index = options.findIndex(
-                  (Todo) => Todo.title === searchRef.current.value.trim()
-                );
-
-                // If todo is not found, toggle open Modal
-                if (index === -1) {
-                  toggleOpen(true);
-                  setDialogValue({
-                    title: newValue,
-                  });
-                }
-              }
+            toggleOpen(true);
+            setDialogValue({
+              title: newValue,
             });
           } else if (newValue && newValue.inputValue) {
             toggleOpen(true);
@@ -127,9 +127,6 @@ export default function NavInput(props) {
           if (typeof option === "string") {
             return option;
           }
-          if (option.inputValue) {
-            return option.inputValue;
-          }
           return option.title;
         }}
         selectOnFocus
@@ -147,9 +144,10 @@ export default function NavInput(props) {
         renderInput={(params) => (
           <TextField
             {...params}
-            component="form"
             inputRef={searchRef}
             placeholder="Search Todo"
+            // @ts-ignore
+            component="form"
             onSubmit={searchSubmitHandler}
             variant="standard"
           />
@@ -157,7 +155,10 @@ export default function NavInput(props) {
       />
       <Dialog open={open} onClose={handleClose} style={{ margin: "0" }}>
         <Box style={{ backgroundColor: "#36393f" }}>
-          <DialogTitle color="white" style={{ textAlign: "center" }}>
+          <DialogTitle
+            color="white"
+            style={{ textAlign: "center", fontSize: "30px" }}
+          >
             Add a new Todo
           </DialogTitle>
           <DialogContent>
@@ -185,6 +186,7 @@ export default function NavInput(props) {
                 }
                 type="text"
                 variant="standard"
+                // @ts-ignore
                 component="form"
                 onSubmit={handleSubmit}
                 InputProps={{

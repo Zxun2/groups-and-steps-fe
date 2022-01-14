@@ -6,7 +6,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
+import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, Button, Divider } from "@mui/material";
@@ -16,19 +16,24 @@ import {
   updateCurrStep,
   deleteCurrStep,
   stepAction,
+  LabelType,
 } from "../../../store/steps-slice";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
-import { useDispatch } from "react-redux";
 import { uiAction } from "../../../store/ui-slice";
-import { FAIL } from "../../../misc/constants";
+import { ACTION } from "../../../misc/constants";
 import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
 import TaskContent from "./TaskContent";
 import TaskHeader from "./TaskHeader";
 import TaskTags from "./TaskTags";
+import { useAppDispatch } from "../../../hooks/useHooks";
+
+interface ExpandMoreProps extends IconButtonProps {
+  expand: boolean;
+}
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -44,7 +49,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 // Styled Components
-const ExpandMore = styled((props) => {
+const ExpandMore = styled((props: ExpandMoreProps) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
@@ -55,11 +60,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-function getNumberOfDays(start, end) {
-  if (start === "" || end === "") {
-    return;
-  }
-
+function getNumberOfDays(start: Date, end: Date): number {
   const date1 = new Date(start);
   const date2 = new Date(end);
 
@@ -72,6 +73,19 @@ function getNumberOfDays(start, end) {
   return diffInDays;
 }
 
+interface TaskProps {
+  key: number;
+  id: number;
+  step: string;
+  completed: boolean;
+  todo_id: number;
+  updated_at: Date;
+  tags: string[];
+  setValue: React.Dispatch<React.SetStateAction<LabelType[]>>;
+  deadline: Date;
+  created_at: Date;
+}
+
 export default function Task({
   updated_at,
   created_at,
@@ -82,24 +96,24 @@ export default function Task({
   tags,
   deadline,
   setValue,
-}) {
-  const dispatch = useDispatch();
+}: TaskProps) {
+  const dispatch = useAppDispatch();
 
   const [expanded, setExpanded] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedItem, setSelectedItem] = useState([]);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [selectedItem, setSelectedItem] = useState<string[] | []>([]);
   const [newTags, setNewTags] = useState(tags);
 
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>();
 
   const { sendRequest: updateStep } = useHttp2(updateCurrStep);
   const { sendRequest: deleteStep } = useHttp2(deleteCurrStep);
 
   const open = Boolean(anchorEl);
 
-  const ref = useRef();
+  const ref = useRef<HTMLInputElement | null>(null);
   const [dateValue, setDateValue] = useState(
-    deadline ? format(new Date(deadline), "MM/dd/yyyy") : null
+    deadline ? new Date(format(new Date(deadline), "MM/dd/yyyy")) : null
   );
 
   let newDeadline = "";
@@ -107,19 +121,19 @@ export default function Task({
   const daysApart =
     deadline && updated_at
       ? getNumberOfDays(new Date(created_at), new Date(deadline))
-      : "";
+      : -1;
 
   const daysPassed =
     deadline && updated_at
       ? getNumberOfDays(new Date(created_at), new Date())
-      : "";
+      : -1;
 
   const daysLeft = daysApart - daysPassed;
   const progress = Math.ceil((daysPassed / daysApart) * 100);
 
   // Function is called in TagsInput.jsx
   // To return selected tags
-  function handleSelectedTags(items) {
+  function handleSelectedTags(items: string[]) {
     setNewTags(items);
   }
 
@@ -135,16 +149,16 @@ export default function Task({
     });
   };
 
-  const updateStepHandler = (e) => {
+  const updateStepHandler = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
 
-    if (ref.current.value !== "") {
-      const newDate = new Date(ref.current.value);
+    if (ref.current!.value !== "") {
+      const newDate = new Date(ref.current!.value);
 
       if (newDate.getDate() < new Date().getDate()) {
         dispatch(
           uiAction.showNotification({
-            status: FAIL,
+            status: ACTION.FAIL,
             _title: "Error!",
             message: "Please ensure that your deadline is valid.",
           })
@@ -160,7 +174,7 @@ export default function Task({
       todo_id,
       step_id,
       content: {
-        step: inputRef.current.value,
+        step: inputRef.current!.value,
         tags: newTags,
         deadline: newDeadline || "",
       },
@@ -179,9 +193,7 @@ export default function Task({
 
     // Clean up filters
     setValue((prev) => {
-      if (prev) {
-        prev.filter((tags) => tags.id !== step_id);
-      }
+      return prev.filter((tags) => tags.id !== step_id)!;
     });
 
     deleteStep({ todo_id, step_id });
@@ -301,6 +313,7 @@ export default function Task({
               />
               <TextField
                 id="title"
+                // @ts-ignore
                 component="form"
                 color="primary"
                 onSubmit={updateStepHandler}
@@ -343,7 +356,6 @@ export default function Task({
                           views={["year", "month", "day"]}
                           value={dateValue}
                           minDate={new Date()}
-                          format="DD-MM-YYYY"
                           InputProps={{
                             style: {
                               color: "#ffffff",
@@ -356,7 +368,10 @@ export default function Task({
                           }}
                           disableCloseOnSelect
                           inputRef={ref}
-                          renderInput={(params) => <TextField {...params} />}
+                          renderInput={(params) => (
+                            // @ts-ignore
+                            <TextField {...params} />
+                          )}
                         />
                       </LocalizationProvider>
                     </Box>

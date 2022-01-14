@@ -11,6 +11,10 @@ interface TagsInputProps {
   setSelectedItem: React.Dispatch<React.SetStateAction<string[]>>;
   placeholder: string;
   selectedTags: (items: string[]) => void;
+  fullWidth: boolean;
+  variant: string;
+  id: string;
+  tags?: string[] | [];
 }
 
 const TagsInput: React.FC<TagsInputProps> = ({
@@ -21,14 +25,16 @@ const TagsInput: React.FC<TagsInputProps> = ({
   // HandleSelectedTags so that i can use it
   selectedTags,
   placeholder,
+  variant,
+  tags,
   ...other
 }) => {
   const classes = tagInputStyles();
   const [inputValue, setInputValue] = useState("");
 
-  // useEffect(() => {
-  //   setSelectedItem();
-  // }, [tags, setSelectedItem]);
+  useEffect(() => {
+    setSelectedItem(tags || []);
+  }, [tags, setSelectedItem]);
 
   useEffect(() => {
     selectedTags(selectedItem);
@@ -50,10 +56,10 @@ const TagsInput: React.FC<TagsInputProps> = ({
 
       // \s means "match whitespace" and the g is a flag which means "global", i.e. Match all whitespace, not just the first.
       if (
-        !(event as React.ChangeEvent<HTMLInputElement>).target.value.replace(
+        (event as React.ChangeEvent<HTMLInputElement>).target.value.replace(
           /\s/g,
           ""
-        ).length
+        ).length === 0
       )
         return;
 
@@ -61,8 +67,9 @@ const TagsInput: React.FC<TagsInputProps> = ({
       newSelectedItem.push(
         (event as React.ChangeEvent<HTMLInputElement>).target.value.trim()
       );
-      setSelectedItem(newSelectedItem);
+      console.log("TEst");
       setInputValue("");
+      setSelectedItem(newSelectedItem);
     }
 
     // This checks for the BACKSPACE keydown event.
@@ -131,8 +138,9 @@ const TagsInput: React.FC<TagsInputProps> = ({
                 })}
               </Box>
               <TextField
-                variant="standard"
+                variant={variant as "filled"}
                 InputProps={{
+                  value: inputValue,
                   onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
                     handleInputChange(event);
                   },

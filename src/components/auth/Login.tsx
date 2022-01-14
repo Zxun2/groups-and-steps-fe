@@ -6,7 +6,7 @@ import {
   userLoggedIn,
 } from "../../store/user-slice";
 import { Box, LinearProgress } from "@material-ui/core";
-import { FAIL, SUCCESS } from "../../misc/constants";
+import { ACTION } from "../../misc/constants";
 import { uiAction } from "../../store/ui-slice";
 import { useHistory } from "react-router-dom";
 import LandingIcon from "../svgs/LandingPage";
@@ -182,7 +182,7 @@ const Login = () => {
 
         dispatch(
           uiAction.showNotification({
-            status: SUCCESS,
+            status: ACTION.SUCCESS,
             _title: "Success",
             message: message.message
               ? message.message
@@ -194,7 +194,7 @@ const Login = () => {
       } catch (err: any) {
         dispatch(
           uiAction.showNotification({
-            status: FAIL,
+            status: ACTION.FAIL,
             _title: "Error!",
             message:
               err.message || "Something went wrong! Please try again later.",

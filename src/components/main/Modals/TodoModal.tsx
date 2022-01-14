@@ -1,11 +1,20 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import { Modal, Box, Button } from "@mui/material";
 import { TextField } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { todoModalStyle } from "../../../styles/Style";
 
-function TodoModal(props) {
+interface TodoModalProps {
+  open: boolean;
+  handleClose: () => void;
+  updateTodoChangeHandler: (e: ChangeEvent<HTMLInputElement>) => void;
+  updateTodoHandler: (e: React.FormEvent) => void;
+  deleteTodoHandler: (id: number) => void;
+  todoId: number;
+}
+
+function TodoModal(props: TodoModalProps) {
   const classes = todoModalStyle();
   return (
     <Modal open={props.open} onClose={props.handleClose}>
@@ -33,6 +42,7 @@ function TodoModal(props) {
         >
           <TextField
             id="title"
+            // @ts-ignore
             component="form"
             className={classes.input}
             color="primary"

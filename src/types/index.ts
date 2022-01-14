@@ -1,3 +1,4 @@
+import { NotificationStatus } from "../misc/constants";
 export interface Step {
   completed: boolean;
   created_at: Date;
@@ -5,6 +6,7 @@ export interface Step {
   step: string;
   tags: string[];
   todo_id: number;
+  deadline: Date;
   updated_at: Date;
 }
 
@@ -18,7 +20,7 @@ export interface Todo {
 
 export interface Notification {
   message: string;
-  status: string;
+  status: NotificationStatus;
   _title: string;
   id?: string;
 }

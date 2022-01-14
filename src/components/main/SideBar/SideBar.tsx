@@ -21,7 +21,19 @@ import { useSelector } from "react-redux";
 import { getUserState } from "../../../store/user-slice";
 import { getAllTodo } from "../../../store/todo-slice";
 
-export const SideBar = (props) => {
+interface SideBarProps {
+  handleDrawerToggle: () => void;
+  mobileOpen: boolean;
+  setOpenUserModal: React.Dispatch<React.SetStateAction<boolean>>;
+  changeContentHandler: (title: string, id: number) => void;
+  openModalHandler: (id: number) => void;
+  createTodoHandler: (e: React.FormEvent) => void;
+  Todo: string;
+  setTodo: React.Dispatch<React.SetStateAction<string>>;
+  window?: any;
+}
+
+export const SideBar: React.FC<SideBarProps> = (props) => {
   const { window } = props;
   const classes = dashboardStyles();
   const userState = useSelector(getUserState);
@@ -56,6 +68,7 @@ export const SideBar = (props) => {
       </Divider>
       <CustomScrollbars
         style={{ height: "60vh" }}
+        // @ts-ignore
         autoHide
         autoHideTimeout={500}
         autoHideDuration={200}
@@ -79,9 +92,6 @@ export const SideBar = (props) => {
                 style={{
                   justifyContent: "end",
                   fontSize: "10px",
-                  " & .MuiListItemIconRoot": {
-                    minWidth: "38px",
-                  },
                 }}
               >
                 <SettingsIcon
@@ -100,6 +110,7 @@ export const SideBar = (props) => {
       <List>
         <TextField
           style={{ margin: "2rem 0 0 1rem" }}
+          // @ts-ignore
           component="form"
           size="medium"
           value={props.Todo}

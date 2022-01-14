@@ -1,7 +1,7 @@
 import { createNewStep, LabelType } from "../../../store/steps-slice";
 import { Toolbar, Box } from "@mui/material";
 import { uiAction } from "../../../store/ui-slice";
-import { FAIL } from "../../../misc/constants";
+import { ACTION } from "../../../misc/constants";
 import { useHttp2 } from "../../../hooks/useHttp";
 import { Fragment, useRef } from "react";
 import { useState } from "react";
@@ -36,7 +36,7 @@ const Steps: React.FC<StepsProps> = (props) => {
     if (stepRef.current!.value.trim() === "") {
       dispatch(
         uiAction.showNotification({
-          status: FAIL,
+          status: ACTION.FAIL,
           _title: "Error",
           message: "Step must not be empty!",
         })

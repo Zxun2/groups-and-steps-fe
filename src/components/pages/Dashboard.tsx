@@ -1,12 +1,10 @@
 import React, { useCallback, useEffect, useState, Fragment } from "react";
-import { useDispatch } from "react-redux";
-import { drawerWidth } from "../../misc/constants";
 import NavBar from "../main/NavBar/NavBar";
 import { SideBar } from "../main/SideBar/SideBar";
 import { Box, CssBaseline } from "@mui/material";
 import { uiAction } from "../../store/ui-slice";
-import { fetchAllStep, stepAction } from "../../store/steps-slice";
-import Steps from "../main/MainContent/Steps.tsx";
+import { fetchAllStep, LabelType, stepAction } from "../../store/steps-slice";
+import Steps from "../main/MainContent/Steps";
 import TodoModal from "../main/Modals/TodoModal";
 import UserModal from "../main/Modals/UserModal";
 import {
@@ -16,15 +14,17 @@ import {
   updateCurrTodo,
 } from "../../store/todo-slice";
 import { useHttp2 } from "../../hooks/useHttp";
+import { useAppDispatch } from "../../hooks/useHooks";
+import { ACTION } from "../../misc/constants";
 
 export const Dashboard = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // STATE
   const [openUserModal, setOpenUserModal] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState([]);
+  const [value, setValue] = useState<LabelType[] | []>([]);
   const [activeTodoId, setTodoId] = useState(-1);
   const [updatedTodo, setChange] = useState("");
   const [title, setTitle] = useState("");
@@ -42,7 +42,7 @@ export const Dashboard = () => {
   }, [fetchTodos]);
 
   // Todo Modal
-  const openModalHandler = (id) => {
+  const openModalHandler = (id: number) => {
     setOpen(true);
     setTodoId(id);
   };
@@ -62,7 +62,7 @@ export const Dashboard = () => {
   }, [activeTodoId, fetchStep, dispatch]);
 
   const changeContentHandler = useCallback(
-    (title, id) => {
+    (title: string, id: number) => {
       setTitle(title);
       if (id !== -1) {
         setTodoId(id);
@@ -80,7 +80,7 @@ export const Dashboard = () => {
   );
 
   const createTodoHandler = useCallback(
-    (e) => {
+    (e: React.FormEvent) => {
       e.preventDefault();
       if (Todo !== "") {
         createTodo({ content: { title: Todo } });
@@ -91,13 +91,13 @@ export const Dashboard = () => {
   );
 
   const deleteTodoHandler = useCallback(
-    (id) => {
+    (id: number) => {
       removeTodo({ id });
 
       // Reset view
       setTodoId(-1);
       setTitle("");
-      dispatch(stepAction.resetStepState());
+      dispatch(stepAction.resetStepState({}));
 
       // Close Modal
       setOpen(false);
@@ -115,7 +115,7 @@ export const Dashboard = () => {
       } else {
         dispatch(
           uiAction.showNotification({
-            status: "error",
+            status: ACTION.FAIL,
             _title: "Error!",
             message: "Todo title must not be empty",
           })
@@ -141,7 +141,6 @@ export const Dashboard = () => {
           <CssBaseline />
           <NavBar
             handleDrawerToggle={handleDrawerToggle}
-            drawerWidth={drawerWidth}
             title={title}
             changeContentHandler={changeContentHandler}
           />

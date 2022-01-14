@@ -7,7 +7,12 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { userAction } from "../../../store/user-slice";
 
-function UserModal(props) {
+interface UserModalProps {
+  open: boolean;
+  handleClose: () => void;
+}
+
+function UserModal(props: UserModalProps) {
   const history = useHistory();
   const classes = userModalStyle();
   const dispatch = useDispatch();

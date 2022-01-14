@@ -5,22 +5,28 @@ import { Divider } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import React, { useState } from "react";
 import Task from "./Task";
-import { useSelector } from "react-redux";
 import {
   getCompletedAndUncompletedSteps,
   getCompletedCount,
   getUncompletedCount,
+  LabelType,
 } from "../../../store/steps-slice";
+import { useAppSelector } from "../../../hooks/useHooks";
 
-const RenderSteps = (props) => {
+interface RenderStepsProps {
+  view: string;
+  setValue: React.Dispatch<React.SetStateAction<LabelType[]>>;
+}
+
+const RenderSteps = (props: RenderStepsProps) => {
   const [isOpenUncompleted, setOpenUncompleted] = useState(true);
   const [isOpenCompleted, setOpenCompleted] = useState(true);
 
   // Count
-  const UncompletedCount = useSelector(getUncompletedCount);
-  const CompletedCount = useSelector(getCompletedCount);
+  const UncompletedCount = useAppSelector(getUncompletedCount);
+  const CompletedCount = useAppSelector(getCompletedCount);
 
-  const { uncompleted, completed } = useSelector(
+  const { uncompleted, completed } = useAppSelector(
     getCompletedAndUncompletedSteps
   );
 

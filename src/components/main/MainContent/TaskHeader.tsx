@@ -5,7 +5,16 @@ import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-const TaskHeader = ({
+interface TaskHeaderProps {
+  open: boolean;
+  setAnchorEl: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+  anchorEl: HTMLElement | null;
+  date: string;
+  completed: boolean;
+  handleClose: () => Promise<void>;
+}
+
+const TaskHeader: React.FC<TaskHeaderProps> = ({
   open,
   setAnchorEl,
   handleClose,

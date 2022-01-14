@@ -12,11 +12,26 @@ import { Box } from "@material-ui/core";
 import Grid from "@mui/material/Grid";
 import { Chip } from "@material-ui/core";
 import { Stack } from "@mui/material";
-import { useSelector } from "react-redux";
-import { getAllSteps } from "../../../store/steps-slice";
+import { getAllSteps, LabelType } from "../../../store/steps-slice";
 import { stepStyles } from "../../../styles/Style";
+import { useAppSelector } from "../../../hooks/useHooks";
 
-const MainView = ({
+interface MainViewProps {
+  toggleDetails: boolean;
+  setToggleDetails: React.Dispatch<React.SetStateAction<boolean>>;
+  todoId: number;
+  view: string;
+  setView: React.Dispatch<React.SetStateAction<string>>;
+  value: LabelType[];
+  setValue: React.Dispatch<React.SetStateAction<LabelType[]>>;
+  addStepHandler: (e: React.FormEvent<EventTarget>) => void;
+  handleSelectedTags: (items: string[]) => void;
+  selectedItem: string[] | [];
+  setSelectedItem: React.Dispatch<React.SetStateAction<string[] | []>>;
+  stepRef: React.MutableRefObject<HTMLInputElement | undefined>;
+}
+
+const MainView: React.FC<MainViewProps> = ({
   toggleDetails,
   setToggleDetails,
   todoId,
@@ -30,7 +45,7 @@ const MainView = ({
   setSelectedItem,
   stepRef,
 }) => {
-  const steps = useSelector(getAllSteps);
+  const steps = useAppSelector(getAllSteps);
   const classes = stepStyles();
 
   return (
@@ -70,6 +85,7 @@ const MainView = ({
               <Box className={classes.root}>
                 <CustomScrollbars
                   style={{ height: "100%" }}
+                  //@ts-ignore
                   autoHide
                   autoHideTimeout={500}
                   autoHideDuration={200}
@@ -113,6 +129,7 @@ const MainView = ({
             />
             <TextField
               fullWidth
+              // @ts-ignore
               component="form"
               color="primary"
               size="medium"

@@ -8,7 +8,7 @@ interface NotificationProps {
   status: NotificationStatus;
   title: string;
   message: string;
-  id: string;
+  id?: string;
 }
 
 const Notification: React.FC<NotificationProps> = (props) => {

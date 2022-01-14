@@ -12,18 +12,24 @@ import Instructions from "../Inbox/Instructions";
 import { navStyles } from "../../../styles/Style";
 import { Typography } from "@material-ui/core";
 import NavInput from "./NavInput";
-import { useSelector } from "react-redux";
 import { LinearProgress } from "@material-ui/core";
 import { drawerWidth } from "../../../misc/constants";
 import { getLoadingState } from "../../../store/ui-slice";
 import { getAllTodo } from "../../../store/todo-slice";
+import { useAppSelector } from "../../../hooks/useHooks";
 
-const NavBar = (props) => {
+interface NavBarProps {
+  handleDrawerToggle: () => void;
+  title: string;
+  changeContentHandler: (title: string, id: number) => void;
+}
+
+const NavBar = (props: NavBarProps) => {
   const classes = navStyles();
   const [open, setOpen] = useState(true);
   const handleOpen = () => setOpen(true);
-  const status = useSelector(getLoadingState);
-  const Todos = useSelector(getAllTodo);
+  const status = useAppSelector(getLoadingState);
+  const Todos = useAppSelector(getAllTodo);
 
   const handleClose = () => setOpen(false);
 
@@ -67,10 +73,7 @@ const NavBar = (props) => {
                 : props.title}
             </Typography>
             <div className={classes.group}>
-              <NavInput
-                Todos={Todos}
-                changeContentHandler={props.changeContentHandler}
-              />
+              <NavInput changeContentHandler={props.changeContentHandler} />
               <InboxIcon onClick={handleOpen} className={classes.inboxIcon} />
               <Modal keepMounted open={open} onClose={handleClose}>
                 <Box className={classes.style}>
@@ -78,6 +81,7 @@ const NavBar = (props) => {
                     style={{
                       height: "55vh",
                     }}
+                    // @ts-ignore
                     autoHide
                     autoHideTimeout={500}
                     autoHideDuration={200}
