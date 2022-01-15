@@ -1,11 +1,11 @@
-type Params = {
+type ContentParams = {
   content?: Object;
   headers: {
     [key: string]: string;
   };
 };
-
-interface Options {
+type MethodsRequest = "POST" | "PUT" | "PATCH" | "DELETE" | "GET";
+interface HttpOptions {
   method: string;
   headers: {
     [key: string]: string;
@@ -14,12 +14,12 @@ interface Options {
 }
 
 async function request(
-  method: string,
-  params: Params,
+  method: MethodsRequest,
+  params: ContentParams,
   error: string,
   url: string
 ) {
-  const options: Options = {
+  const options: HttpOptions = {
     method,
     headers: {
       "Content-Type": "application/json",

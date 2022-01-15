@@ -5,9 +5,9 @@ import { Route, Switch } from "react-router-dom";
 import { Fragment, useEffect } from "react";
 import { autoLogin } from "./store/user-slice";
 import { useHistory } from "react-router-dom";
-import Notification from "./components/ui/Notification";
+import Notification from "./components/main/Notification/Notification";
 import { getAllNotifications, uiAction } from "./store/ui-slice";
-import { ACTION } from "./misc/constants";
+import { NotificationType } from "./utils/constants";
 import { useAppDispatch, useAppSelector } from "./hooks/useHooks";
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
       } catch (err: any) {
         dispatch(
           uiAction.showNotification({
-            status: ACTION.FAIL,
+            status: NotificationType.FAIL,
             _title: "Error!",
             message: err.message,
           })
@@ -36,7 +36,7 @@ function App() {
       history.push("/");
       dispatch(
         uiAction.showNotification({
-          status: ACTION.NOTICE,
+          status: NotificationType.NOTICE,
           _title: "Take Note!",
           message: "Your token has expired. Please sign in again!",
         })

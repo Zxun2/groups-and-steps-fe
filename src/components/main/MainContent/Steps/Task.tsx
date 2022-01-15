@@ -1,79 +1,34 @@
 import { Typography, TextField, Badge } from "@material-ui/core";
 import React, { Fragment, useRef, useState } from "react";
 import { format } from "date-fns";
-import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, Button, Divider } from "@mui/material";
-import { useHttp2 } from "../../../hooks/useHttp";
-import TagsInput from "../Tag/TagsInput";
+import { useHttp2 } from "../../../../hooks/useHttp";
+import TagsInput from "../../Tag/TagsInput";
 import {
   updateCurrStep,
   deleteCurrStep,
   stepAction,
-  LabelType,
-} from "../../../store/steps-slice";
+} from "../../../../store/steps-slice";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
-import { uiAction } from "../../../store/ui-slice";
-import { ACTION } from "../../../misc/constants";
-import LinearProgress, {
-  linearProgressClasses,
-} from "@mui/material/LinearProgress";
+import { uiAction } from "../../../../store/ui-slice";
+import { NotificationType } from "../../../../utils/constants";
 import TaskContent from "./TaskContent";
 import TaskHeader from "./TaskHeader";
 import TaskTags from "./TaskTags";
-import { useAppDispatch } from "../../../hooks/useHooks";
+import { LabelType } from "../../../../types";
+import { useAppDispatch } from "../../../../hooks/useHooks";
+import getNumberOfDays from "../../../../utils/calcNumberOfDays";
+import { BorderLinearProgress, ExpandMore } from "./TaskStyledComponents";
 
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
-
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-  height: 10,
-  borderRadius: 5,
-  flexGrow: 1,
-  [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor: theme.palette.grey[800],
-  },
-  [`& .${linearProgressClasses.bar}`]: {
-    borderRadius: 5,
-    backgroundColor: "#5865f2",
-  },
-}));
-
-// Styled Components
-const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
-
-function getNumberOfDays(start: Date, end: Date): number {
-  const date1 = new Date(start);
-  const date2 = new Date(end);
-
-  // One day in milliseconds
-  const oneDay = 1000 * 60 * 60 * 24;
-  // Calculating the time difference between two dates
-  const diffInTime = Math.abs(date2.getTime() - date1.getTime());
-  // Calculating the no. of days between two dates
-  const diffInDays = Math.round(diffInTime / oneDay);
-  return diffInDays;
-}
-
-interface TaskProps {
+type TaskProps = {
   key: number;
   id: number;
   step: string;
@@ -84,7 +39,7 @@ interface TaskProps {
   setValue: React.Dispatch<React.SetStateAction<LabelType[]>>;
   deadline: Date;
   created_at: Date;
-}
+};
 
 export default function Task({
   updated_at,
@@ -158,7 +113,7 @@ export default function Task({
       if (newDate.getDate() < new Date().getDate()) {
         dispatch(
           uiAction.showNotification({
-            status: ACTION.FAIL,
+            status: NotificationType.FAIL,
             _title: "Error!",
             message: "Please ensure that your deadline is valid.",
           })
@@ -216,7 +171,6 @@ export default function Task({
           anchorEl={anchorEl}
         />
 
-        {/* Explore how to add markdown content here */}
         <TaskContent
           step={step}
           deadline={deadline}

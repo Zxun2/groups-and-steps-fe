@@ -2,12 +2,12 @@ import React, { Fragment } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import DoneIcon from "@mui/icons-material/Done";
 import { Box } from "@mui/material";
-import { LabelType } from "../../../store/steps-slice";
+import { LabelType } from "../../../types";
 
-interface FilterLabelItemProps {
+type FilterLabelItemProps = {
   option: LabelType;
   selected: boolean;
-}
+};
 
 const FilterLabelItem = (props: FilterLabelItemProps) => {
   return (

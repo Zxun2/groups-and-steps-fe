@@ -2,11 +2,10 @@ import React, { useState, useEffect, Fragment } from "react";
 import {
   getLoadingStatus,
   RegisterUser,
-  UserData,
   userLoggedIn,
 } from "../../store/user-slice";
 import { Box, LinearProgress } from "@material-ui/core";
-import { ACTION } from "../../misc/constants";
+import { NotificationType } from "../../utils/constants";
 import { uiAction } from "../../store/ui-slice";
 import { useHistory } from "react-router-dom";
 import LandingIcon from "../svgs/LandingPage";
@@ -14,24 +13,18 @@ import useInput from "../../hooks/useInput";
 import { homeStyles } from "../../styles/Style";
 import LoginForm from "./LoginForm";
 import { useAppDispatch, useAppSelector } from "../../hooks/useHooks";
+import { APIUserRequestType, APIUserResponseType } from "../../types";
 
-export interface UserDetail {
-  name?: string;
-  email: string;
-  password: string;
-  password_confirmation?: string;
-}
-
-export interface ResponseObject {
+export type ResponseObject = {
   meta: any;
-  payload: UserData;
+  payload: APIUserResponseType;
   type: string;
   error?: {
     name: string;
     stack: string;
     message: string;
   };
-}
+};
 
 // Component responsible for Form Validation and Login/Registration State
 const Login = () => {
@@ -140,7 +133,6 @@ const Login = () => {
     enteredPasswordConfirmationIsValid,
   ]);
 
-  // TODO: DOUBLE CHECK THIS!
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
@@ -154,7 +146,7 @@ const Login = () => {
       try {
         let responseData;
 
-        const payload: UserDetail = {
+        const payload: APIUserRequestType = {
           email: enteredEmail,
           password: enteredPassword,
         };
@@ -170,8 +162,6 @@ const Login = () => {
 
         responseData = (await dispatch(args)) as ResponseObject;
 
-        console.log(responseData, "HELLLOOOO ");
-
         if (responseData.error) {
           throw new Error(responseData.error.message);
         }
@@ -182,7 +172,7 @@ const Login = () => {
 
         dispatch(
           uiAction.showNotification({
-            status: ACTION.SUCCESS,
+            status: NotificationType.SUCCESS,
             _title: "Success",
             message: message.message
               ? message.message
@@ -194,7 +184,7 @@ const Login = () => {
       } catch (err: any) {
         dispatch(
           uiAction.showNotification({
-            status: ACTION.FAIL,
+            status: NotificationType.FAIL,
             _title: "Error!",
             message:
               err.message || "Something went wrong! Please try again later.",

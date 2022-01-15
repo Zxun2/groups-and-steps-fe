@@ -5,14 +5,14 @@ import { Typography } from "@material-ui/core";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { todoModalStyle } from "../../../styles/Style";
 
-interface TodoModalProps {
+type TodoModalProps = {
   open: boolean;
   handleClose: () => void;
   updateTodoChangeHandler: (e: ChangeEvent<HTMLInputElement>) => void;
   updateTodoHandler: (e: React.FormEvent) => void;
   deleteTodoHandler: (id: number) => void;
   todoId: number;
-}
+};
 
 function TodoModal(props: TodoModalProps) {
   const classes = todoModalStyle();

@@ -1,15 +1,15 @@
-import { uiAction, getAllNotifications } from "../../store/ui-slice";
+import { uiAction, getAllNotifications } from "../../../store/ui-slice";
 import React, { useState, useCallback } from "react";
-import { ACTION, NotificationStatus } from "../../misc/constants";
-import { useAppDispatch, useAppSelector } from "../../hooks/useHooks";
+import { NotificationType, NotificationStatus } from "../../../utils/constants";
+import { useAppDispatch, useAppSelector } from "../../../hooks/useHooks";
 
 // Logic for app-wide notifications
-interface NotificationProps {
+type NotificationProps = {
   status: NotificationStatus;
   title: string;
   message: string;
   id?: string;
-}
+};
 
 const Notification: React.FC<NotificationProps> = (props) => {
   const [exit, setExit] = useState(false);
@@ -68,9 +68,9 @@ const Notification: React.FC<NotificationProps> = (props) => {
       onMouseEnter={handlePauseTimer}
       onMouseLeave={handleStartTimer}
       className={`notification-item ${
-        props.status === ACTION.SUCCESS
+        props.status === NotificationType.SUCCESS
           ? "success"
-          : props.status === ACTION.FAIL
+          : props.status === NotificationType.FAIL
           ? "error"
           : "notice"
       } ${exit ? "exit" : ""}`}

@@ -9,12 +9,9 @@ import {
   StyledInput,
 } from "./FilterCustomStyledPopper";
 import FilterLabelItem from "./FilterLabelItem";
-import { LabelType } from "../../../store/steps-slice";
+import { LabelType } from "../../../types";
 
-/**
- * FILTER POPPER COMPONENT
- */
-interface PopperProps {
+type PopperProps = {
   id: "Todo-tags" | undefined;
   open: boolean;
   anchorEl?: any;
@@ -23,7 +20,7 @@ interface PopperProps {
   setPendingValue: React.Dispatch<React.SetStateAction<LabelType[]>>;
   labels: LabelType[];
   value: LabelType[];
-}
+};
 
 const Popper = (props: PopperProps) => {
   return (

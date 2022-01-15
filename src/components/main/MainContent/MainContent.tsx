@@ -1,7 +1,7 @@
-import { createNewStep, LabelType } from "../../../store/steps-slice";
+import { createNewStep } from "../../../store/steps-slice";
 import { Toolbar, Box } from "@mui/material";
 import { uiAction } from "../../../store/ui-slice";
-import { ACTION } from "../../../misc/constants";
+import { NotificationType } from "../../../utils/constants";
 import { useHttp2 } from "../../../hooks/useHttp";
 import { Fragment, useRef } from "react";
 import { useState } from "react";
@@ -9,13 +9,14 @@ import Landing from "./Landing";
 import MainView from "./MainView";
 import { getAllTodo } from "../../../store/todo-slice";
 import { useAppDispatch, useAppSelector } from "../../../hooks/useHooks";
+import { LabelType } from "../../../types";
 
-interface StepsProps {
+type StepsProps = {
   todoId: number;
   title: string;
   value: LabelType[];
   setValue: React.Dispatch<React.SetStateAction<LabelType[]>>;
-}
+};
 
 const Steps: React.FC<StepsProps> = (props) => {
   const dispatch = useAppDispatch();
@@ -27,8 +28,6 @@ const Steps: React.FC<StepsProps> = (props) => {
   const [view, setView] = useState("Layered");
   const [tags, setTags] = useState<string[] | []>([]);
 
-  console.log(selectedItem, "FROM STEPS");
-
   const { sendRequest: createStep } = useHttp2(createNewStep);
   const Todos = useAppSelector(getAllTodo);
 
@@ -36,7 +35,7 @@ const Steps: React.FC<StepsProps> = (props) => {
     if (stepRef.current!.value.trim() === "") {
       dispatch(
         uiAction.showNotification({
-          status: ACTION.FAIL,
+          status: NotificationType.FAIL,
           _title: "Error",
           message: "Step must not be empty!",
         })
@@ -59,8 +58,7 @@ const Steps: React.FC<StepsProps> = (props) => {
     setSelectedItem([]);
   };
 
-  // Function is called in TagsInput.jsx
-  // To return selected tags
+  // Function is called in TagsInput.jsx to return selected tags
   function handleSelectedTags(items: string[]) {
     setTags(items);
   }

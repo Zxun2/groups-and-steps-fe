@@ -1,15 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import request from "../api";
-import { API_URL } from "../misc/base-url";
-import { Todo } from "../types";
+import { API_URL } from "../utils/constants";
+import { Todo, APITodoRequestType } from "../types";
 
-// TODO: Fix types
+interface TodoState {
+  Todo: Todo[];
+}
+
 // GET /todos
-export const fetchAllTodos = createAsyncThunk<any, { token: string }>(
+export const fetchAllTodos = createAsyncThunk(
   "Todo/fetchAllTodos",
-  async (fetchTodo, _) => {
-    const { token } = fetchTodo;
+  async (body: APITodoRequestType, _) => {
+    const { token } = body;
 
     return request(
       "GET",
@@ -21,10 +24,10 @@ export const fetchAllTodos = createAsyncThunk<any, { token: string }>(
 );
 
 // POST /todos
-export const postTodo = createAsyncThunk<any, { token: string; content: any }>(
+export const postTodo = createAsyncThunk(
   "Todo/createTodo",
-  async (todoData, _) => {
-    const { token, content } = todoData;
+  async (body: APITodoRequestType, _) => {
+    const { token, content } = body;
 
     return request(
       "POST",
@@ -36,38 +39,34 @@ export const postTodo = createAsyncThunk<any, { token: string; content: any }>(
 );
 
 // PUT /todos/:id
-export const updateCurrTodo = createAsyncThunk<
-  any,
-  { token: string; id: string; content: any }
->("Todo/updateTodo", async (todoUpdate, _) => {
-  const { token, id, content } = todoUpdate;
+export const updateCurrTodo = createAsyncThunk(
+  "Todo/updateTodo",
+  async (body: APITodoRequestType, _) => {
+    const { token, id, content } = body;
 
-  return request(
-    "PUT",
-    { headers: { Authorization: `Bearer ${token}` }, content },
-    "There was an error updating the group's title. Please reload.",
-    `${API_URL}/todos/${id}`
-  );
-});
+    return request(
+      "PUT",
+      { headers: { Authorization: `Bearer ${token}` }, content },
+      "There was an error updating the group's title. Please reload.",
+      `${API_URL}/todos/${id}`
+    );
+  }
+);
 
 // DELETE /todos/:id
-export const deleteCurrTodo = createAsyncThunk<
-  any,
-  { token: string; id: string }
->("Todo/deleteTodo", async (todoDetail, _) => {
-  const { token, id } = todoDetail;
+export const deleteCurrTodo = createAsyncThunk(
+  "Todo/deleteTodo",
+  async (body: APITodoRequestType, _) => {
+    const { token, id } = body;
 
-  return request(
-    "DELETE",
-    { headers: { Authorization: `Bearer ${token}` } },
-    "There was an error deleting the group.",
-    `${API_URL}/todos/${id}`
-  );
-});
-
-interface TodoState {
-  Todo: Todo[];
-}
+    return request(
+      "DELETE",
+      { headers: { Authorization: `Bearer ${token}` } },
+      "There was an error deleting the group.",
+      `${API_URL}/todos/${id}`
+    );
+  }
+);
 
 const todoSlice = createSlice({
   name: "todo",
@@ -103,13 +102,3 @@ export const getAllTodo = (state: RootState) => state.todo.Todo;
 
 export const todoAction = todoSlice.actions;
 export default todoSlice;
-
-/**
- * interface Todo {
- *  created_at: Date;
- *  created_by: string;
- *  id: number;
- *  title: string;
- *  updated_at: Date;
- * }
- */

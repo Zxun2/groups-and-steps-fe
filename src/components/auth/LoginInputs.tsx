@@ -1,10 +1,10 @@
 import { loginStyles } from "../../styles/Style";
 import React, { Fragment } from "react";
 
-interface LoginInputsProps {
+type LoginInputsProps = {
   form: any;
   isRegistering: boolean;
-}
+};
 
 const LoginInputs: React.FC<LoginInputsProps> = (props) => {
   const classes = loginStyles();

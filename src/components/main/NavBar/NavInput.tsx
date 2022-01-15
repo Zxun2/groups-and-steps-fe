@@ -1,27 +1,19 @@
 import { useState, useRef, Fragment } from "react";
 import { TextField } from "@material-ui/core";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
+
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import { v4 } from "uuid";
-import { Box } from "@material-ui/core";
 import { getAllTodo, postTodo } from "../../../store/todo-slice";
 import { useHttp2 } from "../../../hooks/useHttp";
 import { useAppSelector } from "../../../hooks/useHooks";
-
-interface TodoOptionType {
-  title: string;
-  id?: number;
-  inputValue?: string;
-}
+import { TodoOptionType } from "../../../types";
+import Dialog from "./Dialog";
 
 const filter = createFilterOptions<TodoOptionType>();
 
-interface NavInputProps {
+type NavInputProps = {
   changeContentHandler: (title: string, id: number) => void;
-}
+};
 
 export default function NavInput(props: NavInputProps) {
   const Todos = useAppSelector(getAllTodo);
@@ -153,51 +145,14 @@ export default function NavInput(props: NavInputProps) {
           />
         )}
       />
-      <Dialog open={open} onClose={handleClose} style={{ margin: "0" }}>
-        <Box style={{ backgroundColor: "#36393f" }}>
-          <DialogTitle
-            color="white"
-            style={{ textAlign: "center", fontSize: "30px" }}
-          >
-            Add a new Todo
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText color="white">
-              Are you looking for a Todo not in the list? Please, add it!
-            </DialogContentText>
-            <Box
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "revert",
-                margin: "2rem",
-              }}
-            >
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                value={dialogValue.title}
-                onChange={(event) =>
-                  setDialogValue({
-                    ...dialogValue,
-                    title: event.target.value,
-                  })
-                }
-                type="text"
-                variant="standard"
-                // @ts-ignore
-                component="form"
-                onSubmit={handleSubmit}
-                InputProps={{
-                  style: { color: "white", fontSize: "1.05rem" },
-                }}
-                inputRef={todoRef}
-              />
-            </Box>
-          </DialogContent>
-        </Box>
-      </Dialog>
+      <Dialog
+        open={open}
+        handleSubmit={handleSubmit}
+        handleClose={handleClose}
+        todoRef={todoRef}
+        dialogValue={dialogValue}
+        setDialogValue={setDialogValue}
+      />
     </Fragment>
   );
 }

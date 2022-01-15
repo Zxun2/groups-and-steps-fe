@@ -4,13 +4,13 @@ import { Fragment } from "react";
 import LoginInputs from "./LoginInputs";
 import LoginButtons from "./LoginButtons";
 
-interface LoginFormProps {
+type LoginFormProps = {
   handleSubmit: any; // TODO: HANDLE THIS!
   loading: boolean;
   form: any;
   isRegistering: boolean;
   setIsRegistering: React.Dispatch<React.SetStateAction<boolean>>;
-}
+};
 
 // Form Component
 const LoginForm: React.FC<LoginFormProps> = (props) => {

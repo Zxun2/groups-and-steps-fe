@@ -1,6 +1,6 @@
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
-import { drawerWidth } from "../../../misc/constants";
+import { drawerWidth } from "../../../utils/constants";
 import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
 import CustomScrollbars from "../../ui/CustomScollBars";
@@ -21,7 +21,7 @@ import { useSelector } from "react-redux";
 import { getUserState } from "../../../store/user-slice";
 import { getAllTodo } from "../../../store/todo-slice";
 
-interface SideBarProps {
+type SideBarProps = {
   handleDrawerToggle: () => void;
   mobileOpen: boolean;
   setOpenUserModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,7 +31,7 @@ interface SideBarProps {
   Todo: string;
   setTodo: React.Dispatch<React.SetStateAction<string>>;
   window?: any;
-}
+};
 
 export const SideBar: React.FC<SideBarProps> = (props) => {
   const { window } = props;

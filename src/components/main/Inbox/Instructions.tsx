@@ -2,7 +2,6 @@ import StepConnector from "@mui/material/StepConnector";
 import StepContent from "@mui/material/StepContent";
 import StepLabel from "@mui/material/StepLabel";
 import { Typography } from "@material-ui/core";
-import Check from "@mui/icons-material/Check";
 import Stepper from "@mui/material/Stepper";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
@@ -10,23 +9,8 @@ import Step from "@mui/material/Step";
 import Box from "@mui/material/Box";
 import { Fragment } from "react";
 import * as React from "react";
-import steps from "./data";
-import StepIconRoot from "./StepIconRoot";
-import { StepIconProps } from "@mui/material/StepIcon";
-
-function StepIcon(props: StepIconProps) {
-  const { active, completed, className } = props;
-
-  return (
-    <StepIconRoot ownerState={{ active }} className={className}>
-      {completed ? (
-        <Check className="StepIcon-completedIcon" />
-      ) : (
-        <div className="StepIcon-circle" />
-      )}
-    </StepIconRoot>
-  );
-}
+import steps from "../../../utils/data";
+import StepIcon from "./StepIcon";
 
 const Instructions = () => {
   const [activeStep, setActiveStep] = React.useState(0);

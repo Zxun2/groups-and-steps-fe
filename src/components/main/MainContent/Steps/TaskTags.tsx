@@ -1,12 +1,12 @@
 import React from "react";
 import { Box, Stack, Chip } from "@mui/material";
 import { Typography } from "@material-ui/core";
-import { tagInputStyles } from "../../../styles/Style";
+import { tagInputStyles } from "../../../../styles/Style";
 import randomColor from "randomcolor";
 
-interface TaskTagsProps {
+type TaskTagsProps = {
   tags: string[];
-}
+};
 
 const TaskTags: React.FC<TaskTagsProps> = ({ tags }) => {
   const classes = tagInputStyles();

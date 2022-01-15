@@ -1,72 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { API_URL } from "../misc/base-url";
+import { API_URL } from "../utils/constants";
 import randomColor from "randomcolor";
 import request from "../api";
 import { RootState } from ".";
 import { Step } from "../types/index";
-
-// TODO: FIXED TYPES
-// GET /todos/:id/items
-export const fetchAllStep = createAsyncThunk<
-  any,
-  { token: string; id: string }
->("steps/fetchAllStep", async (fetchStep, _) => {
-  const { token, id: todo_id } = fetchStep;
-
-  return request(
-    "GET",
-    { headers: { Authorization: `Bearer ${token}` } },
-    "There was an error fetching the steps",
-    `${API_URL}/todos/${todo_id}/items`
-  );
-});
-
-// TODO: FIXED TYPES
-// PUT /todos/:id/items/:item_id
-export const updateCurrStep = createAsyncThunk<
-  any,
-  { token: string; todo_id: string; step_id: string; content: any }
->("steps/updateStep", async (newStepData, _) => {
-  const { token, todo_id, step_id, content } = newStepData;
-
-  return request(
-    "PUT",
-    { headers: { Authorization: `Bearer ${token}` }, content },
-    "There was an error updating the step.",
-    `${API_URL}/todos/${todo_id}/items/${step_id}`
-  );
-});
-
-// POST /todos/:id/items
-export const createNewStep = createAsyncThunk<
-  any,
-  { token: string; todo_id: string; content: any }
->("steps/createStep", async (newStepData, _) => {
-  const { token, content, todo_id } = newStepData;
-  const newStep = { ...content, completed: false };
-
-  return request(
-    "POST",
-    { headers: { Authorization: `Bearer ${token}` }, content: newStep },
-    "There was an error creating the step.",
-    `${API_URL}/todos/${todo_id}/items`
-  );
-});
-
-// DELETE /todos/:id/items/:item_id
-export const deleteCurrStep = createAsyncThunk<
-  any,
-  { token: string; todo_id: string; step_id: string }
->("steps/deleteStep", async (currStepData, _) => {
-  const { token, todo_id, step_id } = currStepData;
-
-  return request(
-    "DELETE",
-    { headers: { Authorization: `Bearer ${token}` } },
-    "There was an error deleting the step.",
-    `${API_URL}/todos/${todo_id}/items/${step_id}`
-  );
-});
+import { LabelType, APIStepRequestType } from "../types";
 
 interface StepState {
   steps: Step[];
@@ -75,7 +13,68 @@ interface StepState {
   unCompletedCount: number;
 }
 
-const initialState = {
+// GET /todos/:id/items
+export const fetchAllStep = createAsyncThunk(
+  "steps/fetchAllStep",
+  async (body: APIStepRequestType, _) => {
+    const { token, todo_id } = body;
+
+    return request(
+      "GET",
+      { headers: { Authorization: `Bearer ${token}` } },
+      "There was an error fetching the steps",
+      `${API_URL}/todos/${todo_id}/items`
+    );
+  }
+);
+
+// PUT /todos/:id/items/:item_id
+export const updateCurrStep = createAsyncThunk(
+  "steps/updateStep",
+  async (body: APIStepRequestType, _) => {
+    const { token, todo_id, step_id, content } = body;
+
+    return request(
+      "PUT",
+      { headers: { Authorization: `Bearer ${token}` }, content },
+      "There was an error updating the step.",
+      `${API_URL}/todos/${todo_id}/items/${step_id}`
+    );
+  }
+);
+
+// POST /todos/:id/items
+export const createNewStep = createAsyncThunk(
+  "steps/createStep",
+  async (body: APIStepRequestType, _) => {
+    const { token, content, todo_id } = body;
+    const data = { ...content, completed: false };
+
+    return request(
+      "POST",
+      { headers: { Authorization: `Bearer ${token}` }, content: data },
+      "There was an error creating the step.",
+      `${API_URL}/todos/${todo_id}/items`
+    );
+  }
+);
+
+// DELETE /todos/:id/items/:item_id
+export const deleteCurrStep = createAsyncThunk(
+  "steps/deleteStep",
+  async (body: APIStepRequestType, _) => {
+    const { token, todo_id, step_id } = body;
+
+    return request(
+      "DELETE",
+      { headers: { Authorization: `Bearer ${token}` } },
+      "There was an error deleting the step.",
+      `${API_URL}/todos/${todo_id}/items/${step_id}`
+    );
+  }
+);
+
+const initialState: StepState = {
   steps: [],
   temp: [],
   completedCount: 0,
@@ -84,7 +83,7 @@ const initialState = {
 
 const stepSlice = createSlice({
   name: "steps",
-  initialState: initialState as StepState,
+  initialState: initialState,
   reducers: {
     filterStep(state, action) {
       const filter = action.payload.filterArr;
@@ -177,13 +176,6 @@ export const getCompletedAndUncompletedSteps = (state: RootState) => {
 
   return { completed, uncompleted };
 };
-
-export interface LabelType {
-  tags: string[];
-  step: string;
-  color: string;
-  id: number;
-}
 
 export const getFilterLabels = (state: RootState): LabelType[] => {
   const steps = state.step.steps;

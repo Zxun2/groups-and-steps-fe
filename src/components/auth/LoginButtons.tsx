@@ -6,12 +6,12 @@ import { Box } from "@material-ui/core";
 import { Fragment } from "react";
 
 // TODO: Work on form validation schema
-interface LoginButtonsProps {
+type LoginButtonsProps = {
   loading: boolean;
   form: any;
   isRegistering: boolean;
   setIsRegistering: React.Dispatch<React.SetStateAction<boolean>>;
-}
+};
 
 const LoginButtons = (props: LoginButtonsProps) => {
   const classes = loginStyles();

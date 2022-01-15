@@ -1,4 +1,4 @@
-import SelectLabels from "../FilterComponent/ViewSelect";
+import SelectLabels from "./ViewSelect";
 import CustomScrollbars from "../../ui/CustomScollBars";
 import FilterLabel from "../FilterComponent/Filter";
 import AddTaskIcon from "../../svgs/AddtasksIcon";
@@ -12,11 +12,12 @@ import { Box } from "@material-ui/core";
 import Grid from "@mui/material/Grid";
 import { Chip } from "@material-ui/core";
 import { Stack } from "@mui/material";
-import { getAllSteps, LabelType } from "../../../store/steps-slice";
+import { getAllSteps } from "../../../store/steps-slice";
 import { stepStyles } from "../../../styles/Style";
 import { useAppSelector } from "../../../hooks/useHooks";
+import { LabelType } from "../../../types";
 
-interface MainViewProps {
+type MainViewProps = {
   toggleDetails: boolean;
   setToggleDetails: React.Dispatch<React.SetStateAction<boolean>>;
   todoId: number;
@@ -29,7 +30,7 @@ interface MainViewProps {
   selectedItem: string[] | [];
   setSelectedItem: React.Dispatch<React.SetStateAction<string[] | []>>;
   stepRef: React.MutableRefObject<HTMLInputElement | undefined>;
-}
+};
 
 const MainView: React.FC<MainViewProps> = ({
   toggleDetails,
@@ -145,7 +146,7 @@ const MainView: React.FC<MainViewProps> = ({
           </Stack>
         </Box>
       </Grid>
-      {toggleDetails && (
+      {/* {toggleDetails && (
         <Grid item xs={0} md={4}>
           <Box
             className={`${classes.main} ${
@@ -156,7 +157,7 @@ const MainView: React.FC<MainViewProps> = ({
             <h1>This section is in progress...</h1>
           </Box>
         </Grid>
-      )}
+      )} */}
     </Grid>
   );
 };

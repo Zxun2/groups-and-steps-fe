@@ -5,17 +5,13 @@ import { useTheme } from "@mui/material/styles";
 import Popper from "./FilterPopper";
 import Box from "@mui/material/Box";
 import React, { useState, useEffect } from "react";
-import { LabelType } from "../../../store/steps-slice";
 import { useAppDispatch, useAppSelector } from "../../../hooks/useHooks";
+import { LabelType } from "../../../types";
 
-/**
- * FILTER COMPONENT
- */
-
-interface FilterLabelProps {
+type FilterLabelProps = {
   value: LabelType[];
   setValue: React.Dispatch<React.SetStateAction<LabelType[]>>;
-}
+};
 
 export default function FilterLabel(props: FilterLabelProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

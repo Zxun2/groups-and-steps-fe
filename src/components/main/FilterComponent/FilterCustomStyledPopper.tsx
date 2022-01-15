@@ -4,11 +4,11 @@ import InputBase from "@mui/material/InputBase";
 import { styled } from "@mui/material/styles";
 import Popper from "@mui/material/Popper";
 
-interface PopperComponentProps {
+type PopperComponentProps = {
   anchorEl?: any;
   disablePortal?: boolean;
   open: boolean;
-}
+};
 
 // Auto Complete Popper
 export const StyledAutocompletePopper = styled("div")(({ theme }) => ({
@@ -26,12 +26,6 @@ export const StyledAutocompletePopper = styled("div")(({ theme }) => ({
       minHeight: "auto",
       alignItems: "flex-start",
       padding: "0.6rem",
-      // '&[aria-selected="true"]': {
-      //   backgroundColor: "transparent",
-      // },
-      // '&[data-focus="true"], &[data-focus="true"][aria-selected="true"]': {
-      //   backgroundColor: theme.palette.action.hover,
-      // },
     },
   },
   [`&.${autocompleteClasses.popperDisablePortal}`]: {

@@ -1,26 +1,26 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { STATUS } from "../misc/constants";
-import { API_URL } from "../misc/base-url";
+import { UserStatus, API_URL } from "../utils/constants";
 import request from "../api";
 import { User } from "../types/index";
 import { RootState } from ".";
-import { UserDetail } from "../components/auth/Login";
-
-export interface UserData {
-  user: User;
-  token: string;
-  message?: string;
-}
+import { APIUserRequestType, APIUserResponseType } from "../types/index";
 
 interface UserState {
   currUser: User | null;
   auth_token: string | null;
-  status: STATUS.USER_LOGGED_IN | STATUS.USER_LOGGED_OUT;
+  status: UserStatus.USER_LOGGED_IN | UserStatus.USER_LOGGED_OUT;
   fetching: boolean;
 }
 
+const initialState: UserState = {
+  currUser: null,
+  auth_token: "", // jwt token
+  status: UserStatus.USER_LOGGED_OUT,
+  fetching: false,
+};
+
 // POST /auth/auto_login
-export const autoLogin = createAsyncThunk<UserData, string>(
+export const autoLogin = createAsyncThunk<APIUserResponseType, string>(
   "User/autologin",
   async (token, _) => {
     const data = await request(
@@ -35,16 +35,15 @@ export const autoLogin = createAsyncThunk<UserData, string>(
       `${API_URL}/auth/auto_login`
     );
 
-    const user = data;
-    return { user, token } as UserData;
+    return { user: data, token } as APIUserResponseType;
   }
 );
 
 // POST /auth/login
-export const userLoggedIn = createAsyncThunk<UserData, UserDetail>(
+export const userLoggedIn = createAsyncThunk(
   "User/login",
-  async (userDetails, _) => {
-    const { email, password } = userDetails;
+  async (body: APIUserRequestType, _) => {
+    const { email, password } = body;
 
     const content = { email, password };
     const data = await request(
@@ -57,49 +56,45 @@ export const userLoggedIn = createAsyncThunk<UserData, UserDetail>(
       `${API_URL}/auth/login`
     );
 
-    const token = data.auth_token;
-    const user = data.user;
+    console.log(data);
 
-    return { user, token } as UserData;
+    const { auth_token, user } = data;
+
+    return { user, token: auth_token } as APIUserResponseType;
   }
 );
 
 // POST /signup
-export const RegisterUser = createAsyncThunk<UserData, UserDetail>(
-  "User/register",
-  async (userDetails, _) => {
-    const { name, email, password, password_confirmation } = userDetails;
+export const RegisterUser = createAsyncThunk<
+  APIUserResponseType,
+  APIUserRequestType
+>("User/register", async (body, _) => {
+  const { name, email, password, password_confirmation } = body;
 
-    const content = { name, email, password, password_confirmation };
+  const content = { name, email, password, password_confirmation };
 
-    const data = await request(
-      "POST",
-      {
-        headers: { "Access-Control-Allow-Origin": "*" },
-        content,
-      },
-      "Something went wrong! Please try again.",
-      `${API_URL}/signup`
-    );
+  const data = await request(
+    "POST",
+    {
+      headers: { "Access-Control-Allow-Origin": "*" },
+      content,
+    },
+    "Something went wrong! Please try again.",
+    `${API_URL}/signup`
+  );
 
-    const { message, auth_token: token, user } = data;
-    return { message, user, token } as UserData;
-  }
-);
+  const { message, auth_token: token, user } = data;
+  return { message, user, token };
+});
 
 const userSlice = createSlice({
   name: "user",
-  initialState: {
-    currUser: null,
-    auth_token: "", // jwt token
-    status: STATUS.USER_LOGGED_OUT,
-    fetching: false,
-  } as UserState,
+  initialState,
   reducers: {
     logUserOut(state) {
       state.currUser = null;
       state.auth_token = null;
-      state.status = STATUS.USER_LOGGED_OUT;
+      state.status = UserStatus.USER_LOGGED_OUT;
     },
   },
   extraReducers: (builder) => {
@@ -112,7 +107,7 @@ const userSlice = createSlice({
 
         state.currUser = user;
         state.auth_token = token;
-        state.status = STATUS.USER_LOGGED_IN;
+        state.status = UserStatus.USER_LOGGED_IN;
         state.fetching = false;
       })
       .addCase(userLoggedIn.rejected, (state, _) => {
@@ -125,7 +120,7 @@ const userSlice = createSlice({
         const { token, user } = payload;
         state.currUser = user;
         state.auth_token = token;
-        state.status = STATUS.USER_LOGGED_IN;
+        state.status = UserStatus.USER_LOGGED_IN;
         state.fetching = false;
       })
       .addCase(RegisterUser.rejected, (state, _) => {
@@ -136,7 +131,7 @@ const userSlice = createSlice({
 
         state.currUser = user;
         state.auth_token = token;
-        state.status = STATUS.USER_LOGGED_IN;
+        state.status = UserStatus.USER_LOGGED_IN;
       });
   },
 });

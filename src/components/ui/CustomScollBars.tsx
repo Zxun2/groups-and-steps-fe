@@ -1,10 +1,10 @@
 import { Scrollbars } from "react-custom-scrollbars";
 
-interface CustomScrollbarProps {
+type CustomScrollbarProps = {
   style?: {
     [key: string]: string;
   };
-}
+};
 
 const renderThumb: React.FC<CustomScrollbarProps> = ({ style, ...props }) => {
   const thumbStyle = {

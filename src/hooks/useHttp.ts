@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { uiAction } from "../store/ui-slice";
-import { ACTION } from "../misc/constants";
+import { NotificationType } from "../utils/constants";
 
 import { useAppDispatch } from "./useHooks";
 
@@ -31,7 +31,7 @@ export function useHttp2(requestFunction: any) {
 
         dispatch(
           uiAction.showNotification({
-            status: ACTION.SUCCESS,
+            status: NotificationType.SUCCESS,
             _title: "Success!",
             message: response.payload.message || "The request is successful.",
           })
@@ -39,7 +39,7 @@ export function useHttp2(requestFunction: any) {
       } catch (error: any) {
         dispatch(
           uiAction.showNotification({
-            status: ACTION.FAIL,
+            status: NotificationType.FAIL,
             _title: "Error!",
             message:
               error.message ||

@@ -4,19 +4,19 @@ import { Chip } from "@material-ui/core";
 import { Divider } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import React, { useState } from "react";
-import Task from "./Task";
+import Task from "./Steps/Task";
 import {
   getCompletedAndUncompletedSteps,
   getCompletedCount,
   getUncompletedCount,
-  LabelType,
 } from "../../../store/steps-slice";
 import { useAppSelector } from "../../../hooks/useHooks";
+import { LabelType } from "../../../types";
 
-interface RenderStepsProps {
+type RenderStepsProps = {
   view: string;
   setValue: React.Dispatch<React.SetStateAction<LabelType[]>>;
-}
+};
 
 const RenderSteps = (props: RenderStepsProps) => {
   const [isOpenUncompleted, setOpenUncompleted] = useState(true);

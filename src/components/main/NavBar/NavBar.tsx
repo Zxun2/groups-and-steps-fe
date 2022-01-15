@@ -13,16 +13,16 @@ import { navStyles } from "../../../styles/Style";
 import { Typography } from "@material-ui/core";
 import NavInput from "./NavInput";
 import { LinearProgress } from "@material-ui/core";
-import { drawerWidth } from "../../../misc/constants";
+import { drawerWidth } from "../../../utils/constants";
 import { getLoadingState } from "../../../store/ui-slice";
 import { getAllTodo } from "../../../store/todo-slice";
 import { useAppSelector } from "../../../hooks/useHooks";
 
-interface NavBarProps {
+type NavBarProps = {
   handleDrawerToggle: () => void;
   title: string;
   changeContentHandler: (title: string, id: number) => void;
-}
+};
 
 const NavBar = (props: NavBarProps) => {
   const classes = navStyles();

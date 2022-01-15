@@ -2,12 +2,12 @@ import React from "react";
 import { Typography } from "@material-ui/core";
 import CardContent from "@mui/material/CardContent";
 
-interface TaskContentProps {
+type TaskContentProps = {
   step: string;
   deadline: Date;
   daysLeft: number;
   currDeadline: Date;
-}
+};
 
 const TaskContent: React.FC<TaskContentProps> = ({
   step,

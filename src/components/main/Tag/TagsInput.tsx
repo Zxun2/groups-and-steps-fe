@@ -6,7 +6,7 @@ import randomColor from "randomcolor";
 import { Box } from "@mui/material";
 import { tagInputStyles } from "../../../styles/Style";
 
-interface TagsInputProps {
+type TagsInputProps = {
   selectedItem: string[];
   setSelectedItem: React.Dispatch<React.SetStateAction<string[]>>;
   placeholder: string;
@@ -15,7 +15,7 @@ interface TagsInputProps {
   variant: string;
   id: string;
   tags?: string[] | [];
-}
+};
 
 const TagsInput: React.FC<TagsInputProps> = ({
   // Array of Tags

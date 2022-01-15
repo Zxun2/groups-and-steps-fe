@@ -3,8 +3,8 @@ import NavBar from "../main/NavBar/NavBar";
 import { SideBar } from "../main/SideBar/SideBar";
 import { Box, CssBaseline } from "@mui/material";
 import { uiAction } from "../../store/ui-slice";
-import { fetchAllStep, LabelType, stepAction } from "../../store/steps-slice";
-import Steps from "../main/MainContent/Steps";
+import { fetchAllStep, stepAction } from "../../store/steps-slice";
+import Steps from "../main/MainContent/MainContent";
 import TodoModal from "../main/Modals/TodoModal";
 import UserModal from "../main/Modals/UserModal";
 import {
@@ -15,7 +15,8 @@ import {
 } from "../../store/todo-slice";
 import { useHttp2 } from "../../hooks/useHttp";
 import { useAppDispatch } from "../../hooks/useHooks";
-import { ACTION } from "../../misc/constants";
+import { NotificationType } from "../../utils/constants";
+import { LabelType } from "../../types";
 
 export const Dashboard = () => {
   const dispatch = useAppDispatch();
@@ -57,7 +58,7 @@ export const Dashboard = () => {
   // Fetch curr Todo steps
   useEffect(() => {
     if (activeTodoId !== -1) {
-      fetchStep({ id: activeTodoId });
+      fetchStep({ todo_id: activeTodoId });
     }
   }, [activeTodoId, fetchStep, dispatch]);
 
@@ -115,7 +116,7 @@ export const Dashboard = () => {
       } else {
         dispatch(
           uiAction.showNotification({
-            status: ACTION.FAIL,
+            status: NotificationType.FAIL,
             _title: "Error!",
             message: "Todo title must not be empty",
           })
