@@ -1,7 +1,6 @@
 import { Typography } from "@material-ui/core";
 import AppIcon from "../../svgs/AppIcon";
 import { Box } from "@mui/material";
-import React from "react";
 import { stepStyles } from "../../../styles/Style";
 import { useAppSelector } from "../../../hooks/useHooks";
 import { getUserState } from "../../../store/user-slice";

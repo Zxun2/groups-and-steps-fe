@@ -1,4 +1,3 @@
-import React from "react";
 import { Modal, Box, Button } from "@mui/material";
 import { Typography } from "@material-ui/core";
 import { userModalStyle } from "../../../styles/Style";

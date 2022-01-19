@@ -35,34 +35,34 @@ export const autoLogin = createAsyncThunk<APIUserResponseType, string>(
       `${API_URL}/auth/auto_login`
     );
 
-    return { user: data, token } as APIUserResponseType;
+    return { user: data, token };
   }
 );
 
 // POST /auth/login
-export const userLoggedIn = createAsyncThunk(
-  "User/login",
-  async (body: APIUserRequestType, _) => {
-    const { email, password } = body;
+export const userLoggedIn = createAsyncThunk<
+  APIUserResponseType,
+  APIUserRequestType
+>("User/login", async (body, _) => {
+  const { email, password } = body;
 
-    const content = { email, password };
-    const data = await request(
-      "POST",
-      {
-        headers: { "Access-Control-Allow-Origin": "*" },
-        content,
-      },
-      "Something went wrong! Please try again.",
-      `${API_URL}/auth/login`
-    );
+  const content = { email, password };
+  const data = await request(
+    "POST",
+    {
+      headers: { "Access-Control-Allow-Origin": "*" },
+      content,
+    },
+    "Something went wrong! Please try again.",
+    `${API_URL}/auth/login`
+  );
 
-    console.log(data);
+  console.log(data);
 
-    const { auth_token, user } = data;
+  const { auth_token, user } = data;
 
-    return { user, token: auth_token } as APIUserResponseType;
-  }
-);
+  return { user, token: auth_token };
+});
 
 // POST /signup
 export const RegisterUser = createAsyncThunk<

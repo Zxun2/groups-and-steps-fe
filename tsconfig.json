@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "jsx": "react-jsx",
-    "target": "es2016",
     "module": "esnext",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -17,7 +16,12 @@
     "noEmit": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "target": "es5",
+    "baseUrl": "./src",
+    "noUnusedLocals": true,
+    "downlevelIteration": true
   },
-  "include": ["src"]
+  "include": ["src", "types.d.ts"],
+  "exclude": ["node_modules"]
 }
