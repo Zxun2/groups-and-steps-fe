@@ -1,9 +1,9 @@
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+// import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import GridViewIcon from "@mui/icons-material/GridView";
 import LayersIcon from "@mui/icons-material/Layers";
 import MenuItem from "@mui/material/MenuItem";
-import Divider from "@mui/material/Divider";
+// import Divider from "@mui/material/Divider";
 import { Button } from "@material-ui/core";
 import StyledMenu from "./ViewSelectStyledComponents";
 import * as React from "react";
@@ -28,10 +28,10 @@ export default function SelectLabels(props: SelectLabelsProps) {
     props.setView(view);
     handleClose();
   };
-  const toggleDetails = () => {
-    props.setToggleDetails(!props.toggleDetails);
-    handleClose();
-  };
+  // const toggleDetails = () => {
+  //   props.setToggleDetails(!props.toggleDetails);
+  //   handleClose();
+  // };
 
   return (
     <div>
@@ -60,11 +60,11 @@ export default function SelectLabels(props: SelectLabelsProps) {
           <LayersIcon />
           Layered View
         </MenuItem>
-        <Divider sx={{ my: 0.5 }} />
+        {/* <Divider sx={{ my: 0.5 }} />
         <MenuItem onClick={toggleDetails} disableRipple>
           <MoreHorizIcon />
           {props.toggleDetails ? "Close" : "More"}
-        </MenuItem>
+        </MenuItem> */}
       </StyledMenu>
     </div>
   );
