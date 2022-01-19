@@ -1,10 +1,4 @@
-type ContentParams = {
-  content?: Object;
-  headers: {
-    [key: string]: string;
-  };
-};
-type MethodsRequest = "POST" | "PUT" | "PATCH" | "DELETE" | "GET";
+import { ContentType, RequestsType } from "../types";
 interface HttpOptions {
   method: string;
   headers: {
@@ -14,8 +8,8 @@ interface HttpOptions {
 }
 
 async function request(
-  method: MethodsRequest,
-  params: ContentParams,
+  method: RequestsType,
+  params: ContentType,
   error: string,
   url: string
 ) {

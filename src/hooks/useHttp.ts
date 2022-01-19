@@ -5,17 +5,18 @@ import { NotificationType } from "../utils/constants";
 import { useAppDispatch } from "./useHooks";
 
 // Custom Hook for Sending HTTP requests
-
 export function useHttp2(requestFunction: any) {
-  const token = localStorage.getItem("token");
   const dispatch = useAppDispatch();
 
   const sendRequest = useCallback(
     async function ({ ...requestData }) {
+      const token = localStorage.getItem("token");
+      const { showNotification, updateGlobalState } = uiAction;
+
       try {
         // Set loading state to true
         dispatch(
-          uiAction.updateGlobalState({
+          updateGlobalState({
             status: true,
           })
         );
@@ -30,7 +31,7 @@ export function useHttp2(requestFunction: any) {
         }
 
         dispatch(
-          uiAction.showNotification({
+          showNotification({
             status: NotificationType.SUCCESS,
             _title: "Success!",
             message: response.payload.message || "The request is successful.",
@@ -38,7 +39,7 @@ export function useHttp2(requestFunction: any) {
         );
       } catch (error: any) {
         dispatch(
-          uiAction.showNotification({
+          showNotification({
             status: NotificationType.FAIL,
             _title: "Error!",
             message:
@@ -50,12 +51,12 @@ export function useHttp2(requestFunction: any) {
 
       // Reset loading state
       dispatch(
-        uiAction.updateGlobalState({
+        updateGlobalState({
           status: false,
         })
       );
     },
-    [requestFunction, dispatch, token]
+    [requestFunction, dispatch]
   );
 
   return {

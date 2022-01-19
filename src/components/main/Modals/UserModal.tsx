@@ -1,7 +1,7 @@
 import { Modal, Box, Button } from "@mui/material";
 import { Typography } from "@material-ui/core";
-import { userModalStyle } from "../../../styles/Style";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { userModalStyle } from "../../../styles/Style";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { userAction } from "../../../store/user-slice";

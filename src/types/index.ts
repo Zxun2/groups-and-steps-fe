@@ -16,14 +16,12 @@ export interface Todo {
   created_at: Date;
   created_by: string;
 }
-
 export interface Notification {
   id?: string;
   _title: string;
   message: string;
   status: NotificationStatus;
 }
-
 export interface User {
   id: number;
   name: string;
@@ -32,7 +30,6 @@ export interface User {
   updated_at: Date;
   password_digest: string;
 }
-
 export interface LabelType {
   id: number;
   step: string;
@@ -40,6 +37,14 @@ export interface LabelType {
   tags: string[];
 }
 
+export type ContentType = {
+  content?: Object;
+  headers: {
+    [key: string]: string;
+  };
+};
+
+export type RequestsType = "POST" | "PUT" | "PATCH" | "DELETE" | "GET";
 interface APIStepRequestContent {
   step?: string;
   deadline?: Date;
@@ -57,20 +62,17 @@ export interface APITodoRequestType {
   token: string;
   content?: { title: string };
 }
-
 export interface APIUserRequestType {
   name?: string;
   email: string;
   password: string;
   password_confirmation?: string;
 }
-
 export interface APIUserResponseType {
   user: User;
   token: string;
   message?: string;
 }
-
 export interface TodoOptionType {
   title: string;
   id?: number;

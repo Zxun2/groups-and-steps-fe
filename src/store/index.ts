@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { reduxBatch } from "@manaflair/redux-batch";
 import stepSlice from "./steps-slice";
 import todoSlice from "./todo-slice";
 import uiSlice from "./ui-slice";
 import userSlice from "./user-slice";
-import { reduxBatch } from "@manaflair/redux-batch";
 import logger from "redux-logger";
 
 const store = configureStore({
