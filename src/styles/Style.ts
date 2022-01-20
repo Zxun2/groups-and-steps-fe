@@ -172,7 +172,7 @@ export const todoModalStyle = makeStyles((theme: Theme) =>
       left: "50%",
       transform: "translate(-50%, -50%)",
       width: 400,
-      backgroundColor: "#282424",
+      backgroundColor: "#28282b",
       boxShadow: "24",
       borderRadius: "4px",
       p: 4,
@@ -202,7 +202,7 @@ export const userModalStyle = makeStyles((theme: Theme) =>
       left: "50%",
       transform: "translate(-50%, -50%)",
       width: 300,
-      backgroundColor: "#282424",
+      backgroundColor: "#28282b",
       boxShadow: "24",
       borderRadius: "4px",
       padding: "1rem",
@@ -317,7 +317,7 @@ export const loginStyles = makeStyles((theme: Theme) =>
 
 export const homeStyles = makeStyles((theme) => ({
   root: {
-    background: "#282424",
+    background: "#1d1e1f",
     height: "100vh",
   },
   login: {

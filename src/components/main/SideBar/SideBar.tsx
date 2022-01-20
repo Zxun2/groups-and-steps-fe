@@ -8,6 +8,7 @@ import TagIcon from "@mui/icons-material/Tag";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { dashboardStyles } from "../../../styles/Style";
 import { TextField } from "@material-ui/core";
+import LogoutIcon from "@mui/icons-material/Logout";
 import {
   Chip,
   Toolbar,
@@ -49,17 +50,33 @@ export const SideBar: React.FC<SideBarProps> = (props) => {
         <Chip label="USER" />
       </Divider>
       <List>
-        <ListItem button onClick={() => props.setOpenUserModal(true)}>
+        <ListItem>
           <ListItemIcon>
             <PersonIcon />
           </ListItemIcon>
           <ListItemText primary={userState?.currUser?.name} />
         </ListItem>
-        <ListItem button onClick={() => props.setOpenUserModal(true)}>
+        <ListItem>
           <ListItemIcon>
             <EmailIcon />
           </ListItemIcon>
           <ListItemText primary={userState?.currUser?.email} />
+        </ListItem>
+        <ListItem
+          style={{
+            background: "#2e3747",
+            color: "#fff",
+            width: "auto",
+            borderRadius: "10px",
+            margin: ".5rem",
+          }}
+          button
+          onClick={() => props.setOpenUserModal(true)}
+        >
+          <ListItemIcon>
+            <LogoutIcon style={{ color: "#fff" }} />
+          </ListItemIcon>
+          <ListItemText primary={"Logout"} />
         </ListItem>
       </List>
 
@@ -67,7 +84,7 @@ export const SideBar: React.FC<SideBarProps> = (props) => {
         <Chip label="GROUP" />
       </Divider>
       <CustomScrollbars
-        style={{ height: "60vh" }}
+        style={{ height: "50vh" }}
         // @ts-ignore
         autoHide
         autoHideTimeout={500}
@@ -83,6 +100,12 @@ export const SideBar: React.FC<SideBarProps> = (props) => {
                 Todo.id
               )}
               key={Todo.id}
+              style={{
+                background: "#e3e3e3",
+                width: "auto",
+                borderRadius: "5px",
+                margin: ".5rem",
+              }}
             >
               <ListItemIcon>
                 <TagIcon />

@@ -2,7 +2,7 @@ function AddTaskIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="30vw"
+      width="100%"
       height="30vh"
       data-name="Layer 1"
       viewBox="0 0 1005.563 548.695"

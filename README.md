@@ -1,4 +1,4 @@
-# CVWO Riding on Rails 2021/2022 - 📝 [Groups and Steps](https://cvwo-groups-and-steps.netlify.app/)
+# CVWO Riding on Rails 2021/2022 - 📝 [Groups and Steps](https://cvwo-groups-and-steps-ts.netlify.app/)
 
 <div id="#top"></div>
 
@@ -10,7 +10,7 @@ Backend Repo: <https://github.com/Zxun2/cvwo-assignment-backend>
 | :----------: | :------------------: |
 | Lee Zong Xun |      A0233594Y       |
 
-### Tutorial account details for Web app
+### Tutorial account details for Web app (Recommended)
 
 |       Email        | Password |
 | :----------------: | :------: |

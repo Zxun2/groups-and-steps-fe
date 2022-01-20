@@ -1,11 +1,11 @@
 import { Typography, Paper } from "@material-ui/core";
 import { loginStyles } from "../../styles/Style";
-import { Fragment } from "react";
+import { FormEventHandler, Fragment } from "react";
 import LoginInputs from "./LoginInputs";
 import LoginButtons from "./LoginButtons";
 
 type LoginFormProps = {
-  handleSubmit: any; // TODO: HANDLE THIS!
+  handleSubmit: FormEventHandler<HTMLDivElement>;
   loading: boolean;
   form: any;
   isRegistering: boolean;

@@ -83,12 +83,20 @@ export const Dashboard = () => {
   const createTodoHandler = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
-      if (Todo !== "") {
+      if (Todo !== "" && Todo.length <= 15) {
         createTodo({ content: { title: Todo } });
+      } else {
+        dispatch(
+          uiAction.showNotification({
+            status: NotificationType.FAIL,
+            _title: "Error!",
+            message: "Todo must be less than 15 characters",
+          })
+        );
       }
       setTodo("");
     },
-    [Todo, createTodo]
+    [Todo, createTodo, dispatch]
   );
 
   const deleteTodoHandler = useCallback(

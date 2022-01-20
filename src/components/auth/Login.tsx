@@ -134,7 +134,7 @@ const Login = () => {
   ]);
 
   const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
+    e: React.FormEvent<HTMLDivElement>
   ): Promise<void> => {
     e.preventDefault();
 

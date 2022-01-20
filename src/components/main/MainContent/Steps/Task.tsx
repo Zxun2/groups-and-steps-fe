@@ -107,7 +107,7 @@ export default function Task({
   const updateStepHandler = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
 
-    if (ref.current!.value !== "") {
+    if (!completed && ref && ref.current!.value !== "") {
       const newDate = new Date(ref.current!.value);
 
       if (newDate.getDate() < new Date().getDate()) {

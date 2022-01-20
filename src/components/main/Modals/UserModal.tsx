@@ -5,6 +5,8 @@ import { userModalStyle } from "../../../styles/Style";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { userAction } from "../../../store/user-slice";
+import { uiAction } from "store/ui-slice";
+import { NotificationType } from "utils/constants";
 
 type UserModalProps = {
   open: boolean;
@@ -20,6 +22,13 @@ function UserModal(props: UserModalProps) {
     localStorage.removeItem("token");
     history.push("/");
     dispatch(userAction.logUserOut());
+    dispatch(
+      uiAction.showNotification({
+        status: NotificationType.SUCCESS,
+        _title: "Success!",
+        message: "Logged out successfully",
+      })
+    );
   };
   return (
     <Modal open={props.open} onClose={props.handleClose}>

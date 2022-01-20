@@ -63,21 +63,22 @@ const MainView: React.FC<MainViewProps> = ({
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
+                  width: "100%",
                 }}
               >
-                <AddTaskIcon />
                 <Typography
                   variant="h4"
                   color="secondary"
                   style={{
                     fontWeight: "600",
                     textAlign: "center",
-                    margin: "2rem 0 0 0",
+                    marginBottom: "2rem",
                   }}
                 >
                   Create a <span style={{ color: "#5865f2" }}>step</span> to get
                   started!
                 </Typography>
+                <AddTaskIcon />
               </Box>
             </Fragment>
           )}
