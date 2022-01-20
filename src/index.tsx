@@ -7,6 +7,8 @@ import { Provider } from "react-redux";
 import store from "./store";
 import { ThemeProvider } from "@material-ui/core";
 import theme from "./components/themes";
+import * as serviceWorker from "./serviceWorker";
+serviceWorker.register();
 
 ReactDOM.render(
   <Provider store={store}>
