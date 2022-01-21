@@ -119,6 +119,15 @@ export const stepStyles = makeStyles((theme: Theme) =>
         marginTop: "1rem",
       },
     },
+    container: {
+      margin: theme.spacing(2),
+      padding: theme.spacing(2),
+    },
+    text_: theme.typography.h6,
+    formControlLabel: {
+      ...theme.typography.caption,
+      fontSize: "1rem",
+    },
   })
 );
 
@@ -160,6 +169,34 @@ export const popperStyle = makeStyles((theme: Theme) =>
         backgroundColor: "rgba(0,0,0,.1)",
         outline: "1px solid slategrey",
       },
+    },
+  })
+);
+
+export const scrollStyle = makeStyles((theme: Theme) =>
+  createStyles({
+    scroll: {
+      overflowX: "scroll",
+      "&::-webkit-scrollbar": {
+        height: ".3rem",
+      },
+
+      "&::-webkit-scrollbar-thumb": {
+        borderRadius: 6,
+        backgroundColor: "#5865f2",
+        outline: "1px solid slategrey",
+      },
+    },
+    title: {
+      color: "#fff",
+      width: "10vw",
+      [theme.breakpoints.down("md")]: {
+        width: "100%",
+      },
+    },
+    notasks: {
+      width: "100%",
+      color: "#fff",
     },
   })
 );

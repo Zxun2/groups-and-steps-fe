@@ -11,6 +11,18 @@ body {
   background-color: #2c2f33;
   height: 100%;
 }
+body::-webkit-scrollbar {
+  width: 5px; /* width of the entire scrollbar */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: rgb(81, 90, 216);
+  border-radius: 6px; /* roundness of the scroll thumb */
+}
+
+body::-webkit-scrollbar-track {
+  background: black; /* color of the tracking area */
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",

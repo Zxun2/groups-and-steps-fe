@@ -16,6 +16,7 @@ import { getAllSteps } from "../../../store/steps-slice";
 import { stepStyles } from "../../../styles/Style";
 import { useAppSelector } from "../../../hooks/useHooks";
 import { LabelType } from "../../../types";
+import Reminders from "./Reminders";
 
 type MainViewProps = {
   toggleDetails: boolean;
@@ -51,7 +52,7 @@ const MainView: React.FC<MainViewProps> = ({
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} md={toggleDetails ? 8 : 12}>
+      <Grid item xs={12} md={12}>
         <Box
           className={`${classes.main} ${steps?.length === 0 && classes.notask}`}
         >
@@ -84,6 +85,20 @@ const MainView: React.FC<MainViewProps> = ({
           )}
           {steps?.length !== 0 && todoId !== -1 && (
             <Fragment>
+              {toggleDetails && (
+                <Box
+                  style={{
+                    background: "#2f3136",
+                    height: "15vh",
+                    marginBottom: "2rem",
+                    borderRadius: "10px",
+                    maxWidth: "90vw",
+                    display: "flex",
+                  }}
+                >
+                  <Reminders />
+                </Box>
+              )}
               <Box className={classes.root}>
                 <CustomScrollbars
                   style={{ height: "100%" }}
@@ -147,18 +162,6 @@ const MainView: React.FC<MainViewProps> = ({
           </Stack>
         </Box>
       </Grid>
-      {/* {toggleDetails && (
-        <Grid item xs={0} md={4}>
-          <Box
-            className={`${classes.main} ${
-              steps?.length === 0 && classes.notask
-            }`}
-            style={{ height: "100%" }}
-          >
-            <h1>This section is in progress...</h1>
-          </Box>
-        </Grid>
-      )} */}
     </Grid>
   );
 };

@@ -57,8 +57,6 @@ export const userLoggedIn = createAsyncThunk<
     `${API_URL}/auth/login`
   );
 
-  console.log(data);
-
   const { auth_token, user } = data;
 
   return { user, token: auth_token };
