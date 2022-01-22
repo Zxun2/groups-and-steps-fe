@@ -118,7 +118,7 @@ export const Dashboard = () => {
     (e) => {
       e.preventDefault();
 
-      if (updatedTodo !== "") {
+      if (updatedTodo !== "" && updatedTodo.length <= 15) {
         changeTodo({ id: activeTodoId, content: { title: updatedTodo } });
         setOpen(false);
       } else {
@@ -126,7 +126,7 @@ export const Dashboard = () => {
           uiAction.showNotification({
             status: NotificationType.FAIL,
             _title: "Error!",
-            message: "Todo title must not be empty",
+            message: "Invalid group title",
           })
         );
       }

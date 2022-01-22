@@ -112,19 +112,21 @@ const stepSlice = createSlice({
         const objIndex = state.steps.findIndex((obj) => obj.id === step.id);
         const tempIndex = state.temp.findIndex((obj) => obj.id === step.id);
 
+        if (state.steps[objIndex].completed !== step.completed) {
+          step.completed
+            ? (state.completedCount += 1)
+            : (state.unCompletedCount += 1);
+
+          step.completed
+            ? (state.unCompletedCount -= 1)
+            : (state.completedCount -= 1);
+        }
+
         state.steps[objIndex] = step;
 
         if (tempIndex !== -1) {
           state.temp[tempIndex] = step;
         }
-
-        step.completed
-          ? (state.completedCount += 1)
-          : (state.unCompletedCount += 1);
-
-        step.completed
-          ? (state.unCompletedCount -= 1)
-          : (state.completedCount -= 1);
       })
       .addCase(deleteCurrStep.fulfilled, (state, { payload }) => {
         const { item } = payload;

@@ -137,7 +137,7 @@ export default function NavInput(props: NavInputProps) {
           <TextField
             {...params}
             inputRef={searchRef}
-            placeholder="Search Todo"
+            placeholder="Search Group"
             // @ts-ignore
             component="form"
             onSubmit={searchSubmitHandler}

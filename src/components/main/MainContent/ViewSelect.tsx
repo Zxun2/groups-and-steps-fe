@@ -39,7 +39,7 @@ export default function SelectLabels(props: SelectLabelsProps) {
         variant="contained"
         disableElevation
         onClick={handleClick}
-        endIcon={<KeyboardArrowDownIcon />}
+        endIcon={<KeyboardArrowDownIcon style={{ marginLeft: "1.4rem" }} />}
         style={{
           maxWidth: "220px",
           color: "white",

@@ -66,11 +66,14 @@ export const navStyles = makeStyles((theme: Theme) =>
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
-      width: 400,
+      width: "30%",
       backgroundColor: theme.palette.background.default,
       boxShadow: "24",
       borderRadius: "10px",
       p: 4,
+      [theme.breakpoints.down("xs")]: {
+        width: "80%",
+      },
     },
   })
 );
@@ -93,9 +96,13 @@ export const stepStyles = makeStyles((theme: Theme) =>
     },
     filter: {
       display: "flex",
-      alignItems: "start",
+      alignItems: "flex-end",
       justifyContent: "space-between",
       marginBottom: "1rem",
+      [theme.breakpoints.down("xs")]: {
+        flexDirection: "column",
+        alignItems: "start",
+      },
     },
     text: {
       [theme.breakpoints.down("sm")]: {
@@ -127,6 +134,17 @@ export const stepStyles = makeStyles((theme: Theme) =>
     formControlLabel: {
       ...theme.typography.caption,
       fontSize: "1rem",
+    },
+    reminders: {
+      background: "#2f3136",
+      height: "10vw",
+      marginBottom: "2rem",
+      borderRadius: "10px",
+      maxWidth: "90vw",
+      display: "flex",
+      [theme.breakpoints.down("md")]: {
+        height: "fit-content",
+      },
     },
   })
 );
@@ -176,14 +194,15 @@ export const popperStyle = makeStyles((theme: Theme) =>
 export const scrollStyle = makeStyles((theme: Theme) =>
   createStyles({
     scroll: {
-      overflowX: "scroll",
+      overflow: "scroll",
       "&::-webkit-scrollbar": {
-        height: ".3rem",
+        height: ".2rem",
+        width: ".3rem",
       },
 
       "&::-webkit-scrollbar-thumb": {
         borderRadius: 6,
-        backgroundColor: "#5865f2",
+        backgroundColor: "#d7d8e0",
         outline: "1px solid slategrey",
       },
     },

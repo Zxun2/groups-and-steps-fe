@@ -1,51 +1,15 @@
-import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import { scrollStyle } from "styles/Style";
 import Grid from "@mui/material/Grid";
 import { useAppSelector } from "hooks/useHooks";
-import {
-  getCompletedAndUncompletedSteps,
-  updateCurrStep,
-} from "store/steps-slice";
-import { getUserState } from "store/user-slice";
-import Popover from "@mui/material/Popover";
-import { useState } from "react";
-import { useHttp2 } from "hooks/useHttp";
+import { getCompletedAndUncompletedSteps } from "store/steps-slice";
+import Reminder from "./Widget";
 
-const Widget = styled("div")(({ theme }) => ({
-  padding: 16,
-  borderRadius: 16,
-  position: "relative",
-  zIndex: 1,
-  height: "10vh",
-  backgroundColor: "rgba(255,255,255,0.4)",
-  backdropFilter: "blur(40px)",
-  "& : hover": {
-    color: "#28282b",
-    cursor: "pointer",
-  },
-  width: "14rem",
-  boxShadow: "5px 10px rgba(0,0,0,0.1)",
-}));
 const Reminders = () => {
   const classes = scrollStyle();
   const { uncompleted } = useAppSelector(getCompletedAndUncompletedSteps);
-  const { currUser } = useAppSelector(getUserState);
-  const { sendRequest: updateStep } = useHttp2(updateCurrStep);
-
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-
-  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
 
   uncompleted.sort((a, b) => {
     if (a.deadline && b.deadline) {
@@ -59,16 +23,6 @@ const Reminders = () => {
     }
     return 1;
   });
-
-  const completeStepHandler = (todo_id: number, step_id: number) => {
-    return updateStep({
-      todo_id,
-      step_id,
-      content: {
-        completed: true,
-      },
-    });
-  };
 
   return (
     <Grid container>
@@ -93,58 +47,9 @@ const Reminders = () => {
             {uncompleted.length > 0 &&
               uncompleted.map((step) => {
                 return (
-                  <Box key={step.id}>
-                    <Widget
-                      onMouseEnter={handlePopoverOpen}
-                      onMouseLeave={handlePopoverClose}
-                      onClick={completeStepHandler.bind(
-                        null,
-                        step.todo_id,
-                        step.id
-                      )}
-                    >
-                      <Box sx={{ display: "flex" }}>
-                        <Box sx={{ minWidth: 0, color: "#fff" }}>
-                          <Typography
-                            variant="caption"
-                            color="text.secondary"
-                            fontWeight={500}
-                          >
-                            {currUser?.name}
-                          </Typography>
-                          <Typography noWrap>{step.step}</Typography>
-                          <Typography
-                            variant="caption"
-                            noWrap
-                            letterSpacing={-0.25}
-                          >
-                            Tags: {step.tags.join(", ")}
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </Widget>
-                    <Popover
-                      sx={{
-                        pointerEvents: "none",
-                      }}
-                      open={open}
-                      anchorEl={anchorEl}
-                      anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "center",
-                      }}
-                      transformOrigin={{
-                        vertical: "top",
-                        horizontal: "left",
-                      }}
-                      onClose={handlePopoverClose}
-                      disableRestoreFocus
-                    >
-                      <Typography sx={{ p: 1 }}>
-                        Click to complete the task!
-                      </Typography>
-                    </Popover>
-                  </Box>
+                  <div key={step.id}>
+                    <Reminder step={step} />
+                  </div>
                 );
               })}
           </Stack>

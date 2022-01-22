@@ -79,7 +79,7 @@ const NavBar = (props: NavBarProps) => {
                 <Box className={classes.style}>
                   <CustomScrollbars
                     style={{
-                      height: "55vh",
+                      height: "50vh",
                     }}
                     // @ts-ignore
                     autoHide

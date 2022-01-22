@@ -2,24 +2,28 @@ const steps = [
   {
     label: "Welcome to the application!",
     description: `
-    When you enter the application for the first time, you will be prompted to log in with your credentials. Once authorized, you will be assigned a JWT token that will be saved in your local storage. This token is important for you to access other portions of the application as well as subsequent access during the lock-in period. 
+    When you enter the application for the first time, you will be prompted to log in with your credentials. Once authorized, you will be assigned a JWT token that will be saved to your local storage. This token is important for you to access other portions of the application as well as subsequent access during the lock-in period. 
     
     The Lock-in duration is 24 hours.
+
+    Note: You can access the log in and sign up pages if you are already logged in. A “Log Out” button is provided in the top left corner for your convenience, although you are not required to log out before switching accounts.
     `,
   },
   {
     label: "Groups",
-    description: `To view your groups, simply open the sidebar (it should already be opened by default, unless you're on mobile then you'll be required to click on the hamburger menu on the top left corner of your screen). Enter the title of your group at the bottom of the screen to create a new group. 
-    
-    To delete or update a group, click on the settings icon beside the Group's title and a modal component similar to the one you're currently viewing will appear. 
-    
-    Follow the instructions there.
+    description: `Groups are referred to as "topics" in your tasks. They can assist you in categorizing the tasks at hand..
+
+    To view your groups, simply open the sidebar (it should already be open by default, in which case you'll need to click on the hamburger menu in the upper left corner of your screen). To establish a new group, enter the title of your group at the bottom of the screen.
+
+    To delete or alter a group, click the settings icon next to the Group's title, which will open a modal component.
     `,
   },
   {
     label: "Steps",
     description: `
-    Now, let's try creating our first step. If there are no current steps, then you should see a placeholder SVG (credits to Undraw.io) as well as a prompt to create a new step. Enter your step into the input box on the left, add any tags you wish to have on the right and navigate back to the left input box and press ENTER. 
+    If Groups are "topics", then you may treat Steps as "sub-topics". They can help to provide furthur clarity to the topic at hand.
+
+    Now, let's try creating our first step. If there are no current steps, then you should see a placeholder SVG (credits to Undraw.io) as well as a prompt to create a new step. Add any tags you wish to have on the first inputfield (remember to hit on enter after every tag), and navigate back to the next input box, enter your steps and press ENTER.
     
     To complete your task, navigate to the vertical floating icon on the top right of the card, click on it and indicate that you wish to complete the task.
 

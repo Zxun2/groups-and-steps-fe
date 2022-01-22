@@ -100,6 +100,7 @@ export default function Task({
       step_id,
       content: {
         completed: completed ? false : true,
+        deadline: "",
       },
     });
   };
@@ -110,7 +111,7 @@ export default function Task({
     if (!completed && ref && ref.current!.value !== "") {
       const newDate = new Date(ref.current!.value);
 
-      if (newDate.getDate() < new Date().getDate()) {
+      if (newDate <= new Date()) {
         dispatch(
           uiAction.showNotification({
             status: NotificationType.FAIL,

@@ -23,7 +23,7 @@ const Steps: React.FC<StepsProps> = (props) => {
 
   const stepRef = useRef<HTMLInputElement>();
 
-  const [toggleDetails, setToggleDetails] = useState(false);
+  const [toggleDetails, setToggleDetails] = useState(true);
   const [selectedItem, setSelectedItem] = useState<string[] | []>([]);
   const [view, setView] = useState("Layered");
   const [tags, setTags] = useState<string[] | []>([]);

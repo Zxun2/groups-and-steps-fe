@@ -44,6 +44,9 @@ export const StyledPopper = styled(Popper)(({ theme }) => ({
   boxShadow: `0 8px 8px ${"#1b1f23"}`,
   borderRadius: "3px",
   width: 300,
+  [theme.breakpoints.down("xs")]: {
+    width: 200,
+  },
   zIndex: theme.zIndex.modal,
   fontSize: 13,
   color: "#c9d1d9",

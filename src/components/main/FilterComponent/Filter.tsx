@@ -61,7 +61,7 @@ export default function FilterLabel(props: FilterLabelProps) {
 
   return (
     <React.Fragment>
-      <Box sx={{ width: 220, fontSize: 13 }}>
+      <Box sx={{ width: 220, fontSize: 13, p: "0 1rem 0 1rem" }}>
         <Button disableRipple onClick={handleClick}>
           <span>Filter</span>
           <SettingsIcon />

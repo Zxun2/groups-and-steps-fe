@@ -33,11 +33,11 @@ const DialogComponent: React.FC<DialogProps> = (props) => {
           color="white"
           style={{ textAlign: "center", fontSize: "30px" }}
         >
-          Add a new Todo
+          Add a new group
         </DialogTitle>
         <DialogContent>
           <DialogContentText color="white">
-            Are you looking for a Todo not in the list? Please, add it!
+            Are you looking for a Group not in the list? Please, add it!
           </DialogContentText>
           <Box
             style={{

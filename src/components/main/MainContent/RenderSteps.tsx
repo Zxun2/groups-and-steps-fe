@@ -20,7 +20,7 @@ type RenderStepsProps = {
 
 const RenderSteps = (props: RenderStepsProps) => {
   const [isOpenUncompleted, setOpenUncompleted] = useState(true);
-  const [isOpenCompleted, setOpenCompleted] = useState(true);
+  const [isOpenCompleted, setOpenCompleted] = useState(false);
 
   // Count
   const UncompletedCount = useAppSelector(getUncompletedCount);

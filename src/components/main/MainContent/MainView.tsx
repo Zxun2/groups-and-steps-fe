@@ -86,16 +86,7 @@ const MainView: React.FC<MainViewProps> = ({
           {steps?.length !== 0 && todoId !== -1 && (
             <Fragment>
               {toggleDetails && (
-                <Box
-                  style={{
-                    background: "#2f3136",
-                    height: "15vh",
-                    marginBottom: "2rem",
-                    borderRadius: "10px",
-                    maxWidth: "90vw",
-                    display: "flex",
-                  }}
-                >
+                <Box className={classes.reminders}>
                   <Reminders />
                 </Box>
               )}
