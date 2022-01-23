@@ -6,23 +6,53 @@ import Grid from "@mui/material/Grid";
 import { useAppSelector } from "hooks/useHooks";
 import { getCompletedAndUncompletedSteps } from "store/steps-slice";
 import Reminder from "./Widget";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { Step } from "types";
+import { useEffect, useMemo, useState } from "react";
 
 const Reminders = () => {
   const classes = scrollStyle();
   const { uncompleted } = useAppSelector(getCompletedAndUncompletedSteps);
 
-  uncompleted.sort((a, b) => {
-    if (a.deadline && b.deadline) {
-      if (new Date(a.deadline) < new Date(b.deadline)) {
+  const steps = useMemo(() => {
+    return uncompleted.sort((a, b) => {
+      if (a.deadline && b.deadline) {
+        if (new Date(a.deadline) < new Date(b.deadline)) {
+          return -1;
+        }
+        return 1;
+      }
+      if (a.deadline) {
         return -1;
       }
       return 1;
+    });
+  }, [uncompleted]);
+
+  const [state, setState] = useState(steps);
+
+  useEffect(() => {
+    setState(steps);
+  }, [steps]);
+
+  // a little function to help us with reordering the result
+  const reorder = (list: Step[], startIndex: number, endIndex: number) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  };
+
+  const onDragEnd = (result: any) => {
+    if (!result.destination) {
+      return;
     }
-    if (a.deadline) {
-      return -1;
-    }
-    return 1;
-  });
+
+    const items = reorder(state, result.source.index, result.destination.index);
+
+    setState(items);
+  };
 
   return (
     <Grid container>
@@ -38,21 +68,42 @@ const Reminders = () => {
         </Typography>
       </Grid>
       <Grid item md={10} style={{ display: "flex", alignItems: "center" }}>
-        <Box sx={{ maxWidth: "80vw" }} className={classes.scroll}>
-          <Stack
-            spacing={2}
-            direction="row"
-            sx={{ mb: 1, px: 1, display: "flex", alignItems: "center" }}
-          >
-            {uncompleted.length > 0 &&
-              uncompleted.map((step) => {
-                return (
-                  <div key={step.id}>
-                    <Reminder step={step} />
-                  </div>
-                );
-              })}
-          </Stack>
+        <Box sx={{ width: "80vw" }} className={classes.scroll}>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="droppable" direction="horizontal">
+              {(provided, _) => (
+                <Stack
+                  ref={provided.innerRef}
+                  spacing={2}
+                  direction="row"
+                  sx={{ mb: 1, px: 1, display: "flex", alignItems: "center" }}
+                  {...provided.droppableProps}
+                >
+                  {state.length > 0 &&
+                    state.map((step, indx) => {
+                      return (
+                        <Draggable
+                          key={step.id}
+                          draggableId={JSON.stringify(step.id)}
+                          index={indx}
+                        >
+                          {(provided, _) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <Reminder step={step} />
+                            </div>
+                          )}
+                        </Draggable>
+                      );
+                    })}
+                  {provided.placeholder}
+                </Stack>
+              )}
+            </Droppable>
+          </DragDropContext>
         </Box>
       </Grid>
     </Grid>

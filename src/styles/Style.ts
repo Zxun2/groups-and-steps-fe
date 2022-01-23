@@ -66,11 +66,14 @@ export const navStyles = makeStyles((theme: Theme) =>
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
-      width: "30%",
+      minWidth: "27%",
       backgroundColor: theme.palette.background.default,
       boxShadow: "24",
       borderRadius: "10px",
       p: 4,
+      [theme.breakpoints.down("md")]: {
+        width: "50%",
+      },
       [theme.breakpoints.down("xs")]: {
         width: "80%",
       },
@@ -231,8 +234,11 @@ export const todoModalStyle = makeStyles((theme: Theme) =>
       backgroundColor: "#28282b",
       boxShadow: "24",
       borderRadius: "4px",
-      p: 4,
       padding: "4rem",
+      [theme.breakpoints.down("xs")]: {
+        padding: ".5rem",
+        width: 300,
+      },
     },
     input: {
       "& .MuiFilledInputInput": {
@@ -285,7 +291,8 @@ export const loginStyles = makeStyles((theme: Theme) =>
       width: "auto",
       backgroundColor: "#2f3136 !important",
       padding: "2rem",
-      margin: "0 5rem 0 5rem",
+      margin: "0 1rem 0 1rem",
+      borderRadius: "10px",
       [theme.breakpoints.down("sm")]: {
         padding: "1rem",
       },
