@@ -11,7 +11,7 @@ const steps = [
   },
   {
     label: "Groups",
-    description: `Groups are referred to as "topics" in your tasks. They can assist you in categorizing the tasks at hand..
+    description: `Groups are referred to as "topics" in your tasks. They can assist you in categorizing the tasks at hand.
 
     To view your groups, simply open the sidebar (it should already be open by default, in which case you'll need to click on the hamburger menu in the upper left corner of your screen). To establish a new group, enter the title of your group at the bottom of the screen.
 
