@@ -254,6 +254,12 @@ export const dashboardStyles = makeStyles((theme) => ({
       color: theme.palette.primary.main,
     },
   },
+  anchor: {
+    textDecoration: "none",
+    "&:active": {
+      textDecoration: "none",
+    },
+  },
 }));
 
 export const userModalStyle = makeStyles((theme: Theme) =>

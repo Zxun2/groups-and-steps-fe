@@ -8,26 +8,22 @@ import { getCompletedAndUncompletedSteps } from "store/steps-slice";
 import Reminder from "./Widget";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Step } from "types";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+
+// a little function to help with reordering the result
+const reorder = (list: Step[], startIndex: number, endIndex: number) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
 
 const Reminders = () => {
   const classes = scrollStyle();
-  const { uncompleted } = useAppSelector(getCompletedAndUncompletedSteps);
-
-  const steps = useMemo(() => {
-    return uncompleted.sort((a, b) => {
-      if (a.deadline && b.deadline) {
-        if (new Date(a.deadline) < new Date(b.deadline)) {
-          return -1;
-        }
-        return 1;
-      }
-      if (a.deadline) {
-        return -1;
-      }
-      return 1;
-    });
-  }, [uncompleted]);
+  const { uncompleted: steps } = useAppSelector(
+    getCompletedAndUncompletedSteps
+  );
 
   const [state, setState] = useState(steps);
 
@@ -35,22 +31,11 @@ const Reminders = () => {
     setState(steps);
   }, [steps]);
 
-  // a little function to help us with reordering the result
-  const reorder = (list: Step[], startIndex: number, endIndex: number) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-
-    return result;
-  };
-
   const onDragEnd = (result: any) => {
     if (!result.destination) {
       return;
     }
-
     const items = reorder(state, result.source.index, result.destination.index);
-
     setState(items);
   };
 
@@ -60,9 +45,9 @@ const Reminders = () => {
         <Typography
           variant="h5"
           style={{ fontWeight: 600, margin: "1rem 0 1rem 1rem" }}
-          className={uncompleted.length === 0 ? classes.notasks : classes.title}
+          className={steps.length === 0 ? classes.notasks : classes.title}
         >
-          {uncompleted.length > 0
+          {steps.length > 0
             ? "Your upcoming tasks"
             : "Great! You dont have any outstanding steps!"}
         </Typography>

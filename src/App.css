@@ -95,9 +95,9 @@
 }
 
 .notification-item.error .bar {
-  background-color: red;
+  background-color: #b33a3a;
 }
 
 .notification-item.notice .bar {
-  background-color: yellow;
+  background-color: rgb(255, 255, 116);
 }

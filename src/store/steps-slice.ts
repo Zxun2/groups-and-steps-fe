@@ -176,6 +176,19 @@ export const getCompletedAndUncompletedSteps = (state: RootState) => {
     }
   });
 
+  uncompleted.sort((a, b) => {
+    if (a.deadline && b.deadline) {
+      if (new Date(a.deadline) < new Date(b.deadline)) {
+        return -1;
+      }
+      return 1;
+    }
+    if (a.deadline) {
+      return -1;
+    }
+    return 1;
+  });
+
   return { completed, uncompleted };
 };
 

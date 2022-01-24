@@ -90,7 +90,7 @@ export const Dashboard = () => {
           uiAction.showNotification({
             status: NotificationType.FAIL,
             _title: "Error!",
-            message: "Todo must be less than 15 characters",
+            message: "Length of Group must be between 1 to 15 characters",
           })
         );
       }

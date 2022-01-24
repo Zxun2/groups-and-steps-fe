@@ -161,7 +161,6 @@ export default function Task({
 
   return (
     <Fragment>
-      {/* EXPLORE GRID HERE */}
       <Card sx={{ maxWidth: "100%", backgroundColor: "#2f3136" }}>
         <TaskHeader
           date={date}

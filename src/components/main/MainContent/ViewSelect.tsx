@@ -63,7 +63,7 @@ export default function SelectLabels(props: SelectLabelsProps) {
         <Divider sx={{ my: 0.5 }} />
         <MenuItem onClick={toggleDetails} disableRipple>
           <MoreHorizIcon />
-          {props.toggleDetails ? "Close" : "Open task bar"}
+          {props.toggleDetails ? "Close task bar" : "Open task bar"}
         </MenuItem>
       </StyledMenu>
     </div>

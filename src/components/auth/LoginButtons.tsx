@@ -5,7 +5,6 @@ import { loginStyles } from "../../styles/Style";
 import { Box } from "@material-ui/core";
 import { Fragment } from "react";
 
-// TODO: Work on form validation schema
 type LoginButtonsProps = {
   loading: boolean;
   form: any;

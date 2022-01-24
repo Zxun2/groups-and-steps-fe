@@ -7,22 +7,22 @@ import CustomScrollbars from "../../ui/CustomScollBars";
 import TagIcon from "@mui/icons-material/Tag";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { dashboardStyles } from "../../../styles/Style";
-import { TextField } from "@material-ui/core";
+import { TextField, Typography } from "@material-ui/core";
 import LogoutIcon from "@mui/icons-material/Logout";
 import {
   Chip,
-  Toolbar,
   ListItemIcon,
   ListItemText,
   ListItem,
   List,
   Divider,
 } from "@mui/material";
-import { useSelector } from "react-redux";
 import { getUserState } from "../../../store/user-slice";
 import { getAllTodo } from "../../../store/todo-slice";
+import { useAppSelector } from "hooks/useHooks";
+import Logo from "components/svgs/Logo";
 
-type SideBarProps = {
+interface SideBarProps {
   handleDrawerToggle: () => void;
   mobileOpen: boolean;
   setOpenUserModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,20 +32,41 @@ type SideBarProps = {
   Todo: string;
   setTodo: React.Dispatch<React.SetStateAction<string>>;
   window?: any;
-};
+}
 
+// Sidebar Component
 export const SideBar: React.FC<SideBarProps> = (props) => {
   const { window } = props;
   const classes = dashboardStyles();
-  const userState = useSelector(getUserState);
-  const Todos = useSelector(getAllTodo);
+  const userState = useAppSelector(getUserState);
+  const Todos = useAppSelector(getAllTodo);
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
   const drawer = (
     <div>
-      <Toolbar />
+      <a
+        href="https://cvwo-groups-and-steps-user-guide.netlify.app/"
+        className={classes.anchor}
+      >
+        <Box
+          style={{
+            display: "flex",
+            alignItems: "center",
+            margin: ".5rem",
+            backgroundColor: "#e3e3e3",
+            borderRadius: "10px",
+            padding: ".5rem",
+            color: " #5865f2",
+          }}
+        >
+          <Logo />
+          <Typography variant="h6" style={{ fontWeight: 500 }}>
+            Groups and Steps
+          </Typography>
+        </Box>
+      </a>
       <Divider>
         <Chip label="USER" />
       </Divider>
@@ -104,10 +125,11 @@ export const SideBar: React.FC<SideBarProps> = (props) => {
                 background: "#e3e3e3",
                 width: "auto",
                 borderRadius: "5px",
-                margin: ".5rem",
+                margin: ".4rem",
+                justifyContent: "space-around",
               }}
             >
-              <ListItemIcon>
+              <ListItemIcon sx={{ minWidth: "35px" }}>
                 <TagIcon />
               </ListItemIcon>
               <ListItemText primary={Todo.title} />
@@ -115,6 +137,7 @@ export const SideBar: React.FC<SideBarProps> = (props) => {
                 style={{
                   justifyContent: "end",
                   fontSize: "10px",
+                  minWidth: "35px",
                 }}
               >
                 <SettingsIcon

@@ -13,6 +13,7 @@ body {
 }
 body::-webkit-scrollbar {
   width: 5px; /* width of the entire scrollbar */
+  height: 5px;
 }
 
 body::-webkit-scrollbar-thumb {

@@ -67,7 +67,6 @@ const TagsInput: React.FC<TagsInputProps> = ({
       newSelectedItem.push(
         (event as React.ChangeEvent<HTMLInputElement>).target.value.trim()
       );
-      console.log("TEst");
       setInputValue("");
       setSelectedItem(newSelectedItem);
     }
@@ -83,18 +82,6 @@ const TagsInput: React.FC<TagsInputProps> = ({
     }
   }
 
-  // function handleChange(item: any) {
-  //   let newSelectedItem = [...selectedItem];
-
-  //   // Validates input by checking for duplication
-  //   // If valid, add new tag into array
-  //   if (item && newSelectedItem.indexOf(item) === -1) {
-  //     newSelectedItem = [...newSelectedItem, item];
-  //   }
-  //   setInputValue("");
-  //   setSelectedItem(newSelectedItem);
-  // }
-
   const handleDelete = (item: string) => () => {
     // DO NOT MUTATE ORIGINAL ARRAY
     const newSelectedItem = [...selectedItem];
@@ -109,18 +96,13 @@ const TagsInput: React.FC<TagsInputProps> = ({
 
   return (
     <React.Fragment>
-      <Downshift
-        selectedItem={selectedItem}
-        inputValue={inputValue}
-        // onChange={handleChange}
-      >
+      <Downshift selectedItem={selectedItem} inputValue={inputValue}>
         {({ getInputProps }) => {
           // const { onBlur, onChange, onFocus } = getInputProps({
           //   onKeyDown: handleKeyDown,
           //   placeholder,
           // });
           return (
-            // Must return a div
             <div>
               <Box className={classes.scrollbar}>
                 {selectedItem?.map((item) => {

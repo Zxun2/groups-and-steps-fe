@@ -39,7 +39,6 @@ export default function NavInput(props: NavInputProps) {
       title: "",
     });
 
-    // Close Modal
     toggleOpen(false);
   };
 
@@ -85,7 +84,6 @@ export default function NavInput(props: NavInputProps) {
         autoComplete={true}
         // Does not actually mean onChange (more-of onEnter)
         onChange={(_, newValue) => {
-          console.log("Newvalue is ", newValue);
           if (typeof newValue === "string") {
             toggleOpen(true);
             setDialogValue({
